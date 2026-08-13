@@ -1,0 +1,538 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>一日七次 · 跟练</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0a14">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="一日七次">
+<style>
+:root{--bg:#0a0a14;--card:#12122a;--text:#ccc;--gold:#f0c040;--accent:#e2b04a;--blue:#4a90d9;--green:#4caf84;--dim:#777;--red:#dc503c}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#home{display:flex;flex-direction:column;max-width:500px;margin:0 auto;padding:16px 14px 24px;min-height:100vh;min-height:100dvh}
+#home h1{color:var(--gold);font-size:1.35em;text-align:center;padding:8px 0 2px;letter-spacing:1px}
+#home .sub{color:var(--dim);font-size:0.75em;text-align:center;margin-bottom:10px}
+.card{background:var(--card);border-radius:12px;padding:14px 16px;margin:6px 0}
+.wp{text-align:center}.wp .wn{font-size:1.9em;font-weight:bold;color:var(--gold);line-height:1.2}
+.wp .wl{color:var(--dim);font-size:0.8em;margin-top:2px}.wp .wd{color:var(--green);font-size:0.7em;margin-top:2px}
+.weekcal{display:flex;gap:3px;margin:8px 0}
+.wcd{flex:1;text-align:center;padding:6px 2px;background:var(--card);border-radius:6px;font-size:0.62em;min-width:0}
+.wcd .wce{font-size:0.9em;line-height:1.2}.wcd .wct{font-size:0.65em;color:var(--dim);margin-top:1px}
+.wcd.cur{border:2px solid var(--gold);background:rgba(240,192,64,0.08)}
+.wcd.dn{background:rgba(76,175,132,0.1);border:1px solid rgba(76,175,132,0.3)}.wcd.dn .wct{color:var(--green)}
+.today-box{background:linear-gradient(135deg,#1a1a08,#1a1a14);border:2px solid var(--gold);border-radius:14px;padding:16px;margin:8px 0;text-align:center}
+.today-box .tt{font-size:1.2em;font-weight:bold;color:var(--gold);margin:4px 0}
+.today-box .ts{font-size:0.7em;color:var(--dim);margin:4px 0 10px;line-height:1.5;word-break:break-all}
+.today-box button{display:block;width:100%;padding:15px;background:var(--gold);color:#000;border:none;border-radius:10px;font-size:1.1em;font-weight:bold;cursor:pointer;transition:all 0.2s}
+.today-box button:active{transform:scale(0.97);opacity:0.85}
+.today-box button.done{background:#2a3a2a;color:var(--green);border:1px solid var(--green)}
+.week-adj{display:flex;gap:6px;align-items:center;justify-content:center;margin:4px 0;font-size:0.7em;color:var(--dim)}
+.week-adj button{background:var(--card);border:1px solid #333;color:var(--dim);padding:4px 12px;border-radius:5px;font-size:0.85em;cursor:pointer}
+#w{display:none;flex-direction:column;max-width:500px;margin:0 auto;height:100vh;height:100dvh;background:var(--bg)}
+.wtop{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card);flex-shrink:0;min-height:44px}
+.wtop .wlbl{color:var(--dim);font-size:0.75em}.wtop .wpg{color:var(--dim);font-size:0.7em}
+.wtop button{background:none;border:1px solid #444;color:var(--dim);padding:4px 12px;border-radius:6px;font-size:0.8em;cursor:pointer}
+.wmain{flex:1;display:flex;flex-direction:column;align-items:center;padding:4px 14px;gap:2px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.exname{font-size:1.1em;font-weight:bold;color:var(--gold);text-align:center;margin-top:2px}
+.exdetail{font-size:0.7em;color:var(--accent);text-align:center}
+/* ---- Animation area ---- */
+.anim-box{width:240px;height:150px;margin:2px 0;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center}
+.anim-box svg{width:100%;height:100%;overflow:visible}
+.anim-box svg line,.anim-box svg circle,.anim-box svg path,.anim-box svg rect,.anim-box svg ellipse{transition:all 0.5s ease}
+.anim-box img{width:100%;height:100%;object-fit:contain;border-radius:10px;display:block}
+/* breathing belly */
+@keyframes bellyIn{0%{r:18}100%{r:28}}
+@keyframes bellyOut{0%{r:28}100%{r:18}}
+@keyframes pcPulse{0%,100%{opacity:0.4;r:5}50%{opacity:1;r:8}}
+@keyframes arrowUp{0%{stroke-dashoffset:60}100%{stroke-dashoffset:0}}
+@keyframes fadeInOut{0%,100%{opacity:0.2}50%{opacity:1}}
+/* ---- ring & timer ---- */
+.breath-ring{width:70px;height:70px;border-radius:50%;border:3px solid var(--blue);display:flex;align-items:center;justify-content:center;transition:all 0.4s ease;margin:2px 0;flex-shrink:0;position:relative}
+.breath-ring.inhale{transform:scale(1.35);border-color:var(--green);box-shadow:0 0 24px rgba(76,175,132,0.3)}
+.breath-ring.exhale{transform:scale(0.75);border-color:var(--blue)}
+.breath-ring.contract{border-color:var(--accent);animation:contractPulse 0.8s ease-in-out infinite}
+.breath-ring.hold{border-color:var(--gold)}
+.breath-ring.rest{border-color:var(--dim);animation:restPulse 2s ease-in-out infinite}
+.breath-ring.countdown{border-color:var(--gold);animation:cdPulse 1s ease-in-out infinite}
+@keyframes contractPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes restPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+@keyframes cdPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.phase-cue{font-size:1.6em;font-weight:bold;color:#fff;letter-spacing:3px;position:absolute}
+.phase-timer{font-size:3em;font-weight:bold;color:#fff;line-height:1;font-variant-numeric:tabular-nums;min-height:48px;display:flex;align-items:center}
+.phase-timer.green{color:var(--green)}.phase-timer.blue{color:var(--blue)}.phase-timer.gold{color:var(--gold)}.phase-timer.rest-color{color:var(--dim)}
+.phase-timer.pulse{animation:timerPulse 0.5s ease-in-out}
+@keyframes timerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.rep-info{font-size:0.72em;color:var(--dim);min-height:16px}
+.progress-bar{width:100%;max-width:320px;height:3px;background:#222;border-radius:2px;margin:2px 0;flex-shrink:0}
+.progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.3s;width:0%}
+.steps-box{width:100%;max-width:340px;font-size:0.7em;color:#999;text-align:left;line-height:1.65;background:rgba(0,0,0,0.2);border-radius:8px;padding:8px 12px;flex-shrink:0;max-height:25vh;overflow-y:auto}
+.steps-box .st-title{color:var(--dim);font-size:0.82em;font-weight:bold;margin-bottom:3px}
+.steps-box ol{padding-left:16px;margin:0}.steps-box li{margin:1px 0}
+.steps-box .key{color:var(--gold);font-size:0.95em}
+.steps-box .mistake{color:var(--red);margin-top:3px;font-size:0.92em;padding:2px 0}
+.steps-box .principle{color:var(--accent);font-size:0.88em;margin-top:3px;border-left:2px solid var(--accent);padding-left:6px}
+.steps-box .book-ref{font-size:0.72em;color:var(--dim);margin-top:3px;text-align:right;font-style:italic}
+.steps-box img{max-width:100%;border-radius:6px;margin-top:4px;opacity:0.8}
+.exlist-toggle{font-size:0.65em;color:var(--dim);background:none;border:1px solid #333;padding:4px 12px;border-radius:5px;cursor:pointer;margin:2px 0;flex-shrink:0}
+.exlist{display:none;width:100%;max-width:340px;max-height:22vh;overflow-y:auto;font-size:0.66em;background:rgba(0,0,0,0.25);border-radius:8px;flex-shrink:0}
+.exlist .el{display:flex;justify-content:space-between;align-items:center;padding:5px 12px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.exlist .el:last-child{border-bottom:none}
+.exlist .el .eln{color:var(--dim)}.exlist .el .elr{color:var(--dim);font-size:0.85em}
+.exlist .el.cur{background:rgba(240,192,64,0.08)}.exlist .el.cur .eln{color:var(--gold);font-weight:bold}
+.exlist .el.dn .eln{color:var(--green)}
+.wbot{display:flex;gap:6px;padding:8px 14px;padding-bottom:max(8px,env(safe-area-inset-bottom));background:var(--card);flex-shrink:0}
+.wbot button{flex:1;padding:12px;border-radius:10px;border:none;font-size:0.85em;font-weight:bold;cursor:pointer;transition:all 0.15s}
+.wbot button:active{transform:scale(0.96)}
+.wskip-btn{background:#2a2a2a;color:var(--dim)}.wpause-btn{background:#333;color:var(--text)}.wexit-btn{background:#331313;color:var(--red)}
+</style>
+</head>
+<body>
+<div id="home">
+  <h1>🔥 一日七次</h1>
+  <div class="sub">道家房中术 · 语音跟练</div>
+  <div class="wp card"><div class="wn" id="wn">--</div><div class="wl" id="wl">--</div><div class="wd" id="wdone">--</div></div>
+  <div class="weekcal" id="wcal"></div>
+  <div class="week-adj"><span>调整周数：</span><button onclick="adjWeek(-1)">◀</button><span id="wkov" style="color:var(--gold);min-width:60px;text-align:center">自动</span><button onclick="adjWeek(1)">▶</button></div>
+  <div class="today-box"><div class="tt" id="tt">--</div><div class="ts" id="ts">--</div><button id="tbtn" onclick="startWorkout()">🚀 开始今日训练</button></div>
+<button id="instbtn" onclick="installApp()" style="display:none;width:100%;margin:4px 0;padding:12px;background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">📲 安装为离线App</button>
+<div style="font-size:0.68em;color:#666;text-align:center;margin:0 0 8px;line-height:1.6">安卓：浏览器菜单 → 添加到主屏幕（支持时点上方按钮）<br>苹果：Safari 分享 → 添加到主屏幕</div>
+</div>
+<div id="w">
+  <div class="wtop"><span class="wlbl" id="wlbl">--</span><span class="wpg" id="wpg">--</span></div>
+  <div class="wmain">
+    <div class="exname" id="wnm">准备</div>
+    <div class="exdetail" id="wdt"></div>
+    <div class="anim-box" id="wanim"></div>
+    <div class="breath-ring" id="wring"><div class="phase-cue" id="wcue">准备</div></div>
+    <div class="phase-timer" id="wtimer">--</div>
+    <div class="rep-info" id="wrep"></div>
+    <div class="progress-bar"><div class="progress-fill" id="wpf"></div></div>
+    <div class="steps-box" id="wsteps"></div>
+    <button class="exlist-toggle" onclick="toggleList()">📋 查看全部动作 ▾</button>
+    <div class="exlist" id="exlist"></div>
+  </div>
+  <div class="wbot"><button class="wskip-btn" onclick="skipExercise()">⏭ 跳过</button><button class="wpause-btn" id="wpbtn" onclick="togglePause()">⏸ 暂停</button><button class="wexit-btn" onclick="quitWorkout()">✕ 退出</button></div>
+</div>
+<script>
+"use strict";
+// ============ STORAGE ============
+function loadState(){try{return JSON.parse(localStorage.getItem("yq8"))||{sd:null,done:{},ov:0}}catch(e){return{sd:null,done:{},ov:0}}}
+function saveState(s){try{localStorage.setItem("yq8",JSON.stringify(s))}catch(e){}}
+function todayStr(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function dayOfWeek(){var d=new Date().getDay();return d===0?6:d-1}
+function calcWeek(){var s=loadState();if(s.ov>0)return s.ov;if(!s.sd)return 1;var diff=Math.floor((new Date()-new Date(s.sd))/(7*86400000))+1;if(diff<1)return 1;if(diff<=2)return 1;if(diff<=4)return 3;if(diff<=6)return 5;if(diff<=10)return 7;if(diff<=16)return 11;return 17}
+function adjWeek(d){var s=loadState();if(!s.sd){s.sd=todayStr();saveState(s)}var w=calcWeek();if(s.ov<=0)s.ov=w;s.ov=Math.max(1,s.ov+d);saveState(s);renderHome()}
+var SCHED={labels:{1:"第1-2周 · 基础期",3:"第3-4周 · 探索期",5:"第5-6周 · 控制期",7:"第7-10周 · 能量期",11:"第11-16周 · 冲刺期",17:"第17-24周 · 实战期"},dayType:function(w,d){if(d===6)return"rest";if(w<=2)return[0,2,4].indexOf(d)>=0?"combo":"rec";if(w<=6)return[0,2,4].indexOf(d)>=0?"sex":"pwr";return d===0||d===3?"nrg":d===2||d===5?"sex":d===1||d===4?"pwr":"rec"},typeLabel:function(t){return{combo:"双重日",sex:"性练习日",pwr:"力量日",rec:"恢复日",nrg:"能量日",rest:"休息日"}[t]||t},typeEmoji:function(t){return{combo:"🔒🦵",sex:"🔒",pwr:"🦵",rec:"🧘",nrg:"♻️",rest:"😴"}[t]||""}};
+function getTodayType(){return SCHED.dayType(calcWeek(),dayOfWeek())}
+
+// ============ EXERCISE LIBRARY (enriched from book) ============
+var EX_LIB=[
+{id:"breath",n:"腹式呼吸",d:"鼻吸腹鼓 · 吐气腹收 · 呼吸控心",img:"5153b78551336651c1882ec634c5954f6373811103c1fe82039e582dd70047d7",
+ p:[{c:"吸",t:4,y:"inhale"},{c:"停",t:2,y:"hold"},{c:"呼",t:7,y:"exhale"}],r:18,rest:10,
+ s:["挺直背坐椅上，双脚与肩同宽，双手放肚脐。","鼻吸4秒 → 腹部向外鼓，胸和肩不动。横膈膜上升。","停2秒。","嘴或鼻呼7秒 → 腹部往回收，肚脐推向脊椎。"],
+ m:"吸气时肩膀抬起 → 躺平先找感觉。或试「腹式笑法」：大笑让腹部震动。",
+ key:"核心原理：呼吸控制心跳速度。呼吸越慢越深→心跳越慢→兴奋度越低→射精感越弱。做爱时控制呼吸=控制射精。",
+ book:"《男性多重高潮》练习一"},
+
+{id:"pc",n:"PC肌收放",d:"收1秒→放1秒 · 精准脉冲",img:"904add17d326203605a441598bba5c0e6015b57af74eef4fb9c75ef58ec2389b",
+ p:[{c:"收",t:1,y:"contract"},{c:"放",t:1,y:"relax"}],r:30,rest:10,
+ s:["PC肌=前面接耻骨、后面接尾骨的肌肉束。是生殖器的「瓣膜」。","收紧PC肌（忍尿+忍屁同时的感觉）1秒。","完全放松1秒。只动PC肌，腹臀大腿放松不憋气。"],
+ m:"腹部或臀部一起收紧 → 手放肚子上检查应完全不动。",
+ key:"核心原理：PC肌是控制射精的阀门。学会独立开关它=学会开关射精。PC肌强壮→前列腺高潮强度翻倍。",
+ book:"《男性多重高潮》练习三/四"},
+
+{id:"pc_relax",n:"PC肌主动放松",d:"收→松→检查→保持松 · 关键是松",img:"0ff951ebf2004d93549cdb29b33bfb2dd270b34e2b6b36f2d2b4337e7c7a5f1d",
+ p:[{c:"收",t:1,y:"contract"},{c:"松",t:1,y:"relax"},{c:"保持松",t:5,y:"free"}],r:10,rest:10,
+ s:["收紧PC肌1秒。用意念主动松开PC肌。","手摸会阴（睾丸后、肛门前），确认完全软了。保持放松5秒。","重点不是收，是收完能主动松——射精前那一刻强行放松PC肌的关键能力。"],
+ m:"松不彻底 → 手摸会阴确认完全无张力。",
+ key:"核心原理：射精是PC肌的痉挛性收缩。能主动放松PC肌=能在射精前0.5秒踩刹车。这是区分高潮和射精的核心技能。",
+ book:"《男性多重高潮》练习四"},
+
+{id:"testicle",n:"睾丸按摩",d:"搓热→按摩→轻拍→拉伸 · 打通能量",img:"6c9ba7d3719e7c02ca71c4082b1f04d56dc3825f74d3b646cc6ac97847ab69d5",
+ p:[{c:"自由按揉",t:150,y:"free"}],r:1,rest:5,
+ s:["【第1步】双手搓热。一睾丸放拇指和其他手指间，紧实但小力按摩1-2分钟（酸疼=有阻塞，力道轻但时间久）。","【第2步】阴经上提，露出睾丸，用最长手指轻拍1-2分钟→活化睾丸。","【第3步】拇指和食指握住阴囊和阴茎→轻轻往外拉→骨盆往后拉。再左拉→右拉→下拉，各方向练9/18/36次。"],
+ m:"用力过猛 → 轻轻来，阻塞需慢通。",
+ key:"核心原理：道家认为睾丸按摩增加睾固酮分泌。按摩打通阻塞→血液和能量流入睾丸。做爱后做释放压力。",
+ book:"《男性多重高潮》练习十五"},
+
+{id:"anus",n:"强化肛门",d:"呼→收肛提臀→停→吸松 · 能量上脊椎",
+ p:[{c:"呼收",t:3,y:"exhale"},{c:"停",t:4,y:"hold"},{c:"吸松",t:3,y:"inhale"}],r:9,rest:12,
+ s:["仰躺屈膝。完全呼气 → 收紧肛门+提臀 → 保持4秒。","意念：暖流从肛门→尾骨→沿脊椎上升至头顶。","吸气放松。重复9次。"],
+ m:"只收臀没收肛 → 意念聚焦肛门括约肌。",
+ key:"核心原理：肛门括约肌收缩会带动PC肌和骨盆底整体收紧。配合意念将性能量沿脊髓「督脉」从下往上输送→大脑高潮。",
+ book:"《男性多重高潮》练习十九"},
+
+{id:"prostate",n:"帮助前列腺",d:"呼收会阴→停→吸松 · 前列腺觉醒",
+ p:[{c:"呼收",t:3,y:"exhale"},{c:"停",t:3,y:"hold"},{c:"吸松",t:3,y:"inhale"}],r:9,rest:12,
+ s:["呼气 → 轻收会阴+肛门（前列腺位置在会阴上方、耻骨后方）。","呼气时意念聚焦前列腺→收缩PC肌挤压它。收缩要轻！","前列腺=男人的G点。前列腺高潮≠阴茎高潮，是全骨盆的深层快感。"],
+ m:"用力过猛 → 轻收！前列腺很敏感。",
+ key:"核心原理：前列腺高潮和阴茎高潮是两种完全不同的体验。学会PC肌挤压前列腺→不射精也能体验前列腺高潮。同时有助预防前列腺疾病。",
+ book:"《男性多重高潮》练习十七"},
+
+{id:"bridge",n:"臀桥冲刺",gif:"3013-u0cNiij",demo:"Butt_Lift_Bridge",d:"呼顶→停夹臀→吸放 · 臀与PC分离",
+ p:[{c:"呼顶",t:3,y:"exhale"},{c:"停夹臀",t:4,y:"hold"},{c:"吸放",t:3,y:"inhale"}],r:12,rest:25,
+ s:["仰躺屈膝，双脚与髋同宽。呼气→臀发力上推→肩髋膝成直线。","顶峰夹紧臀部4秒（手摸确认硬如石头）。","吸气慢放。末3次做分离训练：臀夹紧+PC肌完全放松。"],
+ m:"用腰代偿 → 手摸臀，软的=用腰了。",
+ key:"要点：学会臀部发力而不带动PC肌紧张。这对后入式控制至关重要——臀紧PC松=能抽送不射。",
+ book:"添加练习"},
+
+{id:"squat",n:"自重深蹲",demo:"Bodyweight_Squat",d:"吸下→呼上 · 下肢力量基础",
+ p:[{c:"吸下",t:4,y:"inhale"},{c:"呼上",t:3,y:"exhale"}],r:10,rest:25,
+ s:["双脚与肩同宽，脚尖微外八。挺胸背直。","吸气→臀后坐像坐椅子→大腿平行地面。膝盖方向=脚尖。","呼气→脚跟发力起身。全程PC肌保持放松觉察。"],
+ m:"膝盖内扣→想象撕开地板。背弯→浅蹲保直。",
+ key:"要点：下蹲时觉察PC肌是否也跟着收紧→有意识让它放松。大腿发力≠骨盆紧张。",
+ book:"添加练习"},
+
+{id:"catcow",n:"猫牛式骨盆",demo:"Cat_Stretch",d:"牛式吸→猫式呼 · 骨盆觉察",
+ p:[{c:"牛式",t:4,y:"inhale"},{c:"猫式",t:4,y:"exhale"}],r:10,rest:15,
+ s:["四足跪姿，手肩宽、膝髋宽。","牛式：吸气→骨盆前倾→腰微沉、臀翘、抬头。觉察PC肌拉伸。","猫式：呼气→骨盆后倾→拱背、收臀、低头。觉察PC肌收紧。"],
+ m:"用腰代偿 → 想象骨盆是碗前后倒水。",
+ key:"要点：骨盆前倾(后入姿势)时PC肌被拉长更敏感。练习在前倾位保持PC肌放松=后入不射的关键。",
+ book:"添加练习"},
+
+{id:"deadbug",n:"死虫式",gif:"0276-iny3m5y",demo:"Dead_Bug",d:"呼放→吸回 · 核心稳定",
+ p:[{c:"呼放",t:4,y:"exhale"},{c:"吸回",t:3,y:"inhale"}],r:16,rest:20,
+ s:["仰躺手脚朝天。下背完全贴地（手插不进去）。","呼气→同时放右臂+左腿至离地5cm。吸气收回。换边。"],
+ m:"下背拱起 → 先只动手或只动腿减难度。",
+ key:"要点：下背贴地时骨盆处于后倾位。练习此位保持PC肌放松。",
+ book:"添加练习"},
+
+{id:"lunge",n:"弓步蹲",gif:"1460-IZVHb27",demo:"Bodyweight_Walking_Lunge",d:"吸下→呼上 · 单腿力量",
+ p:[{c:"吸下",t:4,y:"inhale"},{c:"呼上",t:3,y:"exhale"}],r:20,rest:25,
+ s:["前迈一大步，后脚跟抬起。上身直立。","吸气→身体垂直下降→前膝约90°。呼气→前脚发力起身。","站不稳扶墙。两腿交替。"],
+ m:"前膝超脚尖 → 步子迈大。",
+ key:"要点：弓步时骨盆前倾类似后入位。在骨盆前倾状态下觉察PC肌紧张度。",
+ book:"添加练习"},
+
+{id:"horse",n:"马步站桩",d:"持续保持→气沉丹田",
+ p:[{c:"保持",t:60,y:"free"}],r:2,rest:35,
+ s:["两倍肩宽站立，下蹲（宁高勿弯）。背绝对直。","双手抱球于腹前。吸气沉丹田，呼气意守双腿。"],
+ m:"弯腰 → 浅蹲保直。",
+ key:"要点：站桩培养能量感和耐力。双腿颤抖时用呼吸稳定。意守丹田=将能量储存在腹部中心。",
+ book:"添加练习"},
+
+{id:"march1",n:"踏步呼吸·基础",demo:"Jogging_Treadmill",d:"原地踏步 · 吸4拍呼6拍",
+ p:[{c:"吸",t:4,y:"inhale"},{c:"呼",t:6,y:"exhale"}],r:24,rest:10,
+ s:["原地踏步，手臂自然摆动。","吸4拍（4步）、呼6拍（6步），鼻吸鼻呼。","节奏稳定，像慢走的速度。"],
+ m:"呼吸乱了 → 放慢踏步速度。",
+ key:"把呼吸绑定在踏步节拍上。这是把深慢呼吸练成肌肉记忆的第一步。",
+ book:"替代方案·踏步呼吸法"},
+{id:"march2",n:"踏步呼吸·骨盆前倾",gif:"1364-cuKYxhu",demo:"Jogging_Treadmill",d:"踏步+骨盆前倾 · 觉察PC肌",
+ p:[{c:"吸",t:4,y:"inhale"},{c:"呼",t:6,y:"exhale"}],r:24,rest:10,
+ s:["保持踏步节奏。骨盆向前倾15°（像后入时的翘臀角度）。","感受PC肌在这个角度被拉长的感觉。","呼吸保持不变：吸4拍呼6拍。"],
+ m:"骨盆前倾变成塌腰 → 收腹控制角度。",
+ key:"直接模拟后入位的骨盆姿态。在这种姿态下保持深慢呼吸+PC肌放松=实战不射的关键彩排。",
+ book:"替代方案·踏步呼吸法"},
+{id:"march3",n:"踏步呼吸·高抬腿",gif:"3636-ealLwvX",demo:"Jogging_Treadmill",d:"高抬腿踏步 · 心率提升",
+ p:[{c:"吸",t:4,y:"inhale"},{c:"呼",t:6,y:"exhale"}],r:24,rest:10,
+ s:["膝盖抬到髋部以上，手臂摆动加大。","速度加快但呼吸节奏不变：依然吸4拍呼6拍。","心率上来了，但呼吸不能乱。这是耐力的核心训练。"],
+ m:"呼吸急促变浅 → 膝盖放低，保呼吸。",
+ key:"心率上升时呼吸不变=性兴奋时呼吸不变。这个能力直接对应床上的持久输出。",
+ book:"替代方案·踏步呼吸法"},
+{id:"march4",n:"踏步呼吸·呼气检查",demo:"Jogging_Treadmill",d:"每次呼气 · 检查PC肌放松",
+ p:[{c:"吸",t:4,y:"inhale"},{c:"呼",t:6,y:"exhale"}],r:24,rest:10,
+ s:["回到慢踏步。每次呼气时检查：会阴是否放松？PC肌是否软？","呼气=放松的信号。让身体记住这个连接。","每呼一次检查一次。"],
+ m:"呼气时PC肌不自觉收紧 → 有意识松开。",
+ key:"呼气→PC肌放松。练成条件反射后，射精前猛呼气就能帮你踩刹车。",
+ book:"替代方案·踏步呼吸法"},
+{id:"march5",n:"踏步呼吸·收尾",demo:"Jogging_Treadmill",d:"逐渐降速 · 深慢呼吸",
+ p:[{c:"吸",t:5,y:"inhale"},{c:"呼",t:7,y:"exhale"}],r:20,rest:10,
+ s:["踏步逐渐放慢。呼吸加深：吸5秒呼7秒。","感受全身发热、心率慢慢降下来。","最后1分钟闭上眼睛，专注呼吸和会阴的放松感。"],
+ m:"突然停下来 → 慢慢降速。",
+ key:"收尾的深慢呼吸让身体记住平静状态，之后练能量循环更容易进入状态。",
+ book:"替代方案·踏步呼吸法"}
+];
+
+// ============ SVG ANIMATIONS ============
+var ANIM={};
+
+// Helper: build body figure. Joints object: {headX,headY, neckX,neckY, shX,shY, hipX,hipY, lKneeX,lKneeY, rKneeX,rKneeY, lFootX,lFootY, rFootX,rFootY, lElbX,lElbY, rElbX,rElbY, lHandX,lHandY, rHandX,rHandY}
+function bodyFig(j, opts){
+  opts=opts||{};
+  var sw=opts.sw||3;
+  var hc=opts.hc||"#ccc"; // head color
+  var bc=opts.bc||"#ddd"; // body color
+  var hl=opts.hl||"";      // highlight joint (e.g. "hip","knee")
+  var arrow=opts.arrow||""; // arrow direction: "up","down","left","right"
+  var label=opts.label||"";
+  var s='<svg viewBox="0 0 240 160">';
+  // Head
+  s+='<circle cx="'+j.headX+'" cy="'+j.headY+'" r="9" fill="none" stroke="'+hc+'" stroke-width="'+sw+'"/>';
+  // Neck to shoulder line
+  s+='<line x1="'+j.neckX+'" y1="'+j.neckY+'" x2="'+j.shX+'" y2="'+j.shY+'" stroke="'+bc+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+  // Spine: shoulder to hip
+  s+='<line x1="'+j.shX+'" y1="'+j.shY+'" x2="'+j.hipX+'" y2="'+j.hipY+'" stroke="'+bc+'" stroke-width="'+(sw+1)+'" stroke-linecap="round"/>';
+  // Arms
+  s+='<line x1="'+j.shX+'" y1="'+j.shY+'" x2="'+j.lElbX+'" y2="'+j.lElbY+'" stroke="'+bc+'" stroke-width="'+(sw-0.5)+'" stroke-linecap="round"/>';
+  s+='<line x1="'+j.lElbX+'" y1="'+j.lElbY+'" x2="'+j.lHandX+'" y2="'+j.lHandY+'" stroke="'+bc+'" stroke-width="'+(sw-0.5)+'" stroke-linecap="round"/>';
+  s+='<line x1="'+j.shX+'" y1="'+j.shY+'" x2="'+j.rElbX+'" y2="'+j.rElbY+'" stroke="'+bc+'" stroke-width="'+(sw-0.5)+'" stroke-linecap="round"/>';
+  s+='<line x1="'+j.rElbX+'" y1="'+j.rElbY+'" x2="'+j.rHandX+'" y2="'+j.rHandY+'" stroke="'+bc+'" stroke-width="'+(sw-0.5)+'" stroke-linecap="round"/>';
+  // Legs
+  s+='<line x1="'+j.hipX+'" y1="'+j.hipY+'" x2="'+j.lKneeX+'" y2="'+j.lKneeY+'" stroke="'+bc+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+  s+='<line x1="'+j.lKneeX+'" y1="'+j.lKneeY+'" x2="'+j.lFootX+'" y2="'+j.lFootY+'" stroke="'+bc+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+  s+='<line x1="'+j.hipX+'" y1="'+j.hipY+'" x2="'+j.rKneeX+'" y2="'+j.rKneeY+'" stroke="'+bc+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+  s+='<line x1="'+j.rKneeX+'" y1="'+j.rKneeY+'" x2="'+j.rFootX+'" y2="'+j.rFootY+'" stroke="'+bc+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+  // Joints
+  s+='<circle cx="'+j.shX+'" cy="'+j.shY+'" r="3" fill="'+hc+'"/>';
+  s+='<circle cx="'+j.hipX+'" cy="'+j.hipY+'" r="3.5" fill="'+(hl==="hip"?"#f0c040":"#999")+'"/>';
+  s+='<circle cx="'+j.lKneeX+'" cy="'+j.lKneeY+'" r="2.5" fill="'+(hl==="knee"?"#4caf84":"#888")+'"/>';
+  s+='<circle cx="'+j.lElbX+'" cy="'+j.lElbY+'" r="2" fill="#888"/>';
+  // Highlight area
+  if(hl==="pelvis"){
+    s+='<ellipse cx="'+j.hipX+'" cy="'+(j.hipY+5)+'" rx="18" ry="12" fill="#f0c040" opacity="0.15" stroke="#f0c040" stroke-width="1" stroke-dasharray="3 2"/>';
+    s+='<text x="'+(j.hipX+22)+'" y="'+(j.hipY+5)+'" fill="#f0c040" font-size="8">PC肌</text>';
+  }
+  if(hl==="glutes"){
+    s+='<ellipse cx="'+j.hipX+'" cy="'+(j.hipY+3)+'" rx="16" ry="10" fill="#4caf84" opacity="0.2" stroke="#4caf84" stroke-width="1.5" stroke-dasharray="2 2"/>';
+    s+='<text x="'+(j.hipX+20)+'" y="'+(j.hipY+3)+'" fill="#4caf84" font-size="8">臀</text>';
+  }
+  if(hl==="belly"){
+    s+='<circle cx="'+(j.shX+(j.hipX-j.shX)*0.55)+'" cy="'+(j.shY+(j.hipY-j.shY)*0.5)+'" r="14" fill="none" stroke="#f0c040" stroke-width="1.5" stroke-dasharray="2 3" opacity="0.6"/>';
+    s+='<text x="'+(j.shX+(j.hipX-j.shX)*0.55+18)+'" y="'+(j.shY+(j.hipY-j.shY)*0.5)+'" fill="#f0c040" font-size="7">腹</text>';
+  }
+  // Arrow
+  if(arrow==="up"){
+    s+='<line x1="'+(j.hipX-18)+'" y1="'+(j.hipY-5)+'" x2="'+(j.shX-18)+'" y2="'+(j.shY+10)+'" stroke="#4caf84" stroke-width="2"><animate attributeName="stroke-dashoffset" values="0;-12" dur="1.5s" repeatCount="indefinite"/></line>';
+  }else if(arrow==="down"){
+    s+='<line x1="'+(j.shX+18)+'" y1="'+(j.shY+10)+'" x2="'+(j.hipX+18)+'" y2="'+(j.hipY-5)+'" stroke="#dc503c" stroke-width="2" stroke-dasharray="6 4"/>';
+  }
+  // Label
+  if(label){
+    s+='<text x="120" y="150" text-anchor="middle" fill="#f0c040" font-size="11" font-weight="bold">'+label+'</text>';
+  }
+  s+='</svg>';
+  return s;
+}
+
+// --- 腹式呼吸: Belly breathing with expanding/contracting overlay ---
+ANIM.breath=function(phase){
+  var bellyR=phase==="inhale"?26:(phase==="exhale"?16:20);
+  var opacity=phase==="inhale"?0.35:0.15;
+  return '<svg viewBox="0 0 240 160"><ellipse cx="120" cy="85" rx="38" ry="60" fill="none" stroke="#444" stroke-width="2"/><circle cx="120" cy="85" r="14" fill="none" stroke="#777" stroke-width="1"/><circle cx="120" cy="85" r="'+bellyR+'" fill="#4caf84" opacity="'+opacity+'" stroke="#4caf84" stroke-width="2.5" style="transition:all 0.6s"/><text x="120" y="28" text-anchor="middle" fill="#ccc" font-size="13" font-weight="bold">膈肌</text><line x1="120" y1="32" x2="120" y2="55" stroke="#f0c040" stroke-width="2"><animate attributeName="y2" values="55;42;55" dur="4s" repeatCount="indefinite"/></line><polygon points="120,38 116,48 124,48" fill="#f0c040" opacity="0.6"/><text x="120" y="145" text-anchor="middle" fill="#f0c040" font-size="11">腹式呼吸 · 鼻吸腹鼓</text></svg>';
+};
+
+// --- PC肌收放: Pelvic cross-section with muscle highlight ---
+ANIM.pc=function(phase){
+  var pulseOp=phase==="contract"?0.9:0.25;
+  return '<svg viewBox="0 0 240 160"><ellipse cx="120" cy="82" rx="45" ry="55" fill="none" stroke="#444" stroke-width="2"/><line x1="85" y1="50" x2="155" y2="50" stroke="#666" stroke-width="1"/><text x="160" y="48" fill="#888" font-size="8">耻骨</text><line x1="90" y1="52" x2="90" y2="52" stroke="#666" stroke-width="1"/><line x1="120" y1="50" x2="120" y2="132" stroke="#444" stroke-width="0.5" stroke-dasharray="4 6"/><text x="124" y="140" fill="#888" font-size="8">尾骨</text><ellipse cx="120" cy="82" rx="22" ry="14" fill="#e2b04a" opacity="'+pulseOp+'" stroke="#f0c040" stroke-width="2" style="transition:opacity 0.4s"><animate attributeName="opacity" values="'+pulseOp+';'+(pulseOp*0.5)+';'+pulseOp+'" dur="1s" repeatCount="indefinite" additive="replace"/></ellipse><text x="120" y="86" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">PC肌</text><text x="120" y="152" text-anchor="middle" fill="#f0c040" font-size="11">'+ (phase==="contract"?"收 · 忍尿感":"放 · 完全松") +'</text></svg>';
+};
+
+// --- PC肌主动放松 ---
+ANIM.pc_relax=function(phase){
+  var op=phase==="contract"?0.85:(phase==="free"?0.15:0.25);
+  var checkDot=phase==="free"?'<circle cx="120" cy="108" r="5" fill="#dc503c" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" repeatCount="indefinite"/></circle><text x="130" y="112" fill="#dc503c" font-size="8">摸会阴确认松</text>':"";
+  return '<svg viewBox="0 0 240 160"><ellipse cx="120" cy="78" rx="45" ry="50" fill="none" stroke="#444" stroke-width="2"/><ellipse cx="120" cy="78" rx="20" ry="12" fill="#e2b04a" opacity="'+op+'" stroke="#f0c040" stroke-width="2" style="transition:opacity 0.5s"/><text x="120" y="82" text-anchor="middle" fill="#fff" font-size="9">PC肌</text>'+checkDot+'<text x="120" y="148" text-anchor="middle" fill="#f0c040" font-size="11">'+ (phase==="contract"?"收紧":"放松 · 主动松开") +'</text></svg>';
+};
+
+// --- 睾丸按摩 ---
+ANIM.testicle=function(phase){
+  return '<svg viewBox="0 0 240 160"><ellipse cx="120" cy="82" rx="28" ry="38" fill="none" stroke="#555" stroke-width="1.5"/><circle cx="115" cy="72" r="11" fill="none" stroke="#e2b04a" stroke-width="1.5"/><circle cx="125" cy="72" r="11" fill="none" stroke="#e2b04a" stroke-width="1.5"/><text x="120" y="75" text-anchor="middle" fill="#e2b04a" font-size="7">睾丸</text><path d="M70 62 C78 42,100 36,120 38" fill="none" stroke="#f0c040" stroke-width="3" stroke-linecap="round" opacity="0.7"><animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/></path><path d="M170 62 C162 42,140 36,120 38" fill="none" stroke="#f0c040" stroke-width="3" stroke-linecap="round" opacity="0.7"><animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/></path><text x="120" y="130" text-anchor="middle" fill="#888" font-size="8">搓热双手→轻揉→轻拍→拉伸</text><text x="120" y="148" text-anchor="middle" fill="#f0c040" font-size="11">睾丸按摩</text></svg>';
+};
+
+// --- 强化肛门 & 帮助前列腺: Spine energy ---
+ANIM.anus=function(phase){return ANIM.spineEnergy(phase)};
+ANIM.prostate=function(phase){return ANIM.spineEnergy(phase)};
+ANIM.spineEnergy=function(phase){
+  return '<svg viewBox="0 0 240 160"><ellipse cx="120" cy="82" rx="35" ry="52" fill="none" stroke="#444" stroke-width="2"/><line x1="120" y1="125" x2="120" y2="25" stroke="#f0c040" stroke-width="2.5" stroke-dasharray="8 5"><animate attributeName="stroke-dashoffset" values="0;-26" dur="2s" repeatCount="indefinite"/></line><polygon points="120,20 114,32 126,32" fill="#f0c040" opacity="0.7"><animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/></polygon><circle cx="120" cy="125" r="7" fill="#4caf84" opacity="0.5"><animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/></circle><text x="120" y="12" text-anchor="middle" fill="#f0c040" font-size="9">大脑</text><text x="130" y="80" fill="#888" font-size="7">脊椎</text><text x="120" y="148" text-anchor="middle" fill="#f0c040" font-size="11">能量:尾骨↑脊椎↑大脑</text></svg>';
+};
+
+// --- 臀桥冲刺 ---
+ANIM.bridge=function(phase){
+  var isUp=phase==="exhale";
+  var hipY=isUp?55:88;
+  var kneeY=isUp?78:98;
+  return '<svg viewBox="0 0 240 160"><line x1="55" y1="125" x2="185" y2="125" stroke="#444" stroke-width="1.5"/><circle cx="120" cy="25" r="11" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="120" y1="36" x2="120" y2="'+hipY+'" stroke="#ddd" stroke-width="3.5" stroke-linecap="round" style="transition:y2 0.5s"/><line x1="80" y1="100" x2="120" y2="'+hipY+'" stroke="#ddd" stroke-width="2.5" stroke-linecap="round" style="transition:y2 0.5s"/><line x1="160" y1="100" x2="120" y2="'+hipY+'" stroke="#ddd" stroke-width="2.5" stroke-linecap="round" style="transition:y2 0.5s"/><line x1="80" y1="100" x2="70" y2="125" stroke="#ddd" stroke-width="2.5" stroke-linecap="round"/><line x1="160" y1="100" x2="170" y2="125" stroke="#ddd" stroke-width="2.5" stroke-linecap="round"/>'+ (isUp?'<ellipse cx="120" cy="'+(hipY+5)+'" rx="14" ry="8" fill="#4caf84" opacity="0.25" stroke="#4caf84" stroke-width="1.5"/><text x="138" y="'+(hipY+8)+'" fill="#4caf84" font-size="9" font-weight="bold">夹臀</text>':"") +'<text x="120" y="148" text-anchor="middle" fill="#f0c040" font-size="11">'+ (isUp?"顶起夹臀 · 肩髋膝直线":"吸气慢放") +'</text></svg>';
+};
+
+// --- 自重深蹲 ---
+ANIM.squat=function(phase){
+  var isDown=phase==="inhale";
+  var hipY=isDown?80:60;
+  var kneeY=isDown?105:92;
+  var kneeLx=isDown?85:100;
+  var kneeRx=isDown?155:140;
+  return '<svg viewBox="0 0 240 160"><circle cx="120" cy="22" r="11" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="120" y1="33" x2="120" y2="'+hipY+'" stroke="#ddd" stroke-width="3.5" stroke-linecap="round" style="transition:y2 0.5s"/><line x1="120" y1="45" x2="80" y2="70" stroke="#ddd" stroke-width="2" stroke-linecap="round"/><line x1="80" y1="70" x2="60" y2="90" stroke="#ddd" stroke-width="2" stroke-linecap="round"/><line x1="120" y1="45" x2="160" y2="70" stroke="#ddd" stroke-width="2" stroke-linecap="round"/><line x1="160" y1="70" x2="180" y2="90" stroke="#ddd" stroke-width="2" stroke-linecap="round"/><line x1="120" y1="'+hipY+'" x2="'+kneeLx+'" y2="'+kneeY+'" stroke="#ddd" stroke-width="3" stroke-linecap="round" style="transition:all 0.5s"/><line x1="'+kneeLx+'" y1="'+kneeY+'" x2="85" y2="132" stroke="#ddd" stroke-width="3" stroke-linecap="round" style="transition:all 0.5s"/><line x1="120" y1="'+hipY+'" x2="'+kneeRx+'" y2="'+kneeY+'" stroke="#ddd" stroke-width="3" stroke-linecap="round" style="transition:all 0.5s"/><line x1="'+kneeRx+'" y1="'+kneeY+'" x2="155" y2="132" stroke="#ddd" stroke-width="3" stroke-linecap="round" style="transition:all 0.5s"/>'+ (isDown?'<ellipse cx="120" cy="'+(hipY+8)+'" rx="12" ry="7" fill="#4caf84" opacity="0.2" stroke="#4caf84" stroke-width="1"/>':"") +'<text x="120" y="152" text-anchor="middle" fill="#f0c040" font-size="11">'+ (isDown?"吸气下蹲 · 臀后坐":"呼气起身 · 脚跟发力") +'</text></svg>';
+};
+
+// --- 猫牛式骨盆 ---
+ANIM.catcow=function(phase){
+  var isCow=phase==="inhale";
+  var spineD=isCow?"M75 42 Q120 50 160 65":"M75 42 Q120 65 160 80";
+  var bellyD=isCow?"M105 55 Q120 65 132 55":"M105 62 Q120 52 132 62";
+  return '<svg viewBox="0 0 240 160"><circle cx="68" cy="30" r="10" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="68" y1="40" x2="75" y2="42" stroke="#ccc" stroke-width="2.5"/><path d="'+spineD+'" fill="none" stroke="#4caf84" stroke-width="3.5" style="transition:d 0.5s" stroke-linecap="round"/>'+ (isCow?'<path d="'+bellyD+'" fill="none" stroke="#f0c040" stroke-width="2" stroke-dasharray="4 3" opacity="0.6"/>':"") +'<circle cx="160" cy="80" r="4" fill="#ccc"/><line x1="160" y1="84" x2="160" y2="105" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="160" y1="105" x2="140" y2="140" stroke="#ddd" stroke-width="2.5"/><line x1="160" y1="105" x2="180" y2="140" stroke="#ddd" stroke-width="2.5"/><line x1="68" y1="65" x2="48" y2="95" stroke="#ddd" stroke-width="2" opacity="0.5"/><line x1="68" y1="65" x2="88" y2="95" stroke="#ddd" stroke-width="2" opacity="0.5"/><text x="120" y="154" text-anchor="middle" fill="#f0c040" font-size="11">'+ (isCow?"牛式:骨盆前倾·觉察PC肌":"猫式:骨盆后倾·拱背收臀") +'</text></svg>';
+};
+
+// --- 死虫式 ---
+ANIM.deadbug=function(phase){
+  var isOut=phase==="exhale";
+  var legY=isOut?62:42;
+  var armY=isOut?105:72;
+  return '<svg viewBox="0 0 240 160"><line x1="50" y1="140" x2="190" y2="140" stroke="#444" stroke-width="1.5"/><circle cx="120" cy="38" r="10" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="120" y1="48" x2="120" y2="70" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="120" y1="55" x2="80" y2="'+armY+'" stroke="#ddd" stroke-width="2.5" stroke-linecap="round" style="transition:y2 0.5s"/><line x1="120" y1="70" x2="85" y2="'+legY+'" stroke="#ddd" stroke-width="2.5" stroke-linecap="round" style="transition:y2 0.5s"/><line x1="120" y1="55" x2="160" y2="80" stroke="#888" stroke-width="2" opacity="0.3"/><line x1="120" y1="70" x2="155" y2="50" stroke="#888" stroke-width="2" opacity="0.3"/><circle cx="120" cy="70" r="4" fill="#4caf84" opacity="0.5"/><text x="120" y="155" text-anchor="middle" fill="#f0c040" font-size="11">'+ (isOut?"呼气放手腿·下背贴地":"吸气收回·换边") +'</text></svg>';
+};
+
+// --- 弓步蹲 ---
+ANIM.lunge=function(phase){
+  var isDown=phase==="inhale";
+  var fKneeY=isDown?92:73;
+  var fFootX=isDown?75:68;
+  return '<svg viewBox="0 0 240 160"><circle cx="120" cy="22" r="11" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="120" y1="33" x2="120" y2="58" stroke="#ddd" stroke-width="3.5" stroke-linecap="round"/><line x1="120" y1="58" x2="92" y2="'+fKneeY+'" stroke="#ddd" stroke-width="3" stroke-linecap="round" style="transition:y2 0.5s"/><line x1="92" y1="'+fKneeY+'" x2="'+fFootX+'" y2="138" stroke="#ddd" stroke-width="3" stroke-linecap="round" style="transition:all 0.5s"/><line x1="120" y1="58" x2="145" y2="100" stroke="#ddd" stroke-width="2.5" stroke-linecap="round"/><line x1="145" y1="100" x2="160" y2="138" stroke="#ddd" stroke-width="2.5" stroke-linecap="round"/><line x1="120" y1="43" x2="90" y2="65" stroke="#ddd" stroke-width="2" stroke-linecap="round" opacity="0.5"/><line x1="120" y1="43" x2="150" y2="65" stroke="#ddd" stroke-width="2" stroke-linecap="round" opacity="0.5"/>'+ (isDown?'<ellipse cx="92" cy="'+(fKneeY-12)+'" rx="12" ry="6" fill="#4caf84" opacity="0.2" stroke="#4caf84" stroke-width="1"/>':"") +'<text x="120" y="155" text-anchor="middle" fill="#f0c040" font-size="11">'+ (isDown?"吸气下降·前膝90°":"呼气起身·前脚发力") +'</text></svg>';
+};
+
+// --- 马步站桩 ---
+ANIM.horse=function(phase){
+  return '<svg viewBox="0 0 240 160"><circle cx="120" cy="22" r="11" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="120" y1="33" x2="120" y2="65" stroke="#ddd" stroke-width="3.5" stroke-linecap="round"/><line x1="120" y1="65" x2="65" y2="82" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="65" y1="82" x2="55" y2="140" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="120" y1="65" x2="175" y2="82" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="175" y1="82" x2="185" y2="140" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="75" y1="48" x2="165" y2="48" stroke="#888" stroke-width="2" opacity="0.3"/><circle cx="120" cy="90" r="16" fill="none" stroke="#f0c040" stroke-width="2" opacity="0.4"><animate attributeName="r" values="16;18;16" dur="3s" repeatCount="indefinite"/></circle><text x="120" y="92" text-anchor="middle" fill="#f0c040" font-size="10" font-weight="bold">气</text><text x="120" y="155" text-anchor="middle" fill="#f0c040" font-size="11">马步站桩 · 气沉丹田</text></svg>';
+};
+
+// --- 踏步呼吸法: Marching figure with alternating legs ---
+// stage: 1=basic, 2=pelvic tilt, 3=high knees, 4=exhale check, 5=cooldown
+function marchAnim(stage,phase){
+  var kneeHigh = stage===3 ? 45 : 58; // knee Y: lower value = higher knee
+  var pelvisTilt = stage===2 ? 4 : 0; // hip Y shift for tilt
+  var checkDot = stage===4 ? '<circle cx="120" cy="118" r="4" fill="#dc503c" opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="6s" repeatCount="indefinite"/></circle><text x="128" y="122" fill="#dc503c" font-size="8">检查PC肌</text>' : "";
+  var speed = stage===3 ? "0.9s" : stage===5 ? "1.8s" : "1.3s";
+  var label = {1:"基础踏步·吸4呼6",2:"骨盆前倾·PC肌放松",3:"高抬腿·呼吸不乱",4:"呼气检查PC肌",5:"慢踏步收尾"}[stage];
+  return '<svg viewBox="0 0 240 160"><circle cx="120" cy="26" r="11" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="120" y1="37" x2="120" y2="'+ (65+pelvisTilt) +'" stroke="#ddd" stroke-width="3.5" stroke-linecap="round"/><line x1="120" y1="45" x2="95" y2="70" stroke="#ddd" stroke-width="2" stroke-linecap="round"><animate attributeName="x2" values="95;145;95" dur="'+speed+'" repeatCount="indefinite"/></line><line x1="120" y1="45" x2="145" y2="70" stroke="#ddd" stroke-width="2" stroke-linecap="round"><animate attributeName="x2" values="145;95;145" dur="'+speed+'" repeatCount="indefinite"/></line><line x1="120" y1="'+ (65+pelvisTilt) +'" x2="100" y2="'+kneeHigh+'" stroke="#ddd" stroke-width="3" stroke-linecap="round"><animate attributeName="y2" values="'+kneeHigh+';110;'+kneeHigh+'" dur="'+speed+'" repeatCount="indefinite"/></line><line x1="100" y1="'+kneeHigh+'" x2="100" y2="140" stroke="#ddd" stroke-width="3" stroke-linecap="round"><animate attributeName="y1" values="'+kneeHigh+';110;'+kneeHigh+'" dur="'+speed+'" repeatCount="indefinite"/></line><line x1="120" y1="'+ (65+pelvisTilt) +'" x2="140" y2="110" stroke="#ddd" stroke-width="3" stroke-linecap="round"><animate attributeName="y2" values="110;'+kneeHigh+';110" dur="'+speed+'" repeatCount="indefinite"/></line><line x1="140" y1="110" x2="140" y2="140" stroke="#ddd" stroke-width="3" stroke-linecap="round"><animate attributeName="y1" values="110;'+kneeHigh+';110" dur="'+speed+'" repeatCount="indefinite"/></line>'+ (stage===2?'<line x1="120" y1="65" x2="120" y2="72" stroke="#f0c040" stroke-width="2.5"><animate attributeName="x2" values="120;132;120" dur="1.3s" repeatCount="indefinite"/></line><text x="136" y="70" fill="#f0c040" font-size="8">前倾</text>':"") + checkDot +'<text x="120" y="155" text-anchor="middle" fill="#f0c040" font-size="11">'+label+'</text></svg>';
+}
+ANIM.march1=function(phase){return marchAnim(1,phase)};
+ANIM.march2=function(phase){return marchAnim(2,phase)};
+ANIM.march3=function(phase){return marchAnim(3,phase)};
+ANIM.march4=function(phase){return marchAnim(4,phase)};
+ANIM.march5=function(phase){return marchAnim(5,phase)};
+// Render animation for current exercise
+function renderAnim(){
+  var ex=getCurEx();if(!ex)return;
+  var box=document.getElementById("wanim");
+  if(ex.gif){
+    box.innerHTML='<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden"><img src="images/'+ex.gif+'.gif" alt="'+ex.n+'" style="width:100%;height:100%;object-fit:contain;border-radius:10px;display:block"><span style="position:absolute;bottom:3px;right:6px;font-size:9px;color:rgba(255,255,255,0.45)">© Gym visual</span></div>';
+    return;
+  }
+  var ph=getCurPh();
+  var fn=ANIM[ex.id]||ANIM.breath;
+  try{box.innerHTML=fn(ph?ph.y:"")}catch(e){}
+}
+
+// ============ WADJ ============
+var WADJ={1:{"腹式呼吸":18,"PC肌收放":30,"PC肌主动放松":10,"臀桥冲刺":12,"自重深蹲":10,"猫牛式骨盆":10,"死虫式":16,"强化肛门":9,"帮助前列腺":9},3:{"腹式呼吸":24,"PC肌收放":50,"PC肌主动放松":12,"臀桥冲刺":15,"自重深蹲":15,"猫牛式骨盆":20,"死虫式":24,"强化肛门":12,"帮助前列腺":12},5:{"腹式呼吸":30,"PC肌收放":80,"PC肌主动放松":15,"臀桥冲刺":25,"自重深蹲":25,"猫牛式骨盆":30,"死虫式":30,"强化肛门":18,"帮助前列腺":18},7:{"腹式呼吸":36,"PC肌收放":100,"PC肌主动放松":18,"臀桥冲刺":30,"自重深蹲":30,"猫牛式骨盆":36,"死虫式":40,"弓步蹲":20,"马步站桩":2,"强化肛门":24,"帮助前列腺":24}};
+var workoutPlan=[];
+function buildWorkout(dayType){
+  workoutPlan=[];var w=calcWeek();var adj=WADJ[w]||WADJ[1];
+  function add(id,ovr){var src=null;for(var i=0;i<EX_LIB.length;i++){if(EX_LIB[i].id===id){src=EX_LIB[i];break}}if(!src)return;var ex=JSON.parse(JSON.stringify(src));if(adj[ex.n])ex.r=adj[ex.n];if(ovr)for(var k in ovr)ex[k]=ovr[k];workoutPlan.push(ex)}
+  add("breath");add("pc");add("pc_relax");
+  if(dayType==="combo"||dayType==="pwr"||dayType==="nrg"){add("bridge");add("squat");add("catcow");add("deadbug");if(w>=7){add("lunge");add("horse");}if(dayType!=="nrg"){add("march1");add("march2");add("march3");add("march4");add("march5")}}
+  if(dayType==="rec"||dayType==="sex"){add("march1");add("march2");add("march3");add("march4");add("march5")}
+  add("testicle");add("anus");add("prostate");
+}
+// ============ TTS ============
+var gVoice=null;var gTTS=false;
+function initVoices(){try{if(typeof speechSynthesis==="undefined"){gTTS=false;return}gTTS=true;var voices=speechSynthesis.getVoices();if(voices&&voices.length>0)pickVoice(voices);speechSynthesis.onvoiceschanged=function(){try{var vs=speechSynthesis.getVoices();if(vs&&vs.length>0)pickVoice(vs)}catch(e){}}}catch(e){gTTS=false}}
+function pickVoice(voices){gVoice=null;var prefs=["Ting-Ting","XiaoXiao","Yaoyao","Hong","Sin-Ji","Mei-Jia","Zhiwei"];for(var p=0;p<prefs.length;p++){for(var i=0;i<voices.length;i++){if(voices[i].name.indexOf(prefs[p])>=0&&voices[i].lang.indexOf("zh")>=0){gVoice=voices[i];return}}}for(var j=0;j<voices.length;j++){if(voices[j].lang.indexOf("zh")>=0){gVoice=voices[j];return}}if(voices.length>0)gVoice=voices[0]}
+function speak(text,rate,pitch){if(!gTTS)return;rate=rate||0.85;pitch=pitch||1.0;try{try{speechSynthesis.cancel()}catch(e){}var u=new SpeechSynthesisUtterance(text);u.lang="zh-CN";u.rate=rate;u.pitch=pitch;u.volume=1;if(gVoice)u.voice=gVoice;speechSynthesis.speak(u)}catch(e){}}
+
+// ============ WORKOUT STATE ============
+var gState="idle",gExI=0,gPhI=0,gRepC=0,gTimeLeft=0,gTimer=null,gPaused=false,gTotalPh=0,gDonePh=0;
+function getCurEx(){return workoutPlan[gExI]}
+function getCurPh(){var ex=getCurEx();return ex?ex.p[gPhI]:null}
+
+function startWorkout(){
+  try{var s=loadState();if(!s.sd){s.sd=todayStr();saveState(s)}var tt=getTodayType();if(tt==="rest"){alert("休息日！😴");return}
+    stopTimer();try{speechSynthesis.cancel()}catch(e){}
+    buildWorkout(tt);gExI=0;gPhI=0;gRepC=0;gTimeLeft=0;gPaused=false;gState="idle";gDonePh=0;
+    gTotalPh=workoutPlan.reduce(function(s,ex){return s+ex.p.length*ex.r},0);
+    document.getElementById("home").style.display="none";document.getElementById("w").style.display="flex";
+    document.getElementById("wlbl").textContent=SCHED.typeLabel(tt)+" · "+(SCHED.labels[calcWeek()]||"");
+    document.getElementById("wpg").textContent="1/"+workoutPlan.length;
+    document.getElementById("wpf").style.width="0%";document.getElementById("wpbtn").textContent="⏸ 暂停";
+    showExInfo();renderExList();renderAnim();
+    speak("准备开始",0.8,1.1);startCD(announceStart);
+  }catch(e){try{document.getElementById("home").style.display="none";document.getElementById("w").style.display="flex";document.getElementById("wnm").textContent="出错";document.getElementById("wtimer").textContent="⚠️";document.getElementById("wsteps").innerHTML='<div style="color:var(--red)">刷新重试</div>'}catch(e2){}}
+}
+
+function showExInfo(){
+  var ex=getCurEx();if(!ex)return;
+  document.getElementById("wnm").textContent=ex.n;
+  document.getElementById("wdt").textContent=ex.d||"";
+  document.getElementById("wpg").textContent=(gExI+1)+"/"+workoutPlan.length;
+  var sh='<div class="st-title">📖 动作详解</div><ol>';
+  if(ex.s)ex.s.forEach(function(s){sh+="<li>"+s+"</li>"});
+  sh+="</ol>";
+  if(ex.key)sh+='<div class="key">💡 '+ex.key+"</div>";
+  if(ex.m)sh+='<div class="mistake">⚠️ '+ex.m+"</div>";
+  if(ex.demo){
+    sh+='<div style="display:flex;gap:4px;margin-top:4px">';
+    sh+='<img src="images/'+ex.demo+'_0.jpg" style="flex:1;max-width:50%;border-radius:6px;opacity:0.85" onerror="this.style.display=\'none\'" loading="lazy">';
+    sh+='<img src="images/'+ex.demo+'_1.jpg" style="flex:1;max-width:50%;border-radius:6px;opacity:0.85" onerror="this.style.display=\'none\'" loading="lazy">';
+    sh+='</div>';
+  }
+  if(ex.img)sh+='<img src="images/'+ex.img+'.jpg" onerror="this.style.display=\'none\'" loading="lazy">';
+  if(ex.book)sh+='<div class="book-ref">—— '+ex.book+"</div>";
+  document.getElementById("wsteps").innerHTML=sh;
+}
+
+function renderExList(){var h="";workoutPlan.forEach(function(ex,i){var cls="el";if(i===gExI)cls+=" cur";if(i<gExI)cls+=" dn";h+='<div class="'+cls+'"><span class="eln">'+(i<gExI?"✓ ":"")+ex.n+'</span><span class="elr">'+ex.r+"次</span></div>"});document.getElementById("exlist").innerHTML=h}
+function toggleList(){var el=document.getElementById("exlist");var btns=document.getElementsByClassName("exlist-toggle");if(el.style.display==="block"){el.style.display="none";if(btns[0])btns[0].textContent="📋 查看全部动作 ▾"}else{el.style.display="block";renderExList();if(btns[0])btns[0].textContent="📋 查看全部动作 ▴"}}
+
+// ============ COUNTDOWN ============
+function startCD(cb){gState="countdown";var ring=document.getElementById("wring");ring.style.display="flex";ring.className="breath-ring countdown";document.getElementById("wcue").textContent="准备";document.getElementById("wrep").textContent="";var cd=3;(function tick(){if(gPaused){setTimeout(tick,300);return}if(gState==="done")return;if(cd>0){document.getElementById("wtimer").textContent=cd;document.getElementById("wtimer").className="phase-timer gold";speak(String(cd),0.5,1.3);cd--;setTimeout(tick,1000)}else{document.getElementById("wtimer").textContent="▶";document.getElementById("wtimer").className="phase-timer gold";speak("开始",0.6,1.2);setTimeout(function(){if(gState!=="done")cb()},500)}})()}
+
+function announceStart(){if(gExI>=workoutPlan.length){finishWorkout();return}var ex=getCurEx();if(!ex){finishWorkout();return}showExInfo();renderExList();gPhI=0;gRepC=0;renderAnim();speak(ex.n,0.8,1.1);setTimeout(function(){if(gState!=="done")startPh()},3000)}
+
+function startPh(){
+  var ex=getCurEx();if(!ex)return;var ph=ex.p[gPhI];if(!ph)return;
+  gTimeLeft=ph.t;gState="phase";
+  var ring=document.getElementById("wring");ring.style.display="flex";
+  if(ph.y==="inhale")ring.className="breath-ring inhale";
+  else if(ph.y==="exhale")ring.className="breath-ring exhale";
+  else if(ph.y==="contract")ring.className="breath-ring contract";
+  else if(ph.y==="hold")ring.className="breath-ring hold";
+  else ring.className="breath-ring";
+  document.getElementById("wcue").textContent=ph.c;
+  document.getElementById("wtimer").textContent=gTimeLeft;
+  document.getElementById("wtimer").className="phase-timer";
+  document.getElementById("wrep").textContent="第"+(gRepC+1)+"/"+ex.r+" 次";
+  document.getElementById("wpf").style.width=(gDonePh/gTotalPh*100)+"%";
+  // Voice: speak the full phase cue text for clarity
+  var cueText=ph.c||"";
+  if(ph.y==="inhale"){document.getElementById("wtimer").classList.add("green");speak(cueText,0.5,1.2)}
+  else if(ph.y==="exhale"){document.getElementById("wtimer").classList.add("blue");speak(cueText,0.5,1.0)}
+  else if(ph.y==="contract")speak(cueText,0.55,1.15);
+  else if(ph.y==="relax")speak(cueText,0.55,1.0);
+  else if(ph.y==="hold"&&ph.t>=2){document.getElementById("wtimer").classList.add("gold");speak(cueText,0.55,0.9)}
+  renderAnim();startTimer();
+}
+
+// ============ TIMER ============
+function startTimer(){stopTimer();gTimer=setInterval(function(){if(gPaused)return;if(gState==="done"){stopTimer();return}gTimeLeft--;document.getElementById("wtimer").textContent=gTimeLeft;if(gTimeLeft<=3&&gTimeLeft>0)document.getElementById("wtimer").classList.add("pulse");else document.getElementById("wtimer").classList.remove("pulse");if(gTimeLeft<=0){stopTimer();gDonePh++;if(gState==="rest"){gExI++;if(gExI>=workoutPlan.length){finishWorkout();return}startCD(announceStart);return}gPhI++;var ex=getCurEx();if(!ex){finishWorkout();return}if(gPhI>=ex.p.length){gPhI=0;gRepC++;if(gRepC>=ex.r){startRest();return}renderAnim();setTimeout(function(){if(gState!=="done")startPh()},1500)}else{renderAnim();setTimeout(function(){if(gState!=="done")startPh()},800)}}},1000)}
+function stopTimer(){if(gTimer){clearInterval(gTimer);gTimer=null}}
+function startRest(){gState="rest";var ex=getCurEx();gTimeLeft=ex.rest||10;document.getElementById("wcue").textContent="休息";document.getElementById("wtimer").textContent=gTimeLeft;document.getElementById("wtimer").className="phase-timer rest-color";document.getElementById("wrep").textContent="下一动作："+(workoutPlan[gExI+1]?workoutPlan[gExI+1].n:"最后一项");document.getElementById("wring").className="breath-ring rest";speak("休息",0.6,0.9);startTimer()}
+
+// ============ CONTROLS ============
+function togglePause(){gPaused=!gPaused;var btn=document.getElementById("wpbtn");if(gPaused){btn.textContent="▶ 继续";document.getElementById("wtimer").textContent="⏸"}else{btn.textContent="⏸ 暂停";document.getElementById("wtimer").textContent=gTimeLeft;if(gState==="rest")document.getElementById("wtimer").className="phase-timer rest-color"}}
+function skipExercise(){stopTimer();try{speechSynthesis.cancel()}catch(e){}gExI++;if(gExI>=workoutPlan.length){finishWorkout();return}showExInfo();renderExList();renderAnim();startCD(announceStart)}
+function quitWorkout(){if(!confirm("确定要退出训练吗？退出后今日将标记为已完成"))return;stopTimer();try{speechSynthesis.cancel()}catch(e){}gState="done";document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex";var s=loadState();s.done[todayStr()]=true;saveState(s);renderHome()}
+function finishWorkout(){stopTimer();try{speechSynthesis.cancel()}catch(e){}gState="done";document.getElementById("wcue").textContent="🏆";document.getElementById("wtimer").textContent="完成";document.getElementById("wtimer").className="phase-timer gold";document.getElementById("wrep").textContent="";document.getElementById("wnm").textContent="训练完成！";document.getElementById("wdt").textContent="点击退出保存";document.getElementById("wsteps").innerHTML="";document.getElementById("wring").className="breath-ring";document.getElementById("wpf").style.width="100%";document.getElementById("wanim").innerHTML="";speak("训练完成",0.75,1.2);var s=loadState();s.done[todayStr()]=true;saveState(s)}
+
+// ============ KEYBOARD ============
+document.addEventListener("keydown",function(e){if(document.getElementById("w").style.display!=="flex")return;if(e.code==="Space"){e.preventDefault();togglePause()}if(e.code==="ArrowRight"){e.preventDefault();skipExercise()}});
+
+// ============ RENDER HOME ============
+function renderHome(){try{var w=calcWeek(),dow=dayOfWeek(),tt=getTodayType(),s=loadState();var dn=["一","二","三","四","五","六","日"];document.getElementById("wn").textContent="第"+w+"周";document.getElementById("wl").textContent=SCHED.labels[w]||"";document.getElementById("wdone").textContent="已完成训练 "+Object.keys(s.done).length+" 天";document.getElementById("wkov").textContent=s.ov>0?"手动：第"+s.ov+"周":"自动";var todayD=new Date(),monD=new Date(todayD);monD.setDate(todayD.getDate()-dow);var cal="";for(var i=0;i<7;i++){var dd=new Date(monD);dd.setDate(monD.getDate()+i);var ds=dd.getFullYear()+"-"+String(dd.getMonth()+1).padStart(2,"0")+"-"+String(dd.getDate()).padStart(2,"0");var tp=SCHED.dayType(w,i),isDone=!!s.done[ds];cal+='<div class="wcd'+(i===dow?" cur":"")+(isDone?" dn":"")+'"><div class="wce">'+SCHED.typeEmoji(tp)+'</div><div class="wct">'+dn[i]+(isDone?"✓":"")+"</div></div>"}document.getElementById("wcal").innerHTML=cal;document.getElementById("tt").textContent=SCHED.typeEmoji(tt)+" "+SCHED.typeLabel(tt);buildWorkout(tt);var names=workoutPlan.map(function(x){return x.n});document.getElementById("ts").textContent=names.join(" → ");workoutPlan=[];var btn=document.getElementById("tbtn");if(tt==="rest"){btn.textContent="😴 休息日";btn.className="done";btn.onclick=function(){alert("休息日！")}}else if(s.done[todayStr()]){btn.textContent="✅ 已完成 · 再来一次";btn.className="done";btn.onclick=startWorkout}else{btn.textContent="🚀 开始今日训练";btn.className="";btn.onclick=startWorkout}document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex"}catch(e){}}
+
+// ============ INIT ============
+initVoices();
+document.addEventListener("touchstart",function(){if(gTTS&&!gVoice)initVoices()},{once:true});
+document.addEventListener("click",function(){if(gTTS){try{var u=new SpeechSynthesisUtterance("");u.volume=0;speechSynthesis.speak(u)}catch(e){}}},{once:true});
+renderHome();
+</script>
+<script>
+var gInst=null;
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();gInst=e;var b=document.getElementById("instbtn");if(b)b.style.display="block"});
+function installApp(){if(gInst){gInst.prompt();gInst.userChoice.then(function(){gInst=null;var b=document.getElementById("instbtn");if(b)b.style.display="none"})}else{alert("此浏览器暂不支持一键安装。安卓：浏览器菜单→添加到主屏幕；苹果：Safari 分享→添加到主屏幕")}}
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("serviceWorker.js").then(function(){console.log("SW OK")}).catch(function(e){console.log("SW fail",e)})})}
+</script>
+</body>
+</html>
