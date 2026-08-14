@@ -178,6 +178,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;bac
 <button id="instbtn" onclick="installApp()" style="display:none;width:100%;margin:4px 0;padding:12px;background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">📲 安装为离线App</button>
 <div style="font-size:0.68em;color:#666;text-align:center;margin:0 0 8px;line-height:1.6">安卓：浏览器菜单 → 添加到主屏幕（支持时点上方按钮）<br>苹果：Safari 分享 → 添加到主屏幕</div>
 <div class="solo-entry"><button id="solobtn" onpointerdown="soloPress(event)" onpointerup="soloRelease()" onpointercancel="soloRelease()" onpointerleave="soloRelease()" oncontextmenu="return false"><div class="lp" id="sololp"></div>🔒 单人专项（长按 3 秒解锁）</button><div class="sh">自我取悦 · 六技法 · 大提气 · 后入模拟 · 高潮记录 · 仅存本机</div></div>
+<button onclick="checkUpdate()" style="width:100%;margin:4px 0;padding:10px;background:var(--card);border:1px solid #2a2a3a;color:var(--dim);border-radius:10px;font-size:0.8em;cursor:pointer">🔄 检查更新（若显示旧版，点这里）</button>
 </div>
 <div id="w">
   <div class="wtop"><span class="wlbl" id="wlbl">--</span><span class="wpg" id="wpg">--</span></div>
@@ -810,7 +811,9 @@ function quitSolo(){svStopTimer();svDone=true;try{speechSynthesis.cancel()}catch
 function openSolo(){svTabOpen="plan";document.getElementById("home").style.display="none";document.getElementById("sv").style.display="flex";svNotices();svRender();svToast("单人专项 · 数据仅存本机")}
 function soloPress(ev){if(ev&&ev.preventDefault)ev.preventDefault();svPressT0=Date.now();svPressTimer=setInterval(function(){var p=(Date.now()-svPressT0)/3000*100;var lp=document.getElementById("sololp");if(lp)lp.style.width=Math.min(100,p)+"%";if(Date.now()-svPressT0>=3000){clearInterval(svPressTimer);svPressTimer=null;var lp2=document.getElementById("sololp");if(lp2)lp2.style.width="0";try{if(navigator.vibrate)navigator.vibrate(120)}catch(e){}openSolo()}},50)}
 function soloRelease(){if(svPressTimer){clearInterval(svPressTimer);svPressTimer=null}var lp=document.getElementById("sololp");if(lp)lp.style.width="0"}
-// ============ INIT ============
+// ============ 检查更新（强制刷新 Service Worker） ============
+function checkUpdate(){try{if(!("serviceWorker" in navigator)){alert("此浏览器无离线缓存，直接刷新即可");location.reload();return}navigator.serviceWorker.getRegistration().then(function(r){if(!r){alert("未启用离线缓存，刷新页面即可");location.reload();return}function restart(){setTimeout(function(){location.reload(true)},500)}if(r.waiting){r.waiting.postMessage({type:"SKIP_WAITING"});alert("已更新，正在重启");restart();return}if(r.installing){alert("正在后台更新，稍等几秒再刷新");return}r.update().then(function(){setTimeout(function(){if(r.waiting){r.waiting.postMessage({type:"SKIP_WAITING"});alert("已更新，正在重启");restart()}else alert("已是最新版")},800)}).catch(function(){alert("检查失败，请手动清缓存")})}).catch(function(){alert("检查失败，请手动清缓存")})}catch(e){alert("检查失败，请手动清缓存")}}
+window.addEventListener("load",function(){if("serviceWorker" in navigator&&navigator.onLine){navigator.serviceWorker.getRegistration().then(function(r){if(r)r.update().catch(function(){})})}});// ============ INIT ============
 initVoices();
 document.addEventListener("touchstart",function(){if(gTTS&&!gVoice)initVoices()},{once:true});
 document.addEventListener("click",function(){if(gTTS){try{var u=new SpeechSynthesisUtterance("");u.volume=0;speechSynthesis.speak(u)}catch(e){}}},{once:true});

@@ -1,7 +1,6 @@
-﻿const CACHE_NAME = "yq8-pwa-v9";
+﻿const CACHE_NAME = "yq8-pwa-v10";
 const PRECACHE = [
   "./",
-  "./index.html",
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -51,21 +50,34 @@ self.addEventListener("activate", function (e) {
   );
 });
 
+self.addEventListener("message", function (e) {
+  if (e.data && e.data.type === "SKIP_WAITING") self.skipWaiting();
+});
+
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
-  e.respondWith((function () {
-    return caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
+  var u = new URL(e.request.url);
+  if (u.origin !== self.location.origin) return;
+  if (e.request.mode === "navigate") {
+    e.respondWith(
+      fetch(e.request).then(function (res) {
+        var clone = res.clone();
+        caches.open(CACHE_NAME).then(function (c) { c.put("./", clone); });
+        return res;
+      }).catch(function () { return caches.match("./"); })
+    );
+    return;
+  }
+  e.respondWith(
+    caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
       if (hit) return hit;
       return fetch(e.request).then(function (res) {
-        if (res && res.ok && e.request.url.indexOf(self.location.origin) === 0) {
+        if (res && res.ok) {
           var clone = res.clone();
           caches.open(CACHE_NAME).then(function (c) { c.put(e.request, clone); });
         }
         return res;
-      }).catch(function () {
-        if (e.request.mode === "navigate") return caches.match("./index.html");
-        throw new Error("offline");
-      });
-    });
-  })());
+      }).catch(function () { throw new Error("offline"); });
+    })
+  );
 });
