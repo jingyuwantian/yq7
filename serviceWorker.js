@@ -1,4 +1,4 @@
-const CACHE_NAME = "yq8-pwa-v3";
+﻿const CACHE_NAME = "yq8-pwa-v9";
 const PRECACHE = [
   "./",
   "./index.html",
