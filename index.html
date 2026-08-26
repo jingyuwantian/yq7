@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -169,11 +169,11 @@ body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;bac
 <body>
 <div id="home">
   <h1>🔥 一日七次</h1>
-  <div class="sub">道家房中术 · 语音跟练 · v2026.08.15</div>
+  <div class="sub">道家房中术 · 语音跟练 · v2026.08.26</div>
   <div class="wp card"><div class="wn" id="wn">--</div><div class="wl" id="wl">--</div><div class="wd" id="wdone">--</div></div>
   <div class="weekcal" id="wcal"></div>
   <div class="week-adj"><span>调整周数：</span><button onclick="adjWeek(-1)">◀</button><span id="wkov" style="color:var(--gold);min-width:60px;text-align:center">自动</span><button onclick="adjWeek(1)">▶</button></div>
-  <div class="wcal-hint">👆 点周一到周日，可查看当天训练计划（查看学习，不记录）</div>
+  <div class="wcal-hint" id="wcalhint">👆 点周一到周日，可查看并补练任意一天</div>
   <div class="today-box"><div class="tt" id="tt">--</div><div class="ts" id="ts">--</div><button id="tbtn" onclick="startWorkout()">🚀 开始今日训练</button></div>
 <button id="instbtn" onclick="installApp()" style="display:none;width:100%;margin:4px 0;padding:12px;background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">📲 安装为离线App</button>
 <div style="font-size:0.68em;color:#666;text-align:center;margin:0 0 8px;line-height:1.6">安卓：浏览器菜单 → 添加到主屏幕（支持时点上方按钮）<br>苹果：Safari 分享 → 添加到主屏幕</div>
@@ -201,8 +201,9 @@ body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;bac
 // ============ STORAGE ============
 function loadState(){try{return JSON.parse(localStorage.getItem("yq8"))||{sd:null,done:{},ov:0}}catch(e){return{sd:null,done:{},ov:0}}}
 function saveState(s){try{localStorage.setItem("yq8",JSON.stringify(s))}catch(e){}}
-function todayStr(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function dayOfWeek(){var d=new Date().getDay();return d===0?6:d-1}
+function effDate(){var d=new Date();if(d.getHours()<5)d.setDate(d.getDate()-1);return d}
+function todayStr(){var d=effDate();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function dayOfWeek(){var d=effDate();var x=d.getDay();return x===0?6:x-1}
 function calcWeek(){var s=loadState();if(s.ov>0)return s.ov;if(!s.sd)return 1;var diff=Math.floor((new Date()-new Date(s.sd))/(7*86400000))+1;if(diff<1)return 1;if(diff<=2)return 1;if(diff<=4)return 3;if(diff<=6)return 5;if(diff<=10)return 7;if(diff<=16)return 11;return 17}
 function adjWeek(d){var s=loadState();if(!s.sd){s.sd=todayStr();saveState(s)}var w=calcWeek();if(s.ov<=0)s.ov=w;s.ov=Math.max(1,s.ov+d);saveState(s);renderHome()}
 var SCHED={labels:{1:"第1-4周 · 第1月 地基",2:"第5-8周 · 第2月 控精",3:"第9-12周 · 第3月 能量入门",4:"第13-16周 · 第4月 能量转化",5:"第17-20周 · 第5月 实战整合",6:"第21-24周 · 第6月 冲刺"},dayType:function(w,d){if(d===6)return"rest";if(w<=4)return[0,2,4].indexOf(d)>=0?"combo":"rec";if(w<=8)return[0,2,4].indexOf(d)>=0?"sex":"pwr";return d===0||d===3?"nrg":d===2||d===5?"sex":d===1||d===4?"pwr":"rec"},typeLabel:function(t){return{combo:"双重日",sex:"性练习日",pwr:"力量日",rec:"恢复日",nrg:"能量日",rest:"休息日"}[t]||t},typeEmoji:function(t){return{combo:"🔒🦵",sex:"🔒",pwr:"🦵",rec:"🧘",nrg:"♻️",rest:"😴"}[t]||""}};
@@ -559,12 +560,14 @@ function pickVoice(voices){gVoice=null;var prefs=["Ting-Ting","XiaoXiao","Yaoyao
 function speak(text,rate,pitch){if(!gTTS)return;rate=rate||0.85;pitch=pitch||1.0;try{try{speechSynthesis.cancel()}catch(e){}var u=new SpeechSynthesisUtterance(text);u.lang="zh-CN";u.rate=rate;u.pitch=pitch;u.volume=1;if(gVoice)u.voice=gVoice;speechSynthesis.speak(u)}catch(e){}}
 
 // ============ WORKOUT STATE ============
-var gState="idle",gExI=0,gPhI=0,gRepC=0,gTimeLeft=0,gTimer=null,gPaused=false,gTotalPh=0,gDonePh=0;
+var gState="idle",gExI=0,gPhI=0,gRepC=0,gTimeLeft=0,gTimer=null,gPaused=false,gTotalPh=0,gDonePh=0;var gWorkType="",gWorkDate="",gPv=null;
 function getCurEx(){return workoutPlan[gExI]}
 function getCurPh(){var ex=getCurEx();return ex?ex.p[gPhI]:null}
 
+function startToday(){gWorkType=getTodayType();gWorkDate=todayStr();startWorkout()}
+function startPvDay(){if(!gPv)return;if(gPv.tp==="rest"){alert("这天是休息日。休息也是训练的一部分");return}gWorkType=gPv.tp;gWorkDate=gPv.ds;closePv();setTimeout(startWorkout,50)}
 function startWorkout(){
-  try{var s=loadState();if(!s.sd){s.sd=todayStr();saveState(s)}var tt=getTodayType();if(tt==="rest"){alert("休息日！😴");return}
+  try{var s=loadState();if(!s.sd){s.sd=todayStr();saveState(s)}var tt=gWorkType||getTodayType();if(tt==="rest"){alert("休息日！😴 可以点日历选其他天补练");return}
     stopTimer();try{speechSynthesis.cancel()}catch(e){}
     buildWorkout(tt);gExI=0;gPhI=0;gRepC=0;gTimeLeft=0;gPaused=false;gState="idle";gDonePh=0;
     gTotalPh=workoutPlan.reduce(function(s,ex){return s+ex.p.length*ex.r},0);
@@ -639,20 +642,22 @@ function startRest(){gState="rest";var ex=getCurEx();gTimeLeft=ex.rest||10;docum
 // ============ CONTROLS ============
 function togglePause(){gPaused=!gPaused;var btn=document.getElementById("wpbtn");if(gPaused){btn.textContent="▶ 继续";document.getElementById("wtimer").textContent="⏸"}else{btn.textContent="⏸ 暂停";document.getElementById("wtimer").textContent=gTimeLeft;if(gState==="rest")document.getElementById("wtimer").className="phase-timer rest-color"}}
 function skipExercise(){stopTimer();try{speechSynthesis.cancel()}catch(e){}gExI++;if(gExI>=workoutPlan.length){finishWorkout();return}showExInfo();renderExList();renderAnim();startCD(announceStart)}
-function quitWorkout(){if(!confirm("确定要退出训练吗？退出后今日将标记为已完成"))return;stopTimer();try{speechSynthesis.cancel()}catch(e){}gState="done";document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex";var s=loadState();s.done[todayStr()]=true;saveState(s);renderHome()}
-function finishWorkout(){stopTimer();try{speechSynthesis.cancel()}catch(e){}gState="done";document.getElementById("wcue").textContent="🏆";document.getElementById("wtimer").textContent="完成";document.getElementById("wtimer").className="phase-timer gold";document.getElementById("wrep").textContent="";document.getElementById("wnm").textContent="训练完成！";document.getElementById("wdt").textContent="点击退出保存";document.getElementById("wsteps").innerHTML="";document.getElementById("wring").className="breath-ring";document.getElementById("wpf").style.width="100%";document.getElementById("wanim").innerHTML="";speak("训练完成",0.75,1.2);var s=loadState();s.done[todayStr()]=true;saveState(s)}
+function quitWorkout(){if(!confirm("确定要退出训练吗？退出后今日将标记为已完成"))return;stopTimer();try{speechSynthesis.cancel()}catch(e){}gState="done";document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex";var s=loadState();s.done[gWorkDate||todayStr()]=true;saveState(s);renderHome()}
+function finishWorkout(){stopTimer();try{speechSynthesis.cancel()}catch(e){}gState="done";document.getElementById("wcue").textContent="🏆";document.getElementById("wtimer").textContent="完成";document.getElementById("wtimer").className="phase-timer gold";document.getElementById("wrep").textContent="";document.getElementById("wnm").textContent="训练完成！";document.getElementById("wdt").textContent="点击退出保存";document.getElementById("wsteps").innerHTML="";document.getElementById("wring").className="breath-ring";document.getElementById("wpf").style.width="100%";document.getElementById("wanim").innerHTML="";speak("训练完成",0.75,1.2);var s=loadState();s.done[gWorkDate||todayStr()]=true;saveState(s)}
 
 // ============ KEYBOARD ============
 document.addEventListener("keydown",function(e){if(document.getElementById("w").style.display!=="flex")return;if(e.code==="Space"){e.preventDefault();togglePause()}if(e.code==="ArrowRight"){e.preventDefault();skipExercise()}});
 
 // ============ RENDER HOME ============
-function renderHome(){try{var w=calcWeek(),dow=dayOfWeek(),tt=getTodayType(),s=loadState();var dn=["一","二","三","四","五","六","日"];document.getElementById("wn").textContent="第"+w+"周";document.getElementById("wl").textContent=labelOfWeek(w)||"";document.getElementById("wdone").textContent="已完成训练 "+Object.keys(s.done).length+" 天";document.getElementById("wkov").textContent=s.ov>0?"手动：第"+s.ov+"周":"自动";var todayD=new Date(),monD=new Date(todayD);monD.setDate(todayD.getDate()-dow);var cal="";for(var i=0;i<7;i++){var dd=new Date(monD);dd.setDate(monD.getDate()+i);var ds=dd.getFullYear()+"-"+String(dd.getMonth()+1).padStart(2,"0")+"-"+String(dd.getDate()).padStart(2,"0");var tp=SCHED.dayType(w,i),isDone=!!s.done[ds];cal+='<div class="wcd'+(i===dow?" cur":"")+(isDone?" dn":"")+'" onclick="previewDay('+i+')"><div class="wce">'+SCHED.typeEmoji(tp)+'</div><div class="wct">'+dn[i]+(isDone?"✓":"")+"</div></div>"}document.getElementById("wcal").innerHTML=cal;document.getElementById("tt").textContent=SCHED.typeEmoji(tt)+" "+SCHED.typeLabel(tt);buildWorkout(tt);var names=workoutPlan.map(function(x){return x.n});document.getElementById("ts").textContent=names.join(" → ");workoutPlan=[];var btn=document.getElementById("tbtn");if(tt==="rest"){btn.textContent="😴 休息日";btn.className="done";btn.onclick=function(){alert("休息日！")}}else if(s.done[todayStr()]){btn.textContent="✅ 已完成 · 再来一次";btn.className="done";btn.onclick=startWorkout}else{btn.textContent="🚀 开始今日训练";btn.className="";btn.onclick=startWorkout}document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex"}catch(e){}}
+function renderHome(){try{var w=calcWeek(),dow=dayOfWeek(),tt=getTodayType(),s=loadState();var dn=["一","二","三","四","五","六","日"];document.getElementById("wn").textContent="第"+w+"周";document.getElementById("wl").textContent=labelOfWeek(w)||"";document.getElementById("wdone").textContent="已完成训练 "+Object.keys(s.done).length+" 天";document.getElementById("wkov").textContent=s.ov>0?"手动：第"+s.ov+"周":"自动";var todayD=effDate(),monD=new Date(todayD);monD.setDate(todayD.getDate()-dow);var wh=document.getElementById("wcalhint");if(wh)wh.textContent=((new Date()).getHours()<5?"🌙 凌晨5点前算前一天，仍显示昨晚计划 · ":"")+"👆 点周一到周日，可查看并补练任意一天";var cal="";for(var i=0;i<7;i++){var dd=new Date(monD);dd.setDate(monD.getDate()+i);var ds=dd.getFullYear()+"-"+String(dd.getMonth()+1).padStart(2,"0")+"-"+String(dd.getDate()).padStart(2,"0");var tp=SCHED.dayType(w,i),isDone=!!s.done[ds];cal+='<div class="wcd'+(i===dow?" cur":"")+(isDone?" dn":"")+'" onclick="previewDay('+i+')"><div class="wce">'+SCHED.typeEmoji(tp)+'</div><div class="wct">'+dn[i]+(isDone?"✓":"")+"</div></div>"}document.getElementById("wcal").innerHTML=cal;document.getElementById("tt").textContent=SCHED.typeEmoji(tt)+" "+SCHED.typeLabel(tt);buildWorkout(tt);var names=workoutPlan.map(function(x){return x.n});document.getElementById("ts").textContent=names.join(" → ");workoutPlan=[];var btn=document.getElementById("tbtn");if(tt==="rest"){btn.textContent="😴 休息日";btn.className="done";btn.onclick=function(){alert("休息日！")}}else if(s.done[todayStr()]){btn.textContent="✅ 已完成 · 再来一次";btn.className="done";btn.onclick=startToday}else{btn.textContent="🚀 开始今日训练";btn.className="";btn.onclick=startToday}document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex"}catch(e){}}
 
 // ============ 一周计划预览（查看学习，不记录完成） ============
 function closePv(){document.getElementById("pv").style.display="none";try{speechSynthesis.cancel()}catch(e){}}
 function previewDay(di){
   try{
     var w=calcWeek(),tp=SCHED.dayType(w,di);var dn=["一","二","三","四","五","六","日"];
+    var base=effDate(),d0=dayOfWeek(),mon0=new Date(base);mon0.setDate(base.getDate()-d0);var dd0=new Date(mon0);dd0.setDate(mon0.getDate()+di);var pds=dd0.getFullYear()+"-"+String(dd0.getMonth()+1).padStart(2,"0")+"-"+String(dd0.getDate()).padStart(2,"0");gPv={di:di,ds:pds,tp:tp};
+    var pvs=document.getElementById("pvstart");if(pvs){if(tp==="rest"){pvs.style.display="none"}else{pvs.style.display="block";pvs.textContent="▶ 开始这一天（周"+dn[di]+"）的训练"}}
     document.getElementById("pvtitle").textContent="第"+w+"周 · 周"+dn[di]+" · "+SCHED.typeEmoji(tp)+" "+SCHED.typeLabel(tp);
     var h="";
     if(tp==="rest"){h='<div class="pv-item"><div class="pv-nm">😴 休息日</div><div class="pv-d">恢复日可只做：数到一百 + 腹式呼吸，保持身体记忆即可（书中：持之以恒＞一次大量）。</div></div>'}
@@ -840,7 +845,8 @@ if("serviceWorker" in navigator){window.addEventListener("load",function(){navig
   <div class="pv-box">
     <div class="pv-top"><span class="pv-title" id="pvtitle">--</span><button class="pv-x" onclick="closePv()">✕</button></div>
     <div class="pv-body" id="pvbody"></div>
-    <button class="pv-btn" onclick="closePv()">关 闭</button>
+    <button class="pv-btn" id="pvstart" style="display:none;color:var(--gold);font-weight:bold" onclick="startPvDay()">▶ 开始这一天的训练</button>
+<button class="pv-btn" onclick="closePv()">关 闭</button>
   </div>
 </div>
 </body>
