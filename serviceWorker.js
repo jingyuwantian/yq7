@@ -1,4 +1,4 @@
-const CACHE_NAME = "yq8-pwa-v12";
+const CACHE_NAME = "yq8-pwa-v13";
 const PRECACHE = [
   "./",
   "./manifest.json",

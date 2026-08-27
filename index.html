@@ -165,19 +165,50 @@ body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;bac
 .sv-d b.why{color:#9fd18f}
 .sv-how{width:100%;max-width:360px;font-size:0.7em;color:#9aa;background:rgba(0,0,0,0.25);border-radius:8px;padding:8px 10px;line-height:1.6;max-height:24vh;overflow-y:auto;text-align:left}
 </style>
+
+<style>
+.sv-subh{font-size:0.75em;color:var(--accent);margin:6px 2px;font-weight:bold}
+.sv-steps{margin-top:6px;font-size:0.7em;color:#bbb}
+.sv-steps summary{color:var(--gold);cursor:pointer}
+.sv-steps ol{margin:4px 0 0 16px;padding:0}
+.sv-steps li{margin:3px 0}
+.sv-warn{margin-top:6px;font-size:0.68em;color:#d0a040}
+.sv-ponr{width:100%;max-width:340px;padding:16px;background:linear-gradient(135deg,#2a1610,#1a0d08);border:2px solid #d2804a;color:#f0d0b0;border-radius:12px;font-size:0.95em;font-weight:bold;cursor:pointer;margin-top:8px}
+.sv-ponr:active{transform:scale(0.97)}
+.sv-ponr .sub{display:block;font-size:0.62em;font-weight:normal;color:#c9a070;margin-top:2px}
+.sv-row3{display:flex;gap:6px;width:100%;max-width:340px;margin-top:6px}
+.sv-cnt{flex:1;padding:12px 6px;background:var(--card);border:1px solid #3a3a4a;color:var(--text);border-radius:10px;font-size:0.78em;font-weight:bold;cursor:pointer}
+.sv-cnt .sub{display:block;font-size:0.58em;font-weight:normal;color:var(--dim);margin-top:2px}
+.sv-end{width:100%;max-width:340px;padding:12px;background:#1a2220;border:1px solid #4a7a5a;color:#9fd18f;border-radius:12px;font-size:0.9em;font-weight:bold;cursor:pointer;margin-top:6px}
+.sv-end .sub{display:block;font-size:0.6em;font-weight:normal;color:#7a9a80;margin-top:2px}
+.sv-mt{font-size:0.78em;color:#f0d0b0;margin-bottom:6px}
+.sv-mol{margin:6px 0 6px 18px;padding:0;font-size:0.75em;color:#ccc}
+.sv-mol li{margin:4px 0}
+.sv-drain-opt{display:flex;gap:6px;margin:8px 0}
+.sv-drain-opt button{flex:1;padding:10px;background:var(--card);border:1px solid #3a3a4a;color:var(--text);border-radius:8px;font-weight:bold;cursor:pointer}
+.sv-drain-opt button.on{background:var(--gold);color:#000;border-color:var(--gold)}
+.sv-drain-steps{font-size:0.72em;color:#ccc;margin:6px 0}
+.sv-drain-go{width:100%;padding:12px;background:var(--gold);color:#000;border:none;border-radius:10px;font-weight:bold;font-size:0.95em;cursor:pointer}
+.sv-drain-skip{width:100%;margin-top:10px;padding:10px;background:var(--card);border:1px solid #333;color:var(--dim);border-radius:8px;cursor:pointer}
+.sv-log{font-size:0.75em;color:#ccc;line-height:1.9}
+</style>
+
 </head>
 <body>
 <div id="home">
   <h1>🔥 一日七次</h1>
-  <div class="sub">道家房中术 · 语音跟练 · v2026.08.26</div>
+  <div class="sub">道家房中术 · 语音跟练 · v2026.08.27m · 呼吸+PC肌版 · 吐气四拍·荐骨分段</div>
   <div class="wp card"><div class="wn" id="wn">--</div><div class="wl" id="wl">--</div><div class="wd" id="wdone">--</div></div>
   <div class="weekcal" id="wcal"></div>
   <div class="week-adj"><span>调整周数：</span><button onclick="adjWeek(-1)">◀</button><span id="wkov" style="color:var(--gold);min-width:60px;text-align:center">自动</span><button onclick="adjWeek(1)">▶</button></div>
   <div class="wcal-hint" id="wcalhint">👆 点周一到周日，可查看并补练任意一天</div>
   <div class="today-box"><div class="tt" id="tt">--</div><div class="ts" id="ts">--</div><button id="tbtn" onclick="startWorkout()">🚀 开始今日训练</button></div>
+<div style="display:flex;gap:6px;margin:6px 0 0"><button id="sndbtn" onclick="testVoice()" style="flex:1;padding:12px;background:var(--card);border:1px solid var(--green);color:var(--green);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">🔊 测试语音</button><button id="mutebtn" onclick="toggleSound()" style="flex:1;padding:12px;background:var(--card);border:1px solid #2a2a3a;color:var(--text);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">🔊 声音：开</button></div>
+<a href="声音诊断.html" style="display:block;text-align:center;margin-top:8px;color:#4caf84;font-size:0.8em;text-decoration:none">🔍 没声音？打开「声音诊断」自检</a>
+<button id="legsbtn" onclick="startLegs()" style="width:100%;margin:6px 0 0;padding:12px;background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">🏋️ 动作练习专区 · 腿部动作（站桩3→30分钟 · 吸4呼6 · 5-7组）</button>
 <button id="instbtn" onclick="installApp()" style="display:none;width:100%;margin:4px 0;padding:12px;background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">📲 安装为离线App</button>
 <div style="font-size:0.68em;color:#666;text-align:center;margin:0 0 8px;line-height:1.6">安卓：浏览器菜单 → 添加到主屏幕（支持时点上方按钮）<br>苹果：Safari 分享 → 添加到主屏幕</div>
-<div class="solo-entry"><button id="solobtn" onpointerdown="soloPress(event)" onpointerup="soloRelease()" onpointercancel="soloRelease()" onpointerleave="soloRelease()" oncontextmenu="return false"><div class="lp" id="sololp"></div>🔒 单人专项（长按 3 秒解锁）</button><div class="sh">自我取悦 · 六技法 · 大提气 · 后入模拟 · 高潮记录 · 仅存本机</div></div>
+<div class="solo-entry"><button id="solobtn" onpointerdown="soloPress(event)" onpointerup="soloRelease()" onpointercancel="soloRelease()" onpointerleave="soloRelease()" oncontextmenu="return false"><div class="lp" id="sololp"></div>🧴 自我取悦 · 板块三（长按 3 秒解锁）</button><div class="sh">第三板块 · 卡片式自我取悦 · 无法返回之点/大提气/手指锁记录 · 排空能量收尾 · 仅存本机</div></div>
 <button onclick="checkUpdate()" style="width:100%;margin:4px 0;padding:10px;background:var(--card);border:1px solid #2a2a3a;color:var(--dim);border-radius:10px;font-size:0.8em;cursor:pointer">🔄 检查更新（若显示旧版，点这里）</button>
 </div>
 <div id="w">
@@ -206,17 +237,17 @@ function todayStr(){var d=effDate();return d.getFullYear()+"-"+String(d.getMonth
 function dayOfWeek(){var d=effDate();var x=d.getDay();return x===0?6:x-1}
 function calcWeek(){var s=loadState();if(s.ov>0)return s.ov;if(!s.sd)return 1;var diff=Math.floor((new Date()-new Date(s.sd))/(7*86400000))+1;if(diff<1)return 1;if(diff<=2)return 1;if(diff<=4)return 3;if(diff<=6)return 5;if(diff<=10)return 7;if(diff<=16)return 11;return 17}
 function adjWeek(d){var s=loadState();if(!s.sd){s.sd=todayStr();saveState(s)}var w=calcWeek();if(s.ov<=0)s.ov=w;s.ov=Math.max(1,s.ov+d);saveState(s);renderHome()}
-var SCHED={labels:{1:"第1-4周 · 第1月 地基",2:"第5-8周 · 第2月 控精",3:"第9-12周 · 第3月 能量入门",4:"第13-16周 · 第4月 能量转化",5:"第17-20周 · 第5月 实战整合",6:"第21-24周 · 第6月 冲刺"},dayType:function(w,d){if(d===6)return"rest";if(w<=4)return[0,2,4].indexOf(d)>=0?"combo":"rec";if(w<=8)return[0,2,4].indexOf(d)>=0?"sex":"pwr";return d===0||d===3?"nrg":d===2||d===5?"sex":d===1||d===4?"pwr":"rec"},typeLabel:function(t){return{combo:"双重日",sex:"性练习日",pwr:"力量日",rec:"恢复日",nrg:"能量日",rest:"休息日"}[t]||t},typeEmoji:function(t){return{combo:"🔒🦵",sex:"🔒",pwr:"🦵",rec:"🧘",nrg:"♻️",rest:"😴"}[t]||""}};
+var SCHED={labels:{1:"第1-4周 · 第1月 地基",2:"第5-8周 · 第2月 控精",3:"第9-12周 · 第3月 能量入门",4:"第13-16周 · 第4月 能量转化",5:"第17-20周 · 第5月 实战整合",6:"第21-24周 · 第6月 冲刺"},dayType:function(w,d){return d===6?"rest":"train"},typeLabel:function(t){return{train:"训练日",rest:"休息日",combo:"双重日",sex:"性练习日",pwr:"力量日",rec:"恢复日",nrg:"能量日"}[t]||t},typeEmoji:function(t){return{train:"🏋️",rest:"😴",combo:"🔒🦵",sex:"🔒",pwr:"🦵",rec:"🧘",nrg:"♻️"}[t]||""}};
 function getTodayType(){return SCHED.dayType(calcWeek(),dayOfWeek())}
 
 // ============ EXERCISE LIBRARY (enriched from book) ============
 var EX_LIB=[
-{id:"breath",n:"腹式呼吸",d:"鼻吸腹鼓 · 吐气腹收 · 呼吸控心",img:"5153b78551336651c1882ec634c5954f6373811103c1fe82039e582dd70047d7",
- p:[{c:"吸",t:4,y:"inhale"},{c:"停",t:2,y:"hold"},{c:"呼",t:7,y:"exhale"}],r:18,rest:10,
- s:["挺直背坐椅上，双脚与肩同宽，双手放肚脐。","鼻吸4秒 → 腹部向外鼓，胸和肩不动。横膈膜上升。","停2秒。","嘴或鼻呼7秒 → 腹部往回收，肚脐推向脊椎。"],
- m:"吸气时肩膀抬起 → 躺平先找感觉。或试「腹式笑法」：大笑让腹部震动。",
- key:"核心原理：呼吸控制心跳速度。呼吸越慢越深→心跳越慢→兴奋度越低→射精感越弱。做爱时控制呼吸=控制射精。",
- book:"《男性多重高潮》练习一"},
+{id:"pc_practice",n:"PC肌练习",d:"呼·收（PC肌+眼嘴）→ 吸·松 · 一呼一吸=1次 · 36次起",blk:"呼吸练习",
+ p:[{c:"呼·收",t:3,y:"contract"},{c:"吸·松",t:1.5,y:"relax"}],r:36,rest:10,
+ s:["吸气，专注前列腺、会阴、肛门三个部位。","呼气时收缩围绕前列腺和肛门的PC肌（忍尿+忍屁的感觉），同时收缩眼睛和嘴巴周围的肌肉。","吸气放松，同时放松PC肌、眼睛和嘴巴周围的肌肉。","一呼（收）+一吸（松）=1次收缩。基础36次起，逐月+6次。","随处可练：开车、看手机、开会；每天至少2-3次，多多益善。持之以恒＞一次大量。"],
+ m:"眼嘴没跟着收 → 呼气收PC肌时同步眯眼抿嘴，用眼嘴带动PC肌。",
+ key:"核心：PC肌的精准开关。呼气=收、吸气=松，一呼一吸算1次收缩，基础36次起、逐月+6次。这个节奏就是射精控制的基本节拍——能收能松=能开关射精。",
+ book:"《男性多重高潮》练习四（呼气收缩PC肌+眼嘴，吸气放松）"},
 
 {id:"pc",n:"PC肌收放",d:"收1秒→放1秒 · 精准脉冲",img:"904add17d326203605a441598bba5c0e6015b57af74eef4fb9c75ef58ec2389b",
  p:[{c:"收",t:1,y:"contract"},{c:"放",t:1,y:"relax"}],r:30,rest:10,
@@ -239,11 +270,11 @@ var EX_LIB=[
  key:"核心原理：道家认为睾丸按摩增加睾固酮分泌。按摩打通阻塞→血液和能量流入睾丸。做爱后做释放压力。",
  book:"《男性多重高潮》练习十五"},
 
-{id:"anus",n:"强化肛门",d:"呼→收肛提臀→停→吸松 · 能量上脊椎",
- p:[{c:"呼收",t:3,y:"exhale"},{c:"停",t:4,y:"hold"},{c:"吸松",t:3,y:"inhale"}],r:9,rest:12,
- s:["仰躺屈膝。完全呼气 → 收紧肛门+提臀 → 保持4秒。","意念：暖流从肛门→尾骨→沿脊椎上升至头顶。","吸气放松。重复9次。"],
+{id:"anus",n:"强化肛门",d:"吐气1·2·3·4 → 挤提肛臀 → 吸松 · 基础18次",blk:"PC肌呼吸锻炼",
+ p:[{c:"吐气 1、2、3、4",t:6,y:"exhale",beat4:true},{c:"挤提",t:4,y:"contract"},{c:"吸松",t:3,y:"inhale"}],r:18,rest:12,
+ s:["吐气1、2、3、4：六秒四拍（每拍1.5秒），语音会逐拍播报，跟着声音每拍挤压并提起肛门和臀部肌肉一次（挤压+放松），把空气由鼻子慢慢排空。","挤提：持续几秒保持收紧，把能量向上提。","慢慢吸气，然后放松。","基础18次/天，或直到鼠蹊部和肛门开始觉得温暖为止。能量可沿督脉上提到尾骨、荐骨，再经脊椎送至头部；能量过多时舌顶上颚，让能量下送腹部。"],
  m:"只收臀没收肛 → 意念聚焦肛门括约肌。",
- key:"核心原理：肛门括约肌收缩会带动PC肌和骨盆底整体收紧。配合意念将性能量沿脊髓「督脉」从下往上输送→大脑高潮。",
+ key:"核心：肛门括约肌收缩带动PC肌和骨盆底整体收紧，配合意念把性能量沿督脉从下往上输送→大脑高潮。",
  book:"《男性多重高潮》练习十九"},
 
 {id:"prostate",n:"帮助前列腺",d:"呼收会阴→停→吸松 · 前列腺觉醒",
@@ -288,12 +319,12 @@ var EX_LIB=[
  key:"要点：弓步时骨盆前倾类似后入位。在骨盆前倾状态下觉察PC肌紧张度。",
  book:"添加练习"},
 
-{id:"horse",n:"马步站桩",d:"持续保持→气沉丹田",
- p:[{c:"保持",t:60,y:"free"}],r:2,rest:35,
- s:["两倍肩宽站立，下蹲（宁高勿弯）。背绝对直。","双手抱球于腹前。吸气沉丹田，呼气意守双腿。"],
+{id:"horse",n:"马步站桩",d:"单次连续站桩 · 3→30分钟/月递进 · 气沉丹田",blk:"腿部动作",u:"分钟",
+ p:[{c:"站桩",t:60,y:"hold"}],r:2,rest:35,
+ s:["两倍肩宽站立，下蹲（宁高勿弯），背绝对直，双手抱球于腹前。","吸气沉丹田，呼气意守双腿；双腿颤抖时用呼吸稳住，抖得厉害就站浅一点。","6个月递进：第1月单次3分钟→第2月5分钟→第3月8分钟→第4月12分钟→第5月18分钟→第6月30分钟。","第6月验收：轻松单次连续站满30分钟以上（不是累计、不是分多次凑）。","每天一次，宁可浅蹲也要挺背；每次比上次多坚持30秒。"],
  m:"弯腰 → 浅蹲保直。",
- key:"要点：站桩培养能量感和耐力。双腿颤抖时用呼吸稳定。意守丹田=将能量储存在腹部中心。",
- book:"添加练习"},
+ key:"要点：腿部力量与耐力根基。单次连续站桩时间=骨盆核心续航力，是抽插输出的底盘。第6个月目标：轻松每天单次30分钟以上。",
+ book:"添加练习·6个月渐进至单次30分钟"},
 
 {id:"march1",n:"踏步呼吸·基础",demo:"Jogging_Treadmill",d:"原地踏步 · 吸4拍呼6拍",
  p:[{c:"吸",t:4,y:"inhale"},{c:"呼",t:6,y:"exhale"}],r:24,rest:10,
@@ -345,7 +376,62 @@ var EX_LIB=[
  m:"只按一个位置 → 三个位置都要顺反各一圈。",
  key:"为什么练：释放骨盆压力，帮身体吸收性能和精液。先按会阴和睾丸效果更好。",
  pass:"三个位置顺反各完成一轮。",
- book:"《男性多重高潮》练习十一"}
+ book:"《男性多重高潮》练习十一"},
+{id:"count200",n:"数到二百",d:"吸4秒→呼6秒 · 数到200 · 分心重来",blk:"呼吸练习",
+ p:[{c:"吸",t:4,y:"inhale"},{c:"呼",t:6,y:"exhale"}],r:100,rest:10,
+ s:["1次吸气+1次呼气=1次呼吸。从1数到200，只专注呼吸。","心有杂念→从1重新开始。","每天1次，直到能轻松数完200。"],
+ m:"数到走神还继续 → 从1重来。",
+ key:"为什么练：专注力=觉察兴奋的前提。呼吸越慢越深→心跳越慢→兴奋度越低。",
+ pass:"一次数到200不分心。",
+ book:"《男性多重高潮》练习二（数到二百）"},
+{id:"warm",n:"暖睾准备",d:"掌心覆盖睾丸 → 温热",blk:"呼吸练习",
+ p:[{c:"暖睾",t:60,y:"free"}],r:1,rest:5,
+ s:["触摸睾丸或将单手掌覆盖在睾丸上使其温暖，直到你觉得有点「想」的感觉。"],
+ m:"",
+ key:"作用：让睾丸温热放松，为冷提气法做准备。",
+ book:"《男性多重高潮》冷提气法·步骤1"},
+{id:"coldlift",n:"冷提气法",d:"吸提肌→呼放松 · 能量沿脊椎上提 · 60→150次",blk:"呼吸练习",
+ p:[{c:"吸提",t:4,y:"inhale"},{c:"呼松",t:6,y:"exhale"}],r:30,rest:15,
+ s:["先暖睾。吸气并轻轻将睾丸、会阴、肛门附近的肌肉向上提起；想像你在啜饮性能量，从睾丸提到会阴、肛门和尾骨。","呼气并放松肌肉，持续注意逐渐增加的性能量。","重复吸提呼松，直到会阴处有温暖的刺痒感。能量能上提后，把脊椎当吸管，将能量从睾丸和会阴往上吸，经整条脊椎直到头骨底部；下巴轻轻内缩有助能量从脊椎移至头部。","重复吸提呼松直到完成当天次数（60次起步，逐月递增，150次封顶），直到头部有轻微刺痒感；用意念让能量在头部内循环。最后舌头顶上颚（前牙后方半吋处），能量沿身体前方下流到肚脐。"],
+ m:"背和骨盆紧绷、能量提不上去 → 先做「放松·骨盆波浪」。",
+ key:"核心：把性能量从睾丸沿督脉提到头=不射精高潮的能量基础。舌顶上颚连接任督二脉。",
+ book:"《男性多重高潮》冷提气法（每日5-10分钟循序渐进）"},
+{id:"horsewave",n:"放松·骨盆波浪",d:"像骑马前后摇骨盆 · 脊椎如波浪",blk:"呼吸练习",
+ p:[{c:"前摇",t:4,y:"free"},{c:"后摇",t:4,y:"free"}],r:12,rest:10,
+ s:["背部和骨盆很紧绷时，性能量很难沿脊椎上提，所以必须先放松骨盆区、脊椎和颈部。","想像你骑着一匹奔驰中的马：前后摇摆骨盆，下巴也上下移动，脊椎像波浪一样摆动。"],
+ m:"动作僵硬 → 幅度由小到大，像水波流动。",
+ key:"作用：先放松骨盆/脊椎/颈部，能量才能上提——冷提气法做不动时先做这个。",
+ book:"《男性多重高潮》解决之道：放松"},
+{id:"sq1",n:"动作一 · 包头深蹲",d:"半蹲↕全蹲 · 吸4下呼6下 · 5-7组",blk:"腿部动作",
+ p:[{c:"吸下",t:3,y:"inhale"},{c:"呼上",t:3,y:"exhale"}],r:12,rest:25,
+ s:["双手包头，只做下半身动作。起始：大腿与地面平行（半蹲位）。","节奏：吸4下（吸气下蹲到底）+呼6下（呼气回到半蹲位，不站直）=10次动作为1个完整呼吸。","语音喊「吸 1、2、3、4」下蹲4次，再喊「呼 1、2、3、4、5、6」起身6次。","每组=完整呼吸：起步1轮（吸4下+呼6下=10次），逐月加到2轮（20次）；每天5组起步、逐月加到7组；每组后休息10秒。","全程用做爱抽插的频率，每一下=一次抽插。"],
+ m:"站直或弯腰 → 始终在半蹲↔全蹲之间，背挺直。",
+ key:"要点：模仿性交下半身的抽插节奏+绑定呼吸（吸4呼6），呼吸不断=输出不断，把实战频率练进肌肉记忆。",
+ book:"新方案·动作一"},
+{id:"sq2",n:"动作二 · 手撑地深蹲",d:"手不离地 · 吸4下呼6下 · 5-7组",blk:"腿部动作",
+ p:[{c:"吸下",t:3,y:"inhale"},{c:"呼上",t:3,y:"exhale"}],r:12,rest:25,
+ s:["双手撑地不离开，臀部抬起至大腿与地面平行。","节奏：吸4下（吸气下蹲至底部）+呼6下（呼气抬起回到大腿平行）=10次动作为1个完整呼吸。","语音喊「吸 1、2、3、4」再喊「呼 1、2、3、4、5、6」。","每组=完整呼吸：起步1轮（吸4下+呼6下=10次），逐月加到2轮（20次）；每天5组起步、逐月加到7组；每组后休息10秒。"],
+ m:"手离地或脚跟抬起 → 手按稳、幅度以大腿平行线为界。",
+ key:"要点：腿臀+核心联动，模拟后入位下沉抽插的发力链；吸4呼6绑定节奏，呼吸不断=输出不断。",
+ book:"新方案·动作二"},
+{id:"sq3",n:"动作三 · 跪姿顶髋",d:"跪姿抱拳 · 臀发力前顶 · 回吸4下顶呼6下 · 5-7组",blk:"腿部动作",
+ p:[{c:"顶·呼",t:3,y:"exhale"},{c:"回·吸",t:3,y:"inhale"}],r:12,rest:25,
+ s:["跪姿，双手十指相扣抱拳放于下巴处。","节奏：回髋4下（吸 1、2、3、4）+前顶6下（呼 1、2、3、4、5、6）=10次动作为1个完整呼吸。","臀部发力往前顶髋——呼气；髋部回收——吸气。","每组=完整呼吸：起步1轮（吸4下+呼6下=10次），逐月加到2轮（20次）；每天5组起步、逐月加到7组；每组后休息10秒。"],
+ m:"腰代偿 → 只动髋，想象臀部向前拍。",
+ key:"要点：跪姿顶髋=后入/跪姿的核心发力动作，练臀和髋部耐力；回吸4下、顶呼6下，呼吸不断=输出不断。",
+ book:"新方案·动作三"},
+{id:"sq4",n:"动作四 · 凳上摆髋",d:"手撑凳半蹲 · 前后摆髋 · 后收4下前顶6下 · 5-7组",blk:"腿部动作",
+ p:[{c:"前顶·呼",t:2,y:"exhale"},{c:"后收·吸",t:2,y:"inhale"}],r:20,rest:25,
+ s:["双手放在凳子上，双脚踮起脚尖，双腿向两侧展开成半蹲姿势。","髋部前后摆动，像公狗腰一样做出前后动作幅度。","节奏：后收4下（吸 1、2、3、4）+前顶6下（呼 1、2、3、4、5、6）=10次动作为1个完整呼吸。","每组=完整呼吸：起步1轮（吸4下+呼6下=10次），逐月加到2轮（20次）；每天5组起步、逐月加到7组；每组后休息10秒。"],
+ m:"幅度只靠腰 → 髋发力，腰保持稳定。",
+ key:"要点：直接模拟后入式抽插的骨盆摆动轨迹，绑定呼吸练控制；后收4下、前顶6下。",
+ book:"新方案·动作四"},
+{id:"sacrum",n:"动作五 · 旋转荐骨",d:"定位→前推上举→后推下摆→左右→顺逆圈→绑呼吸",blk:"腿部动作",
+ p:[{c:"定位",t:10,y:"free"},{c:"前推上举",t:4,y:"inhale"},{c:"后推下摆",t:4,y:"exhale"},{c:"左右",t:4,y:"free"},{c:"顺圈",t:6,y:"free"},{c:"逆圈",t:6,y:"free"},{c:"呼吸",t:6,y:"inhale"}],r:1,rest:15,
+ s:["段1 定位：一手放耻骨、一手放荐骨，静心感受荐骨位置，学会只动荐骨不动腰臀。","段2 左右旋：每下2秒，左旋吸气、右旋呼气，幅度小而精准。","段3 前推上举：尾骨前推（背微内弯），阴茎跟着上举——吸气，每下2秒。","段4 后推下摆：尾骨后推（脊椎微弓），阴茎随着下摆——呼气，每下2秒。","段5 前后连动：前推吸/后推呼交替，每下1秒，练出慢速抽插的骨盆节奏。","段6 顺逆圈：顺圈、逆圈各按次数，每圈3秒一圈一呼吸，先一侧再另一侧。","段7 旋进：模拟插入绕半圈、出来绕半圈，绑呼吸（一圈一呼吸，后期吸4呼6）。","段间休息5秒、组间休息10秒；掌握分段动作后即可「旋进」实战。"],
+ m:"用腰臀大力转 → 幅度缩小，感受荐骨本身的微动作。",
+ key:"要点：旋进的基础。别用臀和骨盆蛮力，练出荐骨的分段微动作。",
+ book:"《男性多重高潮》解决之道：旋转荐骨 · PDF p139"}
 ];
 
 // ============ SVG ANIMATIONS ============
@@ -422,6 +508,7 @@ ANIM.pc=function(phase){
   return '<svg viewBox="0 0 240 160"><ellipse cx="120" cy="82" rx="45" ry="55" fill="none" stroke="#444" stroke-width="2"/><line x1="85" y1="50" x2="155" y2="50" stroke="#666" stroke-width="1"/><text x="160" y="48" fill="#888" font-size="8">耻骨</text><line x1="90" y1="52" x2="90" y2="52" stroke="#666" stroke-width="1"/><line x1="120" y1="50" x2="120" y2="132" stroke="#444" stroke-width="0.5" stroke-dasharray="4 6"/><text x="124" y="140" fill="#888" font-size="8">尾骨</text><ellipse cx="120" cy="82" rx="22" ry="14" fill="#e2b04a" opacity="'+pulseOp+'" stroke="#f0c040" stroke-width="2" style="transition:opacity 0.4s"><animate attributeName="opacity" values="'+pulseOp+';'+(pulseOp*0.5)+';'+pulseOp+'" dur="1s" repeatCount="indefinite" additive="replace"/></ellipse><text x="120" y="86" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">PC肌</text><text x="120" y="152" text-anchor="middle" fill="#f0c040" font-size="11">'+ (phase==="contract"?"收 · 忍尿感":"放 · 完全松") +'</text></svg>';
 };
 
+ANIM.pc_practice=ANIM.pc;
 // --- PC肌主动放松 ---
 ANIM.pc_relax=function(phase){
   var op=phase==="contract"?0.85:(phase==="free"?0.15:0.25);
@@ -518,65 +605,91 @@ function renderAnim(){
 
 // ============ 次数递增（书中数字=月目标：首月 50%→75%→100%，第4周减量30%；次月起保持书中最高次数） ============
 var REP_PLAN={
-"腹式呼吸":[36,36,36,36,36,36],
-"PC肌收放":[36,36,36,36,36,36],
-"PC肌主动放松":[10,10,10,10,10,10],
-"臀桥冲刺":[36,36,36,36,36,36],
-"自重深蹲":[36,36,36,36,36,36],
-"猫牛式骨盆":[30,30,30,30,30,30],
-"死虫式":[48,48,48,48,48,48],
-"弓步蹲":[0,60,60,60,60,60],
-"马步站桩":[0,2,3,3,3,3],
-"强化肛门":[36,36,36,36,36,36],
-"帮助前列腺":[18,18,18,18,18,18],
-"踏步呼吸·基础":[24,24,24,24,24,24],
-"踏步呼吸·骨盆前倾":[24,24,24,24,24,24],
-"踏步呼吸·高抬腿":[24,24,24,24,24,24],
-"踏步呼吸·呼气检查":[24,24,24,24,24,24],
-"踏步呼吸·收尾":[20,20,20,20,20,20],
-"数到一百":[100,100,100,100,100,100],
-"排空能量":[3,3,6,6,9,9],
-"骨盆按摩":[1,1,1,1,1,1]
+"数到二百":[100,120,140,160,180,200],
+"暖睾准备":[1,1,1,1,1,1],
+"冷提气法":[60,75,90,110,130,150],
+"放松·骨盆波浪":[12,12,12,12,12,12],
+"PC肌练习":[36,42,48,54,60,66],
+"强化肛门":[18,18,18,18,18,18],
+"马步站桩":[3,5,8,12,18,30],
+"动作一 · 包头深蹲":[16,20,24,28,32,36],
+"动作二 · 手撑地深蹲":[16,20,24,28,32,36],
+"动作三 · 跪姿顶髋":[16,24,32,40,48,56],
+"动作四 · 凳上摆髋":[24,32,40,48,56,64],
+"动作五 · 旋转荐骨":[1,1,2,2,3,3]
 };
-var REP_CAP={"腹式呼吸":36,"PC肌收放":36,"PC肌主动放松":10,"臀桥冲刺":36,"自重深蹲":36,"猫牛式骨盆":30,"死虫式":48,"弓步蹲":60,"马步站桩":3,"强化肛门":36,"帮助前列腺":18,"踏步呼吸·基础":24,"踏步呼吸·骨盆前倾":24,"踏步呼吸·高抬腿":24,"踏步呼吸·呼气检查":24,"踏步呼吸·收尾":20,"数到一百":100,"排空能量":9,"骨盆按摩":1};
-var REP_FIXED={"数到一百":true,"排空能量":true,"骨盆按摩":true,"马步站桩":true};
+var REP_CAP={"数到二百":200,"暖睾准备":1,"冷提气法":150,"放松·骨盆波浪":12,"PC肌练习":66,"强化肛门":36,"马步站桩":30,"动作一 · 包头深蹲":36,"动作二 · 手撑地深蹲":36,"动作三 · 跪姿顶髋":56,"动作四 · 凳上摆髋":64,"动作五 · 旋转荐骨":3};
+var REP_FIXED={"暖睾准备":true,"冷提气法":true,"放松·骨盆波浪":true,"PC肌练习":true,"强化肛门":true,"动作五 · 旋转荐骨":true};
+var INH4=4,EXH6=6;
+var SETS_PLAN={"动作一 · 包头深蹲":[5,5,6,6,7,7],"动作二 · 手撑地深蹲":[5,5,6,6,7,7],"动作三 · 跪姿顶髋":[5,5,6,6,7,7],"动作四 · 凳上摆髋":[5,5,6,6,7,7]};
+var SETREP_PLAN={"动作一 · 包头深蹲":[10,10,20,20,20,20],"动作二 · 手撑地深蹲":[10,10,20,20,20,20],"动作三 · 跪姿顶髋":[10,10,20,20,20,20],"动作四 · 凳上摆髋":[10,10,20,20,20,20]};
+var BT_PLAN={"动作一 · 包头深蹲":[2.4,2.2,2.0,1.8,1.6,1.4],"动作二 · 手撑地深蹲":[2.4,2.2,2.0,1.8,1.6,1.4],"动作三 · 跪姿顶髋":[1.8,1.6,1.4,1.3,1.2,1.1],"动作四 · 凳上摆髋":[1.6,1.4,1.3,1.2,1.1,1.0]};
+var SAC_PLAN={rot:[6,8,8,10,10,12],fwd:[8,10,12,14,16,20],bwd:[8,10,12,14,16,20],alt:[10,12,14,16,20,24],cir:[6,6,8,8,10,10],circSets:[1,1,1,1,2,2],spi:[6,6,10,10,16,16]};
+function setRepFor(name,w){var m=monthOfWeek(w);var T=SETREP_PLAN[name][m-1]||10;var k=(w-1)%4;if(T<=10)return 10;if(T<=20)return k===2?20:10;return [10,20,30,20][k]}
 function monthOfWeek(w){return Math.min(6,Math.max(1,Math.floor((w-1)/4)+1))}
 function adjFor(name,w){var pl=REP_PLAN[name];if(!pl)return null;var m=monthOfWeek(w);var T=pl[m-1];if(!T)return null;if(REP_FIXED[name])return T;var prev=m>1?pl[m-2]:0;var ramp=(m===1||prev===0||T>prev);var k=(w-1)%4;if(k===3)return Math.max(1,Math.round(T*0.7));if(!ramp)return T;return [Math.ceil(T*0.5),Math.ceil(T*0.75),T][k]}
 function labelOfWeek(w){var s=SCHED.labels[monthOfWeek(w)]||"";if((w-1)%4===3)s+=" · 减量30%周";return s}
 var workoutPlan=[];
 function buildWorkout(dayType){
-  workoutPlan=[];var w=calcWeek();var adj=null;
-  function add(id,ovr){var src=null;for(var i=0;i<EX_LIB.length;i++){if(EX_LIB[i].id===id){src=EX_LIB[i];break}}if(!src)return;var ex=JSON.parse(JSON.stringify(src));var r=adjFor(ex.n,w);if(r!==null)ex.r=r;if(ovr)for(var k in ovr)ex[k]=ovr[k];workoutPlan.push(ex)}
-  add("breath");add("pc");add("pc_relax");
-  if(dayType==="combo"||dayType==="pwr"||dayType==="nrg"){add("bridge");add("squat");add("catcow");add("deadbug");if(w>=5){add("lunge");add("horse");}if(dayType!=="nrg"){add("march1");add("march2");add("march3");add("march4");add("march5")}}
-  if(dayType==="rec"){add("count100")}
-  if(dayType==="sex"){add("march1");add("march2");add("march3");add("march4");add("march5")}
-  add("testicle");add("anus");add("prostate");add("drain");add("pelvis");
+  workoutPlan=[];var w=calcWeek();
+  function add(id,ovr){var src=null;for(var i=0;i<EX_LIB.length;i++){if(EX_LIB[i].id===id){src=EX_LIB[i];break}}if(!src)return;var ex=JSON.parse(JSON.stringify(src));var r=adjFor(ex.n,w);if(r!==null)ex.r=r;if(ovr)for(var k in ovr)ex[k]=ovr[k];
+    var m=monthOfWeek(w);var sarr=SETS_PLAN[ex.n];var sets=sarr?sarr[m-1]:0;
+    if(sets){var perSet=setRepFor(ex.n,w),bt=1;
+      var dirs=["吸","呼"];
+      var ps=[];ex.sets=sets;ex.r=sets*perSet;ex.setRest=10;
+      for(var si=0;si<sets;si++){
+        var rem=perSet,ix=0;
+        while(rem>0){var inhale=(ix%2===0);var n=Math.min(inhale?INH4:EXH6,rem);
+          var nums=[];for(var q=1;q<=n;q++)nums.push(q);
+          var base=dirs[inhale?0:1];
+          ps.push({c:base+" "+nums.join("、"),base:base,y:inhale?"inhale":"exhale",t:Math.ceil(n*bt),rp:n,bt:bt,beat:true,num:true});
+          rem-=n;ix++}
+        if(si<sets-1)ps.push({c:"组间休息",t:ex.setRest,y:"rest",isRest:true,nextSet:si+2});
+      }
+      ex.p=ps;ex.grouped=true;
+      ex.d=ex.d+" · 本月"+sets+"组×"+perSet+"次 · 吸"+INH4+"呼"+EXH6;
+      ex.key=(ex.key||"")+" 呼吸融合有氧：每个完整呼吸=吸"+INH4+"下+呼"+EXH6+"下（10次动作）。每下1秒（吸4秒+呼6秒），每组从1轮完整呼吸（10次）起步、逐月加到2轮（20次）；组数5组起步、逐月加到7组；每组后休息"+ex.setRest+"秒。呼吸不断=输出不断。";
+    }
+    if(ex.id==="sacrum"){var sp2=SAC_PLAN;var R2=function(k){return sp2[k][m-1]||0};var ps2=[];ps2.push({c:"定位荐骨",t:10,y:"hold"});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});ps2.push({c:"左旋",base:"左旋",rp:R2("rot"),bt:2,beat:true,y:"inhale",t:R2("rot")*2});ps2.push({c:"右旋",base:"右旋",rp:R2("rot"),bt:2,beat:true,y:"exhale",t:R2("rot")*2});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});ps2.push({c:"前推上举",base:"前推上举",rp:R2("fwd"),bt:2,beat:true,y:"inhale",t:R2("fwd")*2});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});ps2.push({c:"后推下摆",base:"后推下摆",rp:R2("bwd"),bt:2,beat:true,y:"exhale",t:R2("bwd")*2});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});var altH=Math.floor(R2("alt")/2);ps2.push({c:"前推",base:"前推",rp:altH,bt:1,beat:true,y:"inhale",t:altH});ps2.push({c:"后推",base:"后推",rp:altH,bt:1,beat:true,y:"exhale",t:altH});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});var cs2=R2("circSets");for(var ci2=0;ci2<cs2;ci2++){ps2.push({c:"顺圈",base:"顺圈",rp:R2("cir"),bt:3,beat:true,y:"free",t:R2("cir")*3});ps2.push({c:"逆圈",base:"逆圈",rp:R2("cir"),bt:3,beat:true,y:"free",t:R2("cir")*3});if(ci2<cs2-1)ps2.push({c:"组间休息",t:10,y:"rest",isRest:true,nextSet:ci2+2})}ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});ps2.push({c:"旋进",base:"旋进",rp:R2("spi"),bt:3,beat:true,y:"free",t:R2("spi")*3});ex.p=ps2;ex.grouped=true;ex.sets=cs2;ex.r=1+R2("rot")*2+R2("fwd")+R2("bwd")+R2("alt")+R2("cir")*2*cs2+R2("spi");ex.d="荐骨分段·旋进 · 本月："+R2("rot")+"轮左右旋 · 前推"+R2("fwd")+" · 后推"+R2("bwd")+" · 连动"+R2("alt")+" · 顺逆圈"+R2("cir")+"×"+cs2+" · 旋进"+R2("spi")+"圈";ex.key=(ex.key||"")+" 呼吸绑定：左右旋/前推/后推每下2秒（左旋吸、右旋呼，前推吸、后推呼），连动每下1秒（前推吸后推呼），顺逆圈每圈3秒一圈一呼吸，旋进绑呼吸（M5-6吸4呼6）。段间休息5秒、组间休息10秒。"}
+    if(ex.id==="horse"){ex.minutes=ex.r;ex.r=1;ex.p=[{c:"站桩",t:ex.minutes*60,y:"hold"}]}
+    workoutPlan.push(ex)}
+  if(dayType==="rest"){add("count200");return}
+  if(dayType==="legs"){add("horse");add("sq1");add("sq2");add("sq3");add("sq4");add("sacrum");return}
+  add("count200");add("pc_practice");add("horsewave");add("warm");add("coldlift");
+  add("anus");
 }
 // ============ TTS ============
-var gVoice=null;var gTTS=false;
+var gVoice=null;var gTTS=false;var gSound=true;var gSpeakQueue=[];var gSpeaking=false;var gWaitVoice=false;var gRunId=0;
 function initVoices(){try{if(typeof speechSynthesis==="undefined"){gTTS=false;return}gTTS=true;var voices=speechSynthesis.getVoices();if(voices&&voices.length>0)pickVoice(voices);speechSynthesis.onvoiceschanged=function(){try{var vs=speechSynthesis.getVoices();if(vs&&vs.length>0)pickVoice(vs)}catch(e){}}}catch(e){gTTS=false}}
-function pickVoice(voices){gVoice=null;var prefs=["Ting-Ting","XiaoXiao","Yaoyao","Hong","Sin-Ji","Mei-Jia","Zhiwei"];for(var p=0;p<prefs.length;p++){for(var i=0;i<voices.length;i++){if(voices[i].name.indexOf(prefs[p])>=0&&voices[i].lang.indexOf("zh")>=0){gVoice=voices[i];return}}}for(var j=0;j<voices.length;j++){if(voices[j].lang.indexOf("zh")>=0){gVoice=voices[j];return}}if(voices.length>0)gVoice=voices[0]}
-function speak(text,rate,pitch){if(!gTTS)return;rate=rate||0.85;pitch=pitch||1.0;try{try{speechSynthesis.cancel()}catch(e){}var u=new SpeechSynthesisUtterance(text);u.lang="zh-CN";u.rate=rate;u.pitch=pitch;u.volume=1;if(gVoice)u.voice=gVoice;speechSynthesis.speak(u)}catch(e){}}
+function pickVoice(voices){gVoice=null;var zh=[];for(var i=0;i<voices.length;i++){if(/zh|Chinese|中文|普通话/i.test(voices[i].lang+" "+voices[i].name))zh.push(voices[i])}if(!zh.length){if(voices.length>0)gVoice=voices[0];return}var prefs=["Ting-Ting","Xiaoxiao","Yaoyao","Huihui","Hong","Kangkang","Sin-Ji","Mei-Jia","Zhiwei"];for(var p=0;p<prefs.length;p++){for(var j=0;j<zh.length;j++){if(zh[j].localService&&zh[j].name.indexOf(prefs[p])>=0){gVoice=zh[j];return}}}for(var q=0;q<zh.length;q++){if(zh[q].localService){gVoice=zh[q];return}}for(var r=0;r<prefs.length;r++){for(var k=0;k<zh.length;k++){if(zh[k].name.indexOf(prefs[r])>=0){gVoice=zh[k];return}}}gVoice=zh[0]}
+function stopSpeak(){gSpeakQueue=[];gSpeaking=false;gWaitVoice=false;try{speechSynthesis.cancel()}catch(e){}}
+function speak(text,rate,pitch,force,cb){if(!gTTS||!gSound){if(cb){try{cb()}catch(e){}}return}rate=rate||0.85;pitch=pitch||1.0;if(force)stopSpeak();gSpeakQueue.push({text:text,rate:rate,pitch:pitch,cb:cb});drainSpeak()}
+function drainSpeak(){if(gSpeaking||!gSpeakQueue.length||!gTTS||!gSound)return;var it=gSpeakQueue.shift();gSpeaking=true;var done=false;var watch=0;function fin(){if(done)return;done=true;if(watch)clearTimeout(watch);gSpeaking=false;if(it.cb){try{it.cb()}catch(e){}}setTimeout(drainSpeak,60)}try{try{if(speechSynthesis.paused)speechSynthesis.resume()}catch(e){}var u=new SpeechSynthesisUtterance(it.text);u.lang="zh-CN";u.rate=it.rate;u.pitch=it.pitch;u.volume=1;if(gVoice)u.voice=gVoice;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u);watch=setTimeout(fin,15000)}catch(e){fin()}}
+function speakWait(text,rate,pitch,go){if(!go)return;var done=false;function fin(){if(done)return;done=true;go()}speak(text,rate,pitch,false,fin);setTimeout(function(){if(done)return;try{speechSynthesis.cancel()}catch(e){}gSpeaking=false;gSpeakQueue=[];gWaitVoice=false;done=true;go()},2500)}
+function unlockAudio(){try{initVoices();if(gBeepAC&&gBeepAC.state==="suspended")gBeepAC.resume()}catch(e){}}
+function saveSoundPref(){try{var s=loadState();s.sound=gSound;saveState(s)}catch(e){}}
+function toggleSound(){gSound=!gSound;saveSoundPref();stopSpeak();var b=document.getElementById("mutebtn");if(b)b.textContent=gSound?"🔊 声音：开":"🔇 声音：关";if(gSound)speak("声音已开启",0.8,1.1,true)}
+function testVoice(){unlockAudio();stopSpeak();if(!gTTS){alert("此浏览器不支持语音播报。请换用 Chrome / Edge / Safari 浏览器。");return}gSound=true;saveSoundPref();var b=document.getElementById("mutebtn");if(b)b.textContent="🔊 声音：开";var t=document.getElementById("sndbtn");if(t)t.textContent="🔊 正在测试…";var zh=0;try{var vs0=speechSynthesis.getVoices();for(var i0=0;i0<vs0.length;i0++){if(/zh|Chinese|中文|普通话|Huihui|Yaoyao|Kangkang/i.test(vs0[i0].lang+" "+vs0[i0].name))zh++}}catch(e){}try{var u0=new SpeechSynthesisUtterance("语音播报正常，准备好了吗？");u0.lang="zh-CN";u0.rate=0.85;u0.pitch=1.1;u0.volume=1;if(gVoice)u0.voice=gVoice;var started0=false;u0.onstart=function(){started0=true;if(t)t.textContent="✅ 已开始播报"};u0.onend=function(){if(t)t.textContent="✅ 播报完成 · 声音正常"};u0.onerror=function(ev0){if(t)t.textContent="❌ 播报失败："+((ev0&&ev0.error)||"未知")};speechSynthesis.speak(u0);setTimeout(function(){if(!started0&&t){t.textContent="⚠️ 未开始（点我重试）";if(!zh)alert("本机没有检测到中文语音。Chrome 的中文语音依赖 Google 服务器，国内常连不上，建议换 Edge 浏览器；或安装 Windows 中文语音包（设置→时间和语言→语言→添加中文→语音）。详细自检请打开首页「声音诊断」链接。")}},4000)}catch(e1){if(t)t.textContent="❌ 异常："+e1.message}}
 
 // ============ WORKOUT STATE ============
-var gState="idle",gExI=0,gPhI=0,gRepC=0,gTimeLeft=0,gTimer=null,gPaused=false,gTotalPh=0,gDonePh=0;var gWorkType="",gWorkDate="",gPv=null;
+var gState="idle",gExI=0,gPhI=0,gRepC=0,gTimeLeft=0,gTimer=null,gPaused=false,gTotalRep=0,gDoneRep=0,gPhEl=0,gPhW=0,gPhLastRep=0;var gWorkType="",gWorkDate="",gPv=null;var gLastBlk="";var gBeepAC=null;var gSetN=1;
 function getCurEx(){return workoutPlan[gExI]}
 function getCurPh(){var ex=getCurEx();return ex?ex.p[gPhI]:null}
 
 function startToday(){gWorkType=getTodayType();gWorkDate=todayStr();startWorkout()}
 function startPvDay(){if(!gPv)return;if(gPv.tp==="rest"){alert("这天是休息日。休息也是训练的一部分");return}gWorkType=gPv.tp;gWorkDate=gPv.ds;closePv();setTimeout(startWorkout,50)}
+function startLegs(){gWorkType="legs";gWorkDate=todayStr();startWorkout()}
 function startWorkout(){
   try{var s=loadState();if(!s.sd){s.sd=todayStr();saveState(s)}var tt=gWorkType||getTodayType();if(tt==="rest"){alert("休息日！😴 可以点日历选其他天补练");return}
-    stopTimer();try{speechSynthesis.cancel()}catch(e){}
-    buildWorkout(tt);gExI=0;gPhI=0;gRepC=0;gTimeLeft=0;gPaused=false;gState="idle";gDonePh=0;
-    gTotalPh=workoutPlan.reduce(function(s,ex){return s+ex.p.length*ex.r},0);
+    stopTimer();stopSpeak();unlockAudio();
+    buildWorkout(tt);gExI=0;gPhI=0;gLastBlk="";gRepC=0;gTimeLeft=0;gPaused=false;gState="idle";gDoneRep=0;gPhEl=0;gPhW=0;gPhLastRep=0;
+    gTotalRep=workoutPlan.reduce(function(s,ex){return s+ex.r},0);gDoneRep=0;
     document.getElementById("home").style.display="none";document.getElementById("w").style.display="flex";
-    document.getElementById("wlbl").textContent=SCHED.typeLabel(tt)+" · "+(labelOfWeek(calcWeek())||"");
+    document.getElementById("wlbl").textContent=(tt==="legs"?"🏋️ 腿部动作专区":SCHED.typeLabel(tt))+" · "+(labelOfWeek(calcWeek())||"");
     document.getElementById("wpg").textContent="1/"+workoutPlan.length;
     document.getElementById("wpf").style.width="0%";document.getElementById("wpbtn").textContent="⏸ 暂停";
     showExInfo();renderExList();renderAnim();
-    speak("准备开始",0.8,1.1);startCD(announceStart);
+    startCD(announceStart);
   }catch(e){try{document.getElementById("home").style.display="none";document.getElementById("w").style.display="flex";document.getElementById("wnm").textContent="出错";document.getElementById("wtimer").textContent="⚠️";document.getElementById("wsteps").innerHTML='<div style="color:var(--red)">刷新重试</div>'}catch(e2){}}
 }
 
@@ -584,6 +697,7 @@ function showExInfo(){
   var ex=getCurEx();if(!ex)return;
   document.getElementById("wnm").textContent=ex.n;
   document.getElementById("wdt").textContent=ex.d||"";
+  var lbl=document.getElementById("wlbl");if(lbl)lbl.textContent=(gWorkType==="legs")?"🏋️ 腿部动作专区":((ex.blk?ex.blk+" · ":"")+SCHED.typeLabel(gWorkType||getTodayType()));
   document.getElementById("wpg").textContent=(gExI+1)+"/"+workoutPlan.length;
   var sh='<div class="st-title">📖 动作详解</div><ol>';
   if(ex.s)ex.s.forEach(function(s){sh+="<li>"+s+"</li>"});
@@ -602,16 +716,20 @@ function showExInfo(){
   document.getElementById("wsteps").innerHTML=sh;
 }
 
-function renderExList(){var h="";workoutPlan.forEach(function(ex,i){var cls="el";if(i===gExI)cls+=" cur";if(i<gExI)cls+=" dn";h+='<div class="'+cls+'"><span class="eln">'+(i<gExI?"✓ ":"")+ex.n+'</span><span class="elr">'+ex.r+"次</span></div>"});document.getElementById("exlist").innerHTML=h}
+function renderExList(){var h="";workoutPlan.forEach(function(ex,i){var cls="el";if(i===gExI)cls+=" cur";if(i<gExI)cls+=" dn";h+='<div class="'+cls+'"><span class="eln">'+(i<gExI?"✓ ":"")+ex.n+'<span class="elr">'+((ex.minutes?ex.minutes+"分钟":ex.r+(ex.u||"次")))+"</span></div>"});document.getElementById("exlist").innerHTML=h}
 function toggleList(){var el=document.getElementById("exlist");var btns=document.getElementsByClassName("exlist-toggle");if(el.style.display==="block"){el.style.display="none";if(btns[0])btns[0].textContent="📋 查看全部动作 ▾"}else{el.style.display="block";renderExList();if(btns[0])btns[0].textContent="📋 查看全部动作 ▴"}}
 
 // ============ COUNTDOWN ============
-function startCD(cb){gState="countdown";var ring=document.getElementById("wring");ring.style.display="flex";ring.className="breath-ring countdown";document.getElementById("wcue").textContent="准备";document.getElementById("wrep").textContent="";var cd=3;(function tick(){if(gPaused){setTimeout(tick,300);return}if(gState==="done")return;if(cd>0){document.getElementById("wtimer").textContent=cd;document.getElementById("wtimer").className="phase-timer gold";speak(String(cd),0.5,1.3);cd--;setTimeout(tick,1000)}else{document.getElementById("wtimer").textContent="▶";document.getElementById("wtimer").className="phase-timer gold";speak("开始",0.6,1.2);setTimeout(function(){if(gState!=="done")cb()},500)}})()}
+function startCD(cb){gRunId++;gState="countdown";var ring=document.getElementById("wring");ring.style.display="flex";ring.className="breath-ring countdown";document.getElementById("wcue").textContent="准备";document.getElementById("wrep").textContent="";var myRun=gRunId;var steps=[{t:0,s:"3"},{t:1000,s:"2"},{t:2000,s:"1"},{t:3000,s:"开始"}];function fireAt(delay,st){setTimeout(function(){if(gRunId!==myRun||gState==="done")return;if(gPaused){fireAt(300,st);return}if(st.s==="开始"){document.getElementById("wtimer").textContent="▶";document.getElementById("wtimer").className="phase-timer gold";var gone=false;var go=function(){if(gone)return;gone=true;if(gRunId===myRun&&gState!=="done")cb()};speak("开始",0.6,1.2,true,go);setTimeout(function(){if(gone)return;try{speechSynthesis.cancel()}catch(e){}gSpeaking=false;gSpeakQueue=[];go()},1300);return}document.getElementById("wtimer").textContent=st.s;document.getElementById("wtimer").className="phase-timer gold";speak(st.s,0.5,1.3,true)},delay)}for(var si=0;si<steps.length;si++)fireAt(steps[si].t,steps[si])}
 
-function announceStart(){if(gExI>=workoutPlan.length){finishWorkout();return}var ex=getCurEx();if(!ex){finishWorkout();return}showExInfo();renderExList();gPhI=0;gRepC=0;renderAnim();speak(ex.n,0.8,1.1);setTimeout(function(){if(gState!=="done")startPh()},3000)}
+function announceStart(){if(gExI>=workoutPlan.length){finishWorkout();return}var ex=getCurEx();if(!ex){finishWorkout();return}showExInfo();renderExList();gPhI=0;gRepC=0;gSetN=1;renderAnim();if(ex.blk)gLastBlk=ex.blk;var myRun=gRunId;setTimeout(function(){if(gRunId===myRun&&gState!=="done")startPh()},250)}
 
 function startPh(){
   var ex=getCurEx();if(!ex)return;var ph=ex.p[gPhI];if(!ph)return;
+  if(ph.isRest){gPhW=0;gTimeLeft=ph.t;gState="phase";var rng=document.getElementById("wring");rng.style.display="flex";rng.className="breath-ring rest";var rc=ph.c||"组间休息";document.getElementById("wcue").textContent=rc;document.getElementById("wtimer").textContent=(gTimeLeft>0?Math.ceil(gTimeLeft):0);document.getElementById("wtimer").className="phase-timer rest-color";document.getElementById("wrep").textContent=ph.nextSet?("下一组：第"+ph.nextSet+"/"+ex.sets+"组"):"";document.getElementById("wpf").style.width=(gDoneRep/gTotalRep*100)+"%";gWaitVoice=true;var myRunR=gRunId;var rsCb=function(){if(gRunId!==myRunR)return;if(gState!=="phase")return;gWaitVoice=false;if(!gPaused)startTimer()};speakWait(rc+ph.t+"秒",0.7,0.95,rsCb);renderAnim();return}
+  if(ex.minutes){gPhW=1;gPhEl=0;gPhLastRep=0;gTimeLeft=ph.t;gState="phase";var rng2=document.getElementById("wring");rng2.style.display="flex";rng2.className="breath-ring hold";document.getElementById("wcue").textContent="站桩";document.getElementById("wtimer").textContent=fmtMS(gTimeLeft);document.getElementById("wtimer").className="phase-timer gold";document.getElementById("wrep").textContent="目标：单次连续站满 "+ex.minutes+" 分钟（不累计）";document.getElementById("wpf").style.width=(gDoneRep/gTotalRep*100)+"%";gWaitVoice=true;var myRunM=gRunId;var mnCb=function(){if(gRunId!==myRunM)return;if(gState!=="phase")return;gWaitVoice=false;if(!gPaused)startTimer()};speakWait("站桩"+ex.minutes+"分钟，开始",0.6,1.0,mnCb);renderAnim();return}
+  if(ph.rp){var rem=ex.r-gRepC;if(ph.rp>rem){ph.rp=rem;ph.t=Math.ceil(rem*ph.bt)}}
+  gPhW=(ph.rp!==undefined)?ph.rp:1/ex.p.length;gPhEl=0;gPhLastRep=0;
   gTimeLeft=ph.t;gState="phase";
   var ring=document.getElementById("wring");ring.style.display="flex";
   if(ph.y==="inhale")ring.className="breath-ring inhale";
@@ -620,30 +738,48 @@ function startPh(){
   else if(ph.y==="hold")ring.className="breath-ring hold";
   else ring.className="breath-ring";
   document.getElementById("wcue").textContent=ph.c;
-  document.getElementById("wtimer").textContent=gTimeLeft;
+  document.getElementById("wtimer").textContent=(gTimeLeft>0?Math.ceil(gTimeLeft):0);
   document.getElementById("wtimer").className="phase-timer";
-  document.getElementById("wrep").textContent="第"+(gRepC+1)+"/"+ex.r+" 次";
-  document.getElementById("wpf").style.width=(gDonePh/gTotalPh*100)+"%";
+  if(ph.rp!==undefined&&ph.rp>1)document.getElementById("wrep").textContent=(ex.sets?("第"+gSetN+"/"+ex.sets+"组 · "):"")+"第"+(gRepC+1)+"-"+Math.min(gRepC+ph.rp,ex.r)+"/"+ex.r+" "+(ex.u||"次");
+  else document.getElementById("wrep").textContent=(ex.sets?("第"+gSetN+"/"+ex.sets+"组 · "):"")+"第"+(gRepC+1)+"/"+ex.r+" "+(ex.u||"次");
+  document.getElementById("wpf").style.width=(gDoneRep/gTotalRep*100)+"%";
   // Voice: speak the full phase cue text for clarity
   var cueText=ph.c||"";
-  if(ph.y==="inhale"){document.getElementById("wtimer").classList.add("green");speak(cueText,0.5,1.2)}
-  else if(ph.y==="exhale"){document.getElementById("wtimer").classList.add("blue");speak(cueText,0.5,1.0)}
-  else if(ph.y==="contract")speak(cueText,0.55,1.15);
-  else if(ph.y==="relax")speak(cueText,0.55,1.0);
-  else if(ph.y==="hold"&&ph.t>=2){document.getElementById("wtimer").classList.add("gold");speak(cueText,0.55,0.9)}
-  renderAnim();startTimer();
+  if(ph.noWait){gWaitVoice=false;speak(cueText,0.75,1.05);renderAnim();startTimer();return}
+  if(ph.beat4||ph.beat){var bN=ph.beat4?4:(ph.rp||4);var bStep=ph.beat4?1500:((ph.bt||1)*1000);var bLabel=ph.beat4?"吐气":(ph.base||"");document.getElementById("wcue").textContent=bLabel+" 1";gWaitVoice=false;if(!gPaused)startTimer();var myRunB=gRunId;for(var bk=1;bk<=bN;bk++){(function(k){function bFire(delay){setTimeout(function(){if(gRunId!==myRunB||gState!=="phase")return;if(gPaused){bFire(300);return}var cueTxt=bLabel+" "+k;var cueEl=document.getElementById("wcue");if(cueEl)cueEl.textContent=cueTxt;var sayTxt=(ph.beat4||k===1)?cueTxt:String(k);wBeep();speak(sayTxt,0.8,1.05,true)},delay)}bFire((k-1)*bStep)})(bk)}renderAnim();return}
+  var spoken=false;var myRunP=gRunId;gWaitVoice=true;
+  var phStart=function(){if(gRunId!==myRunP)return;if(gState!=="phase")return;gWaitVoice=false;if(!gPaused)startTimer()};
+  if(ph.num){
+    if(ph.y==="inhale"){spoken=true;document.getElementById("wtimer").classList.add("green");speakWait(cueText,0.95,1.15,phStart)}
+    else if(ph.y==="exhale"){spoken=true;document.getElementById("wtimer").classList.add("blue");speakWait(cueText,0.95,1.1,phStart)}
+  }else if(ph.y==="inhale"){spoken=true;document.getElementById("wtimer").classList.add("green");speakWait(cueText,0.5,1.2,phStart)}
+  else if(ph.y==="exhale"){spoken=true;document.getElementById("wtimer").classList.add("blue");speakWait(cueText,0.5,1.0,phStart)}
+  else if(ph.y==="contract"){spoken=true;speakWait(cueText,0.55,1.15,phStart)}
+  else if(ph.y==="relax"){spoken=true;speakWait(cueText,0.55,1.0,phStart)}
+  else if(ph.y==="hold"&&ph.t>=2){spoken=true;document.getElementById("wtimer").classList.add("gold");speakWait(cueText,0.55,0.9,phStart)}
+  if(!spoken){gWaitVoice=false;startTimer()}
+  renderAnim();
 }
 
 // ============ TIMER ============
-function startTimer(){stopTimer();gTimer=setInterval(function(){if(gPaused)return;if(gState==="done"){stopTimer();return}gTimeLeft--;document.getElementById("wtimer").textContent=gTimeLeft;if(gTimeLeft<=3&&gTimeLeft>0)document.getElementById("wtimer").classList.add("pulse");else document.getElementById("wtimer").classList.remove("pulse");if(gTimeLeft<=0){stopTimer();gDonePh++;if(gState==="rest"){gExI++;if(gExI>=workoutPlan.length){finishWorkout();return}startCD(announceStart);return}gPhI++;var ex=getCurEx();if(!ex){finishWorkout();return}if(gPhI>=ex.p.length){gPhI=0;gRepC++;if(gRepC>=ex.r){startRest();return}renderAnim();setTimeout(function(){if(gState!=="done")startPh()},1500)}else{renderAnim();setTimeout(function(){if(gState!=="done")startPh()},800)}}},1000)}
+function wBeep(){try{if(!gBeepAC)gBeepAC=new (window.AudioContext||window.webkitAudioContext)();if(gBeepAC.state==="suspended")gBeepAC.resume();var o=gBeepAC.createOscillator(),g2=gBeepAC.createGain();o.connect(g2);g2.connect(gBeepAC.destination);o.frequency.value=880;g2.gain.setValueAtTime(0.1,gBeepAC.currentTime);g2.gain.exponentialRampToValueAtTime(0.001,gBeepAC.currentTime+0.12);o.start();o.stop(gBeepAC.currentTime+0.14)}catch(e){}}
+function startTimer(){stopTimer();gTimer=setInterval(function(){if(gPaused)return;if(gState==="done"){stopTimer();return}gTimeLeft--;gPhEl++;
+  var exT=getCurEx(),phT=exT?exT.p[gPhI]:null;
+  if(phT&&phT.rp!==undefined&&phT.rp>1&&phT.bt&&!phT.beat){var ri=Math.floor(gPhEl/phT.bt);if(ri>gPhLastRep&&ri<phT.rp){gPhLastRep=ri;wBeep();if(phT.base){var wcueEl=document.getElementById("wcue");if(wcueEl)wcueEl.textContent=phT.base+"·"+(ri+1)}}}
+  if(exT&&exT.minutes&&gPhEl>0&&gPhEl<exT.minutes*60){if(gPhEl%60===0){wBeep();if(gPhEl%180===0)speak("剩余"+Math.ceil((exT.minutes*60-gPhEl)/60)+"分钟",0.6,1.0)}if(gPhEl===Math.floor(exT.minutes*60/2))speak("已过半，坚持",0.6,1.05)}
+  document.getElementById("wtimer").textContent=(exT&&exT.u==="分钟")?fmtMS(gTimeLeft):(gTimeLeft>0?Math.ceil(gTimeLeft):0);if(gTimeLeft<=3&&gTimeLeft>0)document.getElementById("wtimer").classList.add("pulse");else document.getElementById("wtimer").classList.remove("pulse");if(gTimeLeft<=0){stopTimer();if(gState==="rest"){gExI++;if(gExI>=workoutPlan.length){finishWorkout();return}startCD(announceStart);return}var ex=getCurEx();if(!ex){finishWorkout();return}  var ph=ex.p[gPhI];
+  if(ph.isRest){gPhI++;gSetN=ph.nextSet||(gSetN+1);renderAnim();if(ph.nextSet)startCD(announceSet);else startCD(startPh);return}
+  gDoneRep+=gPhW;gRepC+=ph.rp||0;gPhI++;if(gPhI>=ex.p.length){gPhI=0;if(ph.rp===undefined)gRepC++;if(gRepC>=ex.r){startRest();return}renderAnim();setTimeout(function(){if(gState!=="done")startPh()},1500)}else{if(ph.rp!==undefined&&gRepC>=ex.r){startRest();return}renderAnim();setTimeout(function(){if(gState!=="done")startPh()},(ph.gap!==undefined?ph.gap:(ph.rp!==undefined?500:800)))}}},1000)}
+function fmtMS(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function announceSet(){if(gState==="done")return;var myRunS=gRunId;var go=function(){if(gRunId!==myRunS)return;if(gState!=="countdown")return;startPh()};speakWait("第"+gSetN+"组",0.8,1.1,go)}
 function stopTimer(){if(gTimer){clearInterval(gTimer);gTimer=null}}
-function startRest(){gState="rest";var ex=getCurEx();gTimeLeft=ex.rest||10;document.getElementById("wcue").textContent="休息";document.getElementById("wtimer").textContent=gTimeLeft;document.getElementById("wtimer").className="phase-timer rest-color";document.getElementById("wrep").textContent="下一动作："+(workoutPlan[gExI+1]?workoutPlan[gExI+1].n:"最后一项");document.getElementById("wring").className="breath-ring rest";speak("休息",0.6,0.9);startTimer()}
+function startRest(){gState="rest";var ex=getCurEx();var nx=workoutPlan[gExI+1];var blockChange=!!(nx&&ex.blk&&nx.blk!==ex.blk);gTimeLeft=blockChange?Math.max(ex.rest||10,20):(ex.rest||10);document.getElementById("wcue").textContent=blockChange?"板块休息":"休息";document.getElementById("wtimer").textContent=(gTimeLeft>0?Math.ceil(gTimeLeft):0);document.getElementById("wtimer").className="phase-timer rest-color";document.getElementById("wrep").textContent=blockChange?("下一板块："+nx.blk):("下一动作："+(nx?nx.n:"最后一项"));document.getElementById("wring").className="breath-ring rest";var myRunT=gRunId;gWaitVoice=true;var rtGo=function(){if(gRunId!==myRunT)return;if(gState!=="rest")return;gWaitVoice=false;if(!gPaused)startTimer()};speakWait(blockChange?("休息，下一个板块："+nx.blk):"休息",0.65,0.92,rtGo)}
 
 // ============ CONTROLS ============
-function togglePause(){gPaused=!gPaused;var btn=document.getElementById("wpbtn");if(gPaused){btn.textContent="▶ 继续";document.getElementById("wtimer").textContent="⏸"}else{btn.textContent="⏸ 暂停";document.getElementById("wtimer").textContent=gTimeLeft;if(gState==="rest")document.getElementById("wtimer").className="phase-timer rest-color"}}
-function skipExercise(){stopTimer();try{speechSynthesis.cancel()}catch(e){}gExI++;if(gExI>=workoutPlan.length){finishWorkout();return}showExInfo();renderExList();renderAnim();startCD(announceStart)}
-function quitWorkout(){if(!confirm("确定要退出训练吗？退出后今日将标记为已完成"))return;stopTimer();try{speechSynthesis.cancel()}catch(e){}gState="done";document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex";var s=loadState();s.done[gWorkDate||todayStr()]=true;saveState(s);renderHome()}
-function finishWorkout(){stopTimer();try{speechSynthesis.cancel()}catch(e){}gState="done";document.getElementById("wcue").textContent="🏆";document.getElementById("wtimer").textContent="完成";document.getElementById("wtimer").className="phase-timer gold";document.getElementById("wrep").textContent="";document.getElementById("wnm").textContent="训练完成！";document.getElementById("wdt").textContent="点击退出保存";document.getElementById("wsteps").innerHTML="";document.getElementById("wring").className="breath-ring";document.getElementById("wpf").style.width="100%";document.getElementById("wanim").innerHTML="";speak("训练完成",0.75,1.2);var s=loadState();s.done[gWorkDate||todayStr()]=true;saveState(s)}
+function togglePause(){gPaused=!gPaused;var btn=document.getElementById("wpbtn");if(gPaused){btn.textContent="▶ 继续";document.getElementById("wtimer").textContent="⏸"}else{btn.textContent="⏸ 暂停";document.getElementById("wtimer").textContent=(getCurEx()&&getCurEx().u==="分钟")?fmtMS(gTimeLeft):(gTimeLeft>0?Math.ceil(gTimeLeft):0);if(gState==="rest")document.getElementById("wtimer").className="phase-timer rest-color";if(!gTimer&&(gState==="phase"||gState==="rest")&&!gWaitVoice)startTimer()}}
+function skipExercise(){stopTimer();stopSpeak();gExI++;if(gExI>=workoutPlan.length){finishWorkout();return}showExInfo();renderExList();renderAnim();startCD(announceStart)}
+function quitWorkout(){if(!confirm("确定要退出训练吗？"+(gWorkType==="legs"?"退出后本次腿部专区将标记为已完成":"退出后今日将标记为已完成")))return;stopTimer();stopSpeak();gState="done";document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex";var s=loadState();if(gWorkType==="legs"){if(!s.legs)s.legs={};s.legs[gWorkDate||todayStr()]=true}else{s.done[gWorkDate||todayStr()]=true}saveState(s);renderHome()}
+function finishWorkout(){stopTimer();stopSpeak();gState="done";document.getElementById("wcue").textContent="🏆";document.getElementById("wtimer").textContent="完成";document.getElementById("wtimer").className="phase-timer gold";document.getElementById("wrep").textContent="";document.getElementById("wnm").textContent="训练完成！";document.getElementById("wdt").textContent=(gWorkType==="legs")?"🏋️ 腿部动作专区完成 · 需要时进入 🧴 自我取悦":"🎉 今日呼吸+PC肌完成 · 腿部力量请进入 🏋️ 动作练习专区";document.getElementById("wsteps").innerHTML="";document.getElementById("wring").className="breath-ring";document.getElementById("wpf").style.width="100%";document.getElementById("wanim").innerHTML="";speak("训练完成",0.75,1.2,true);var s=loadState();if(gWorkType==="legs"){if(!s.legs)s.legs={};s.legs[gWorkDate||todayStr()]=true}else{s.done[gWorkDate||todayStr()]=true}saveState(s)}
 
 // ============ KEYBOARD ============
 document.addEventListener("keydown",function(e){if(document.getElementById("w").style.display!=="flex")return;if(e.code==="Space"){e.preventDefault();togglePause()}if(e.code==="ArrowRight"){e.preventDefault();skipExercise()}});
@@ -652,7 +788,7 @@ document.addEventListener("keydown",function(e){if(document.getElementById("w").
 function renderHome(){try{var w=calcWeek(),dow=dayOfWeek(),tt=getTodayType(),s=loadState();var dn=["一","二","三","四","五","六","日"];document.getElementById("wn").textContent="第"+w+"周";document.getElementById("wl").textContent=labelOfWeek(w)||"";document.getElementById("wdone").textContent="已完成训练 "+Object.keys(s.done).length+" 天";document.getElementById("wkov").textContent=s.ov>0?"手动：第"+s.ov+"周":"自动";var todayD=effDate(),monD=new Date(todayD);monD.setDate(todayD.getDate()-dow);var wh=document.getElementById("wcalhint");if(wh)wh.textContent=((new Date()).getHours()<5?"🌙 凌晨5点前算前一天，仍显示昨晚计划 · ":"")+"👆 点周一到周日，可查看并补练任意一天";var cal="";for(var i=0;i<7;i++){var dd=new Date(monD);dd.setDate(monD.getDate()+i);var ds=dd.getFullYear()+"-"+String(dd.getMonth()+1).padStart(2,"0")+"-"+String(dd.getDate()).padStart(2,"0");var tp=SCHED.dayType(w,i),isDone=!!s.done[ds];cal+='<div class="wcd'+(i===dow?" cur":"")+(isDone?" dn":"")+'" onclick="previewDay('+i+')"><div class="wce">'+SCHED.typeEmoji(tp)+'</div><div class="wct">'+dn[i]+(isDone?"✓":"")+"</div></div>"}document.getElementById("wcal").innerHTML=cal;document.getElementById("tt").textContent=SCHED.typeEmoji(tt)+" "+SCHED.typeLabel(tt);buildWorkout(tt);var names=workoutPlan.map(function(x){return x.n});document.getElementById("ts").textContent=names.join(" → ");workoutPlan=[];var btn=document.getElementById("tbtn");if(tt==="rest"){btn.textContent="😴 休息日";btn.className="done";btn.onclick=function(){alert("休息日！")}}else if(s.done[todayStr()]){btn.textContent="✅ 已完成 · 再来一次";btn.className="done";btn.onclick=startToday}else{btn.textContent="🚀 开始今日训练";btn.className="";btn.onclick=startToday}document.getElementById("w").style.display="none";document.getElementById("home").style.display="flex"}catch(e){}}
 
 // ============ 一周计划预览（查看学习，不记录完成） ============
-function closePv(){document.getElementById("pv").style.display="none";try{speechSynthesis.cancel()}catch(e){}}
+function closePv(){document.getElementById("pv").style.display="none";stopSpeak()}
 function previewDay(di){
   try{
     var w=calcWeek(),tp=SCHED.dayType(w,di);var dn=["一","二","三","四","五","六","日"];
@@ -660,11 +796,11 @@ function previewDay(di){
     var pvs=document.getElementById("pvstart");if(pvs){if(tp==="rest"){pvs.style.display="none"}else{pvs.style.display="block";pvs.textContent="▶ 开始这一天（周"+dn[di]+"）的训练"}}
     document.getElementById("pvtitle").textContent="第"+w+"周 · 周"+dn[di]+" · "+SCHED.typeEmoji(tp)+" "+SCHED.typeLabel(tp);
     var h="";
-    if(tp==="rest"){h='<div class="pv-item"><div class="pv-nm">😴 休息日</div><div class="pv-d">恢复日可只做：数到一百 + 腹式呼吸，保持身体记忆即可（书中：持之以恒＞一次大量）。</div></div>'}
+    if(tp==="rest"){h='<div class="pv-item"><div class="pv-nm">😴 休息日</div><div class="pv-d">休息日可只做：数到二百，保持身体记忆即可（书中：持之以恒＞一次大量）。</div></div>'}
     else{
       buildWorkout(tp);
       workoutPlan.forEach(function(ex,i){
-        h+='<div class="pv-item"><div class="pv-nm">'+(i+1)+'. '+ex.n+'<span class="pv-r">'+ex.r+'次</span></div><div class="pv-d">'+(ex.d||"")+'</div>'+(ex.key?'<div class="pv-k">💡 '+ex.key+'</div>':"")+(ex.pass?'<div class="pv-pass">🎯 过关标准：'+ex.pass+'</div>':"")+'<details class="pv-detail"><summary>📖 动作详解</summary>'+(ex.s?'<ol>'+ex.s.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ol>':"")+(ex.m?'<div class="pv-m">⚠️ '+ex.m+'</div>':"")+(ex.book?'<div class="pv-d">—— '+ex.book+'</div>':"")+'</details></div>';
+        h+='<div class="pv-item"><div class="pv-nm">'+(i+1)+'. '+ex.n+'<span class="pv-r">'+((ex.minutes?ex.minutes+'分钟':ex.r+(ex.u||'次')))+'</span></div><div class="pv-d">'+(ex.d||"")+'</div>'+(ex.key?'<div class="pv-k">💡 '+ex.key+'</div>':"")+(ex.pass?'<div class="pv-pass">🎯 过关标准：'+ex.pass+'</div>':"")+'<details class="pv-detail"><summary>📖 动作详解</summary>'+(ex.s?'<ol>'+ex.s.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ol>':"")+(ex.m?'<div class="pv-m">⚠️ '+ex.m+'</div>':"")+(ex.book?'<div class="pv-d">—— '+ex.book+'</div>':"")+'</details></div>';
       });
       workoutPlan=[];
     }
@@ -672,159 +808,88 @@ function previewDay(di){
     document.getElementById("pv").style.display="flex";
   }catch(e){alert("查看失败，请重试")}
 }
-// ============ 单人专项（私密模块 · 数据仅存本机） ============
-var svTabOpen="plan",svSid=null,svStageI=0,svTimeLeft=0,svTimer=null,svPaused=false,svSubI=0,svSubLeft=0,svDone=false,svLastLevel=null,svVoiceOn=false,svAC=null,svToastT=null,svPressTimer=null,svPressT0=0;
+
+// ============ 板块三 · 自我取悦（私密模块 · 数据仅存本机） ============
+var svTabOpen="plan",svVoiceOn=false,svAC=null,svToastT=null,svPressTimer=null,svPressT0=0,svLastLevel=null,svDrainN=9,svDrainI=0,svDrainLeft=0,svDrainPh="in",svDrainTimer=null;
 function svSave(s){try{localStorage.setItem("yq8solo",JSON.stringify(s))}catch(e){}}
 function svLoad(){try{return JSON.parse(localStorage.getItem("yq8solo"))||{days:{}}}catch(e){return{days:{}}}}
-function svMut(fn){var s=svLoad();if(!s.days[todayStr()])s.days[todayStr()]={sessions:[],levels:[],org:0,shot:0};var d=s.days[todayStr()];fn(d);svSave(s);return d}
-function svLog(){var s=svLoad();return s.days[todayStr()]||{sessions:[],levels:[],org:0,shot:0}}
-function svToast(msg){var t=document.getElementById("svtoast");if(!t)return;t.textContent=msg;t.style.display="block";clearTimeout(svToastT);svToastT=setTimeout(function(){t.style.display="none"},2400)}
+function svMut(fn){var s=svLoad();if(!s.days[todayStr()])s.days[todayStr()]={levels:[],org:0,shot:0,ponr:0,big:0,finger:0,ended:false};var d=s.days[todayStr()];fn(d);svSave(s);return d}
+function svLog(){var s=svLoad();return s.days[todayStr()]||{levels:[],org:0,shot:0,ponr:0,big:0,finger:0,ended:false}}
+function svToast(msg){var t=document.getElementById("svtoast");if(!t)return;t.textContent=msg;t.style.display="block";clearTimeout(svToastT);svToastT=setTimeout(function(){t.style.display="none"},2600)}
 function svBeep(){try{svAC=svAC||new (window.AudioContext||window.webkitAudioContext)();var o=svAC.createOscillator();var g=svAC.createGain();o.connect(g);g.connect(svAC.destination);o.frequency.value=880;g.gain.setValueAtTime(0.12,svAC.currentTime);g.gain.exponentialRampToValueAtTime(0.001,svAC.currentTime+0.18);o.start();o.stop(svAC.currentTime+0.2)}catch(e){}try{if(navigator.vibrate)navigator.vibrate([60,40,60])}catch(e){}}
 function svSpeak(t){if(!svVoiceOn)return;try{speak(t,0.85,1.1)}catch(e){}}
-var SV_NOTICE='<b>注意事项（每次开始前读一遍）</b><br>① 🔇 默认静音：震动+短提示音提示阶段切换，戴耳机可开语音。<br>② 🧴 全程使用油性润滑（练习五/六要求）。<br>③ 🚦 兴奋等级 0–10：快到「无法返回之点」约=7 级，到 7 级就执行技法/刹车。<br>④ 💥 高潮未射精 → 点「高潮记录」；射了 → 点「射了」，别自责（书中：射了就射了）。<br>⑤ ⏱ 勃起每 20 分钟消退一次；练的不是耐力比赛，累了就停。<br>⑥ ⚠️ 大提气后必做骨盆按摩+PC肌挺起；手指锁只学不练；失眠/耳鸣/心悸立即停+排空能量。<br>⑦ 🔒 全部记录只存本机，不上传。';
-var SV_LIB={
-self:{n:"练习五 · 自我取悦",d:"油性润滑 → 全阴茎+阴囊+会阴 → 觉察兴奋 → 到7级就停",bk:"《男性多重高潮》练习五 · PDF p64",stages:[{n:"准备与润滑",t:60,c:"涂油性润滑，先暖场"},{n:"全阴茎刺激",t:180,c:"杆部到龟头，慢慢来"},{n:"阴囊+会阴",t:120,c:"轻抚阴囊与会阴（百万元点）"},{n:"觉察兴奋",t:90,c:"留意兴奋等级，随手点 0–10"},{n:"到7级就停",t:30,c:"停刺激，深慢呼吸 10–20 秒"},{n:"收尾呼吸",t:60,c:"腹式呼吸收尾，不急着射"}]},
-tech_stop:{n:"六技法 · 停止",d:"本周专练：停止刺激 10–20 秒",bk:"《男性多重高潮》控制射精六技法 · PDF p65",stages:[{n:"刺激至7级",t:90,c:"自慰到兴奋7级"},{n:"执行·停止",t:20,c:"停止一切刺激 10–20 秒"},{n:"观察",t:20,c:"兴奋下降了吗？点等级"},{n:"继续",t:60,c:"继续刺激，第二轮"},{n:"执行·停止",t:20,c:"停 10–20 秒"},{n:"观察",t:20,c:"兴奋下降了吗？点等级"},{n:"继续",t:60,c:"第三轮"},{n:"执行·停止",t:20,c:"停 10–20 秒"},{n:"收尾",t:60,c:"腹式呼吸收尾"}]},
-tech_breath:{n:"六技法 · 呼吸",d:"本周专练：深慢呼吸降兴奋",bk:"《男性多重高潮》控制射精六技法 · PDF p65–66",stages:[{n:"刺激至7级",t:90,c:"自慰到兴奋7级"},{n:"执行·呼吸",t:30,c:"深慢呼吸：吸4呼6"},{n:"观察",t:20,c:"心跳慢下来了吗？点等级"},{n:"继续",t:60,c:"第二轮"},{n:"执行·呼吸",t:30,c:"深慢呼吸：吸4呼6"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第三轮"},{n:"执行·呼吸",t:30,c:"深慢呼吸：吸4呼6"},{n:"收尾",t:60,c:"腹式呼吸收尾"}]},
-tech_pc:{n:"六技法 · 控制PC肌",d:"本周专练：PC肌收紧挤压",bk:"《男性多重高潮》控制射精六技法 · PDF p66",stages:[{n:"刺激至7级",t:90,c:"自慰到兴奋7级"},{n:"执行·收PC",t:20,c:"用力收紧PC肌，停刺激"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第二轮"},{n:"执行·收PC",t:20,c:"收紧PC肌"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第三轮"},{n:"执行·收PC",t:20,c:"收紧PC肌"},{n:"收尾",t:60,c:"PC肌主动放松+呼吸"}]},
-tech_sq:{n:"六技法 · 挤压阴茎",d:"本周专练：挤压阴茎",bk:"《男性多重高潮》控制射精六技法 · PDF p66–67",stages:[{n:"刺激至7级",t:90,c:"自慰到兴奋7级"},{n:"执行·挤压",t:20,c:"拇指按龟头下方尿道两侧，轻挤"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第二轮"},{n:"执行·挤压",t:20,c:"轻挤"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第三轮"},{n:"执行·挤压",t:20,c:"轻挤"},{n:"收尾",t:60,c:"呼吸收尾"}]},
-tech_mil:{n:"六技法 · 按百万元点",d:"本周专练：按压百万元点",bk:"《男性多重高潮》控制射精六技法 · PDF p68",stages:[{n:"刺激至7级",t:90,c:"自慰到兴奋7级"},{n:"执行·按点",t:20,c:"手指按住会阴百万元点，加压或划圈"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第二轮"},{n:"执行·按点",t:20,c:"按压百万元点"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第三轮"},{n:"执行·按点",t:20,c:"按压百万元点"},{n:"收尾",t:60,c:"呼吸收尾"}]},
-tech_scr:{n:"六技法 · 轻扯阴囊",d:"本周专练：轻扯阴囊",bk:"《男性多重高潮》控制射精六技法 · PDF p69",stages:[{n:"刺激至7级",t:90,c:"自慰到兴奋7级"},{n:"执行·轻扯",t:20,c:"轻扯阴囊，把睾丸往下拉"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第二轮"},{n:"执行·轻扯",t:20,c:"轻扯阴囊"},{n:"观察",t:20,c:"点等级"},{n:"继续",t:60,c:"第三轮"},{n:"执行·轻扯",t:20,c:"轻扯阴囊"},{n:"收尾",t:60,c:"呼吸收尾"}]},
-sep:{n:"练习六 · 高潮射精分离",d:"在手上练到「高潮不射」：高潮=收缩期PC/肛门收缩，射精=释放",bk:"《男性多重高潮》练习六 · PDF p70–71",stages:[{n:"润滑",t:60,c:"涂油性润滑"},{n:"刺激到接近点",t:120,c:"快到无法返回之点（7–8级）"},{n:"快到点时",t:30,c:"招式变化/慢下来/深呼吸/能量上提"},{n:"收缩期高潮",t:60,c:"体验前列腺与肛门不自主收缩=高潮，未射精 → 点「高潮记录」"},{n:"能量上提",t:60,c:"吸气，能量沿脊椎上送"},{n:"再来一轮",t:60,c:"想再练就继续；目标=数次高潮不射后停止"},{n:"收尾",t:60,c:"大提气→骨盆按摩→PC肌挺起"}]},
-cold:{n:"冷提气 · 静坐",d:"性欲平静时练：能量从睾丸沿脊椎上提再送下肚脐",bk:"《男性多重高潮》练习七 · PDF p74",stages:[{n:"暖睾丸",t:60,c:"手捂睾丸，感觉微暖"},{n:"吸气上提",t:30,c:"吸气，想象能量从睾丸沿脊椎上到脑"},{n:"呼气送下",t:30,c:"呼气，能量经舌、喉、心送回肚脐"},{n:"吸气上提",t:30,c:""},{n:"呼气送下",t:30,c:""},{n:"吸气上提",t:30,c:""},{n:"呼气送下",t:30,c:""},{n:"吸气上提",t:30,c:""},{n:"呼气送下",t:30,c:""},{n:"静坐收尾",t:60,c:"头皮刺痒=能量到达；感受均衡"}]},
-big:{n:"大提气模拟（单人）",d:"站姿自慰到勃起 → 射精前30秒–1分钟执行大提气 → 骨盆按摩收尾",bk:"《男性多重高潮》练习八 · PDF p83–85",stages:[{n:"站姿至勃起",t:90,c:"站姿自慰到充分勃起，但不到无法返回之点"},{n:"收PC+夹臀+吸气",t:20,c:"用力收PC肌，同时夹臀、脚趾抓地、快速吸气"},{n:"挤肛提取",t:20,c:"像刹车一样，收肛门到脊椎，一波波快速吸气"},{n:"放松",t:20,c:"放松，观察勃起程度是否下降"},{n:"收PC+夹臀+吸气",t:20,c:"第二轮"},{n:"挤肛提取",t:20,c:"一波波收+快吸"},{n:"放松",t:20,c:"观察勃起程度"},{n:"收PC+夹臀+吸气",t:20,c:"第三轮"},{n:"挤肛提取",t:20,c:"一波波收+快吸"},{n:"放松",t:20,c:"观察勃起程度"},{n:"骨盆按摩",t:60,c:"必做：百万元点+肛门尾骨间+骶骨，顺反各一圈"},{n:"PC肌挺起",t:30,c:"收尾：PC肌挺起几下，喝水"}]},
-rhythm:{n:"节奏模拟 · 浅-浅-深",d:"九浅一深 ×9轮 ×3组，绑定呼吸「呼-呼-吸」",bk:"《男性多重高潮》抽插技巧 · PDF p136",stages:[{n:"第1组",t:72,sub:[{c:"浅",t:2},{c:"浅",t:2},{c:"深",t:4}],c:"浅-浅-深×9，呼-呼-吸"},{n:"休息",t:20,c:"呼吸放松"},{n:"第2组",t:72,sub:[{c:"浅",t:2},{c:"浅",t:2},{c:"深",t:4}],c:"浅-浅-深×9，呼-呼-吸"},{n:"休息",t:20,c:"呼吸放松"},{n:"第3组",t:72,sub:[{c:"浅",t:2},{c:"浅",t:2},{c:"深",t:4}],c:"浅-浅-深×9，呼-呼-吸"},{n:"收尾",t:60,c:"腹式呼吸收尾"}]},
-back:{n:"仰卧控精专项",d:"仰卧自慰 → 6级刹车（停+呼吸+PC）→ 提取 → 继续 ×3轮",bk:"《男性多重高潮》第5月专项 · PDF p65–69、p83",stages:[{n:"仰卧刺激至6级",t:90,c:"仰卧，刺激到6级（还有余量）"},{n:"刹车",t:30,c:"停刺激10–20秒+深慢呼吸+收PC"},{n:"提取",t:20,c:"能量沿脊椎上提"},{n:"继续",t:60,c:"继续刺激，第二轮"},{n:"刹车",t:30,c:"停+呼吸+收PC"},{n:"提取",t:20,c:"能量上提"},{n:"继续",t:60,c:"第三轮"},{n:"刹车",t:30,c:"停+呼吸+收PC"},{n:"收尾",t:60,c:"大提气→骨盆按摩→PC肌挺起"}]},
-doggy:{n:"跪姿后入模拟",d:"跪姿骨盆前倾15°不塌腰 → 保持+呼吸 → 前倾位PC肌放松 → 6级刹车×3",bk:"《男性多重高潮》后入体感专项 · PDF p152",stages:[{n:"摆位",t:60,c:"跪姿，骨盆前倾15°，腰背平直不塌"},{n:"前倾保持+呼吸",t:90,c:"保持前倾位，吸4呼6，体会后入角度"},{n:"PC肌放松",t:60,c:"前倾位PC肌被拉长更敏感→主动放松PC肌"},{n:"刹车",t:20,c:"6级刹车：停+收PC+提取"},{n:"刹车",t:20,c:"第2次"},{n:"刹车",t:20,c:"第3次"},{n:"收尾",t:60,c:"呼吸+骨盆按摩"}]},
-sacrum:{n:"骶骨分解 · 旋进基础",d:"定位荐骨→前推上举→后推下摆→左右转→顺圈→逆圈→绑定呼吸",bk:"《男性多重高潮》旋进 · 解决之道：旋转荐骨 · PDF p139",stages:[{n:"定位荐骨",t:60,c:"一手扶耻骨，一手放尾骨上方骨板"},{n:"尾骨前推·上举",t:60,c:"尾骨前推9次，背部微弯，阴茎随之上举"},{n:"尾骨后推·下摆",t:60,c:"尾骨后推9次，脊椎微弓，阴茎随之下摆"},{n:"左右旋转",t:60,c:"尾骨钟摆：左9次→右9次，骨盆尽量不动"},{n:"顺圈旋进",t:60,c:"前后+左右连成顺时针画圈9次"},{n:"逆圈",t:60,c:"逆时针9次"},{n:"结合呼吸",t:60,c:"一圈一呼吸或吸4呼6，幅度由小到大"}]},
-climb:{n:"高潮爬坡 · 目标N次",d:"自慰到高潮不射 → 点高潮记录 → 大提气 → 骨盆按摩 → 下一轮",bk:"《男性多重高潮》第6月冲刺 · PDF p70、p83",stages:[{n:"润滑+暖场",t:60,c:"涂润滑，自慰到接近点"},{n:"高潮轮",t:120,c:"到高潮不射精 → 点「高潮记录」"},{n:"大提气",t:60,c:"高潮后立即大提气：收PC+夹臀+快吸"},{n:"骨盆按摩",t:60,c:"百万元点+尾骨+骶骨顺反各一圈"},{n:"喝水休息",t:60,c:"喝水，PC肌挺起几下"},{n:"高潮轮",t:120,c:"想冲目标就继续：高潮不射→点记录"},{n:"大提气",t:60,c:""},{n:"骨盆按摩",t:60,c:""},{n:"喝水休息",t:60,c:"不硬撑，到目标或身体说停就停"}]},
-after:{n:"高潮后固定流程",d:"每次高潮后：大提气→骨盆按摩→PC肌挺起→喝水",bk:"《男性多重高潮》第6月流程 · PDF p83、p95",stages:[{n:"大提气",t:60,c:"收PC+夹臀+快吸，能量上提"},{n:"骨盆按摩",t:60,c:"顺反各一圈"},{n:"PC肌挺起",t:30,c:"PC肌挺起几下"},{n:"喝水",t:30,c:"喝水补液"}]}
-};
-// ============ 单人专项 · 每个阶段的「做法+作用」 ============
-var SV_COMMON={
-excite:{how:"涂好润滑，用手缓慢均匀刺激整根阴茎（杆部→龟头），快感升到 7 级（再高就到无法返回之点）时停止。",why:"作用：把兴奋等级练成身体的本能刻度——能在 7 级而不是 9 级刹车，控精才有余量。"},
-observe:{how:"停止动作静置 10–20 秒，感受心跳、呼吸、会阴张力，随手点一个等级数字。",why:"作用：验证技法是否真把兴奋压下去了；记录下的曲线就是复盘数据。"},
-cont:{how:"恢复刺激，重新升到 7 级附近。",why:"作用：多轮重复，把技法练成条件反射。"},
-closeB:{how:"腹式呼吸 1 分钟：鼻吸 4 秒腹部鼓起→呼气 6–7 秒腹部回收，肩胸不动。",why:"作用：把身体从高兴奋拉回平静，训练后能量不残留紧张。"},
-big1:{how:"双脚抓地站立，用力收紧 PC 肌（忍尿感）并夹紧臀部、脚趾抓地，同时快速短吸一口气。",why:"作用：大肌肉群收缩把血液从生殖器抽走，射精痉挛失去燃料。"},
-big2:{how:"像踩刹车一样，从肛门到尾骨一波接一波向上收，每一波快速吸气，脊椎随之轻微前后摆动。",why:"作用：把性能量沿脊椎泵到上方——大提气的主体动作。"},
-big3:{how:"完全放松全身，自然呼吸，观察阴茎勃起程度是否下降。",why:"作用：书中成功指标=勃起程度下降；下降说明能量提走了。"},
-pelv:{how:"用指腹绕小圈按摩三个位置：①百万元点（肛门前凹陷）②肛门与尾骨之间 ③骶骨八孔区；每处顺、逆各一圈，轻而稳。",why:"作用：大提气/高潮后必做——释放骨盆压力，帮身体吸收回流的能量，防头痛堵塞。"},
-pcUp:{how:"有节奏地收紧-松开 PC 肌 5–8 下，其余肌肉不动。",why:"作用：大提气后的复位收尾，让 PC 肌回到松弛有弹性的状态。"},
-water:{how:"小口喝水，慢慢咽。",why:"作用：性能量属热，水能冷却身体，顺带补充水分。"},
-lift:{how:"吸气，轻轻收缩会阴，想象能量从会阴、尾骨沿脊椎上送。",why:"作用：把残余兴奋导向全身，而不是积在鼠蹊部导致射精。"}
-};
-var SV_DETAILS={};
-function svTech(act){return[SV_COMMON.excite,act,SV_COMMON.observe,SV_COMMON.cont,act,SV_COMMON.observe,SV_COMMON.cont,act,SV_COMMON.observe,SV_COMMON.closeB]}
-SV_DETAILS.tech_stop=svTech({how:"把正在刺激的手完全拿开，静置 10–20 秒，什么都不做。",why:"作用：性兴奋有惯性，停止刺激能让神经反应降档——最基础的一招，所有技法都从它开始。"});
-SV_DETAILS.tech_breath=svTech({how:"保持不动，深慢呼吸：鼻吸 4 秒、呼气 6 秒，肩胸不动，注意力放在呼气上。",why:"作用：心跳降下来，兴奋度就跟着降——书里最重要的被动刹车。"});
-SV_DETAILS.tech_pc=svTech({how:"停止刺激，用力收紧 PC 肌（忍尿+忍屁感）保持 3–5 秒，再松开。",why:"作用：PC 肌收缩能把血液和神经兴奋从射精反射中抽走。"});
-SV_DETAILS.tech_sq=svTech({how:"停止刺激，用拇指和食指捏住龟头正下方尿道两侧（冠状沟附近），轻压 3–5 秒，快感消退即松手。",why:"作用：直接抑制射精反射的神经信号，书中专门提醒力度要轻。"});
-SV_DETAILS.tech_mil=svTech({how:"停止刺激，用指腹按住会阴的百万元点（肛门前凹陷），加压或绕小圈。",why:"作用：从外部按摩前列腺，压住射精冲动。"});
-SV_DETAILS.tech_scr=svTech({how:"停止刺激，用指腹轻捏阴囊，把睾丸轻轻向下拉 3–5 秒。",why:"作用：把睾丸从兴奋高位拉下来，能明显降低射精冲动。"});
-SV_DETAILS.self=[
-{how:"站或躺均可，先在阴茎涂足量油性润滑剂，慢慢抹开。",why:"作用：减少摩擦、保护皮肤，让刺激更接近真实做爱的湿润感（书中练习五要求油性润滑）。"},
-{how:"用整只手从阴茎根部到龟头缓慢抚摸，不要只抓龟头；节奏由慢到快，留意哪一段最敏感。",why:"作用：书中强调「刺激阴茎的整个部分」——快感从龟头一点扩散到整根，兴奋上升才平缓可控。"},
-{how:"另一只手轻抚阴囊、睾丸，再用指腹按压会阴（肛门与阴囊之间的百万元点），可绕小圈。",why:"作用：提前熟悉性能量门户，后面「按百万元点」控精时手才找得准。"},
-{how:"保持刺激，每 20–30 秒在心里打分：0=完全平静，10=马上要射；随手点页面数字。",why:"作用：觉察兴奋是控精的地基——不会打分就不会刹车。"},
-{how:"感觉升到 7 级立刻停止一切刺激，深慢呼吸（吸4呼6）10–20 秒，观察快感下降。",why:"作用：把「停」练成条件反射，同时记住七级的手感。"},
-{how:"腹式呼吸 1 分钟：鼻吸腹鼓、呼气腹收，肩胸不动。",why:"作用：平静收尾；练习五的目标是敏感度，不是射精。"}];
-SV_DETAILS.sep=[
-{how:"涂足量油性润滑剂。",why:"作用：同练习五——降摩擦、更接近实战。"},
-{how:"缓慢刺激整根阴茎，升到 7–8 级（快接近无法返回之点）。",why:"作用：练习六的核心场景——在离射精最近的地方练分离。"},
-{how:"四招选一或组合：①变换手型/节奏 ②慢下来 ③深慢呼吸 ④想象能量从会阴沿脊椎上提。",why:"作用：书中多高潮男性的原话——招式变化、慢下来、深呼吸、能量上提，四招把高潮和射精拆开。"},
-{how:"继续适度刺激，注意前列腺和肛门出现的不自主收缩——这就是高潮；确认没射精，点「高潮记录」。",why:"作用：全书的命门——亲手体验「高潮≠射精」。"},
-{how:"吸气时轻收会阴，想象能量从阴茎经会阴、尾骨沿脊椎上送。",why:"作用：把高潮能量导向全身，而不是积在鼠蹊部导致射精。"},
-{how:"想再练就重复 2–5 步，练到「数次高潮不射」为止；累了就停。",why:"作用：书中要求练到数次高潮不射后停止——重质量，不硬撑。"},
-{how:"大提气 1–2 轮（收PC+夹臀+快吸→挤肛提取）→骨盆按摩三位置顺反各一圈→PC肌挺起几下。",why:"作用：高潮后固定收尾，防止能量滞留。"}];
-SV_DETAILS.cold=[
-{how:"坐姿，双手搓热后捂住睾丸，感到微暖即可。",why:"作用：把注意力带到睾丸——冷提气的起点，也避免受凉紧张。"},
-{how:"鼻吸，想象睾丸能量像雾气升起，沿会阴、尾骨、脊椎一路上到头顶；可轻收会阴。",why:"作用：把性能量从生殖器提取出来——冷提气的上行段。"},
-{how:"鼻呼，想象能量从头顶经舌、喉、胸口送回肚脐下方；全身放松。",why:"作用：下行段完成任督循环并储存能量，不能只提不送。"},
-{how:"保持节奏：吸气上提、呼气送下。",why:"作用：重复多轮把整条能量路径走顺；头皮轻微刺痒=能量到达。"},
-{how:"保持节奏：吸气上提、呼气送下。",why:"作用：重复多轮把整条能量路径走顺；头皮轻微刺痒=能量到达。"},
-{how:"保持节奏：吸气上提、呼气送下。",why:"作用：重复多轮把整条能量路径走顺；头皮轻微刺痒=能量到达。"},
-{how:"保持节奏：吸气上提、呼气送下。",why:"作用：重复多轮把整条能量路径走顺；头皮轻微刺痒=能量到达。"},
-{how:"保持节奏：吸气上提、呼气送下。",why:"作用：重复多轮把整条能量路径走顺；头皮轻微刺痒=能量到达。"},
-{how:"保持节奏：吸气上提、呼气送下。",why:"作用：重复多轮把整条能量路径走顺；头皮轻微刺痒=能量到达。"},
-{how:"停止意念引导，自然呼吸静坐 1 分钟，感受全身是否均衡。",why:"作用：确认能量没滞留头部；若头晕立刻做排空能量。"}];
-SV_DETAILS.big=[
-{how:"站立，自慰到充分勃起但远未到射精点（约 5–6 级）。",why:"作用：制造真实大提气条件——能量集中在生殖器时练提取。"},
-SV_COMMON.big1,SV_COMMON.big2,SV_COMMON.big3,
-SV_COMMON.big1,SV_COMMON.big2,SV_COMMON.big3,
-SV_COMMON.big1,SV_COMMON.big2,SV_COMMON.big3,
-SV_COMMON.pelv,SV_COMMON.pcUp];
-SV_DETAILS.rhythm=[
-{how:"模拟抽插：浅 2 秒→浅 2 秒→深 4 秒循环 9 轮，骨盆随节奏前后移动；呼吸绑定「呼-呼-吸」。单人可用手或夹枕模拟前后发力，重点是骨盆节奏。",why:"作用：书里九浅一深是控精的节奏模板——浅插积累快感、深插释放一次，把兴奋控制在可预测的波浪里。"},
-{how:"停下自然呼吸 20 秒，放松骨盆。",why:"作用：让兴奋回落一点，下一组质量更好。"},
-{how:"模拟抽插：浅 2 秒→浅 2 秒→深 4 秒循环 9 轮，骨盆随节奏前后移动；呼吸绑定「呼-呼-吸」。",why:"作用：重复九浅一深，把节奏刻进肌肉记忆。"},
-{how:"停下自然呼吸 20 秒，放松骨盆。",why:"作用：让兴奋回落一点，下一组质量更好。"},
-{how:"模拟抽插：浅 2 秒→浅 2 秒→深 4 秒循环 9 轮，骨盆随节奏前后移动；呼吸绑定「呼-呼-吸」。",why:"作用：最后一组追求动作质量，不赶节奏。"},
-{how:"腹式呼吸 1 分钟。",why:"作用：平静收尾。"}];
-SV_DETAILS.back=[
-{how:"仰卧，涂润滑，自慰到 6 级（还有明显余量，不是极限）。",why:"作用：6 级就刹车，练的是从容，不是极限反应。"},
-{how:"停止刺激 10–20 秒＋深慢呼吸（吸4呼6）＋收紧 PC 肌。",why:"作用：六技法组合拳，模拟实战中「快到了→踩刹车」。"},
-SV_COMMON.lift,
-{how:"恢复刺激，再接近 6 级。",why:"作用：练多轮刺激下依然收得住。"},
-{how:"停止刺激 10–20 秒＋深慢呼吸＋收紧 PC 肌。",why:"作用：第二轮刹车，加深记忆。"},
-SV_COMMON.lift,
-{how:"恢复刺激，再接近 6 级。",why:"作用：第三轮。"},
-{how:"停止刺激 10–20 秒＋深慢呼吸＋收紧 PC 肌。",why:"作用：最后一轮刹车。"},
-{how:"大提气 1–2 轮→骨盆按摩→PC肌挺起。",why:"作用：高潮后固定收尾流程。"}];
-SV_DETAILS.doggy=[
-{how:"跪姿，膝盖与髋同宽，骨盆前倾约 15°（腰不塌、背平直），手扶墙或抱枕。",why:"作用：后入的角度=骨盆前倾；先把体位摆标准。"},
-{how:"保持前倾位，吸4呼6，体会这个角度下会阴和 PC 肌的张力。",why:"作用：后入时 PC 肌被拉长、更敏感——提前熟悉这种紧张感，实战才不慌。"},
-{how:"在前倾位里收一下再彻底松开 PC 肌，手摸会阴确认完全软了，保持放松。",why:"作用：专治后入敏感——学会在后入角度下保持 PC 肌放松。"},
-{how:"模拟 6 级刹车：停动作＋收 PC＋快吸＋能量上提，各 5–8 秒。",why:"作用：把刹车动作装进后入体感，形成肌肉记忆。"},
-{how:"第二次刹车：停＋收 PC＋快吸＋上提。",why:"作用：重复加深记忆。"},
-{how:"第三次刹车：停＋收 PC＋快吸＋上提。",why:"作用：三连刹车后收尾。"},
-{how:"腹式呼吸＋骨盆按摩。",why:"作用：放松收尾。"}];
-SV_DETAILS.sacrum=[
-{how:"站姿，一只手扶住耻骨（小腹下端），另一只手放在尾骨上方的骨板（荐骨）上，轻轻前后摆动身体，找到这块倒三角骨头。",why:"作用：书里的第一步——先摸到荐骨，才能区分「荐骨微动」和「臀部发力」。"},
-{how:"双手保持位置，把尾骨向前推 9 次：背部稍微内弯（收腹），感觉耻骨这端向上举、阴茎被带得往上翘。",why:"作用：分段动作一「前推上举」——以后控制插入角度上挑就靠它。书中原文：尾骨前推，阴茎往上举。"},
-{how:"尾骨向后推 9 次：脊椎稍微弓起来，感觉耻骨这端往下压、阴茎跟着下摆。",why:"作用：分段动作二「后推下摆」——书中原文：尾骨后推，阴茎往下摆。"},
-{how:"保持站姿，像钟摆一样把尾骨向左、再向右各 9 次，臀部和大腿尽量不动，只动腰骶这一小块。",why:"作用：分段动作三「左右」——先把方向拆开练，后面才能把圈画圆。"},
-{how:"把「前-左-后-右」连起来，顺时针画小圈 9 次，想象从耻骨方向看是螺丝旋进去的轨迹。",why:"作用：组合=旋进。书里说钉子易拔、螺丝留得久——绕圈进出让刺激均匀，还能控精。"},
-{how:"换逆时针画圈 9 次，圈要圆、速度要慢。",why:"作用：两个方向都要会，对应书中「先玩一边，再玩另一边」。"},
-{how:"画圈时绑定呼吸：一圈配合一次呼气，或全程吸4呼6；幅度由小到大。",why:"作用：把荐骨画圈绑在呼吸上，实战中节奏才不会乱。"}];
-SV_DETAILS.climb=[
-{how:"涂润滑，自慰到接近点（7–8 级）。",why:"作用：进入爬坡状态。"},
-{how:"继续刺激到前列腺/肛门出现收缩期高潮且没射精——立刻点「高潮记录」。",why:"作用：一次不射高潮=一格进度；记录就是爬坡数据。"},
-SV_COMMON.big1,SV_COMMON.pelv,SV_COMMON.water,
-{how:"继续刺激到收缩期高潮且没射精——立刻点「高潮记录」。",why:"作用：想冲目标就继续；记录就是爬坡数据。"},
-SV_COMMON.big1,SV_COMMON.pelv,
-{how:"小口喝水，不硬撑——到目标或身体说停就停。",why:"作用：书中原则：不增加赌注，身体信号优先。"}];
-SV_DETAILS.after=[SV_COMMON.big1,SV_COMMON.pelv,SV_COMMON.pcUp,SV_COMMON.water];
-function svD(sid,i){var a=SV_DETAILS[sid];return a&&a[i]?a[i]:null}function svTarget(){var w=calcWeek(),m=monthOfWeek(w);if(m!==6)return 0;return[3,3,5,7][(w-1)%4]}
-function svSessionFor(w,d){var m=monthOfWeek(w),k=(w-1)%4;if(m===1)return null;if(m===2){var techs=["tech_stop","tech_breath","tech_pc","tech_sq","tech_mil","tech_scr"];if(d===0)return "self";if(d===2)return techs[(w-5)%6];if(d===4)return(w<=6?"self":"sep");return null}if(m===3){return(d===0||d===3)?"cold":null}if(m===4){return(d===0||d===3)?"big":null}if(m===5){return d===0?"rhythm":d===1?"back":d===3?"doggy":d===5?"sacrum":null}if(m===6){return(d===0||d===2||d===4)?"climb":(d===1||d===3||d===5)?"after":null}return null}
-function svWeekStrip(){var w=calcWeek(),dow=dayOfWeek(),dn=["一","二","三","四","五","六","日"],h="";for(var i=0;i<7;i++){var sid=svSessionFor(w,i);h+='<div class="sv-wd'+(sid?" on":"")+(i===dow?" cur":"")+'">'+dn[i]+(sid?"<br>🔒":"<br>·")+"</div>"}return h}
-function svRender(){var w=calcWeek(),dow=dayOfWeek(),sid=svSessionFor(w,dow),m=document.getElementById("svmain");if(svTabOpen==="run"&&svSid&&!svDone){svRenderRun();return}if(svTabOpen==="log"){svRenderLog(m)}else{var h='<div class="sv-week">'+svWeekStrip()+"</div>"+'<div class="sv-card">';if(!sid){h+='<div class="t">😴 今日无单人专项</div><div class="d">第'+w+'周 · 第'+monthOfWeek(w)+'月。单人专项第2月起：自我取悦/六技法/练习六 → 第3月冷提气 → 第4月大提气 → 第5月实战模拟 → 第6月高潮爬坡。</div><div class="d">今天可以照常做主程序跟练；有🔒的日期才有单人专项。</div>'}else{var s=SV_LIB[sid],nm=s.n;if(sid==="climb"&&svTarget()>0)nm=s.n.replace("N",String(svTarget()));h+='<div class="t">🔒 '+nm+'</div><div class="d">'+s.d+'</div><div class="bk">'+s.bk+'</div>';h+='<div style="margin-top:6px">';s.stages.forEach(function(st,i){h+='<div class="sv-stage"><span class="n">'+(i+1)+". "+st.n+'</span><span class="t2">'+st.t+"秒"+(st.sub?" ×9":"")+"</span></div>";var dt=svD(sid,i);if(dt)h+='<div class="sv-d"><b>做法：</b>'+dt.how+'<br>'+dt.why+"</div>"});h+="</div>";h+='<div style="margin-top:8px"><button style="width:100%;padding:13px;background:var(--gold);color:#000;border:none;border-radius:10px;font-weight:bold;font-size:0.95em" onclick="svStart()">▶ 开始今日专项</button></div>'}h+="</div>";m.innerHTML=h;document.getElementById("svbot").style.display="none"}document.getElementById("st-plan").className=svTabOpen==="plan"?"on":"";document.getElementById("st-run").className=svTabOpen==="run"?"on":"";document.getElementById("st-log").className=svTabOpen==="log"?"on":""}
-function svRenderRun(){var s=SV_LIB[svSid];if(!s)return;var nm=s.n;if(svSid==="climb"&&svTarget()>0)nm=s.n.replace("N",String(svTarget()));var rec=svLog(),target=svTarget(),tg=(svSid==="climb"&&target>0)?String(target):(svSid==="sep"?"数次":"—");var h='<div class="sv-run">'+'<div style="font-size:0.8em;color:var(--gold);font-weight:bold">'+nm+"</div>"+'<div class="sv-ring"><div class="in"><div class="t1" id="svtime">--</div><div class="t2" id="svstg">准备</div></div></div>'+'<div class="sv-cue" id="svcue">—</div><div class="sv-sub" id="svsub"></div><div class="sv-how" id="svhow"></div>'+'<div class="sv-count">💥 不射高潮：<b id="svorgn">0</b>/'+tg+'　💧 射了：<b id="svshotn">0</b></div>'+'<div style="font-size:0.7em;color:var(--dim)">兴奋等级 0–10（随手点，自动记录）</div>'+'<div class="sv-levels" id="svlv">';for(var i=0;i<=10;i++)h+='<button onclick="svSetLevel('+i+')">'+i+"</button>";h+="</div>"+'<div class="sv-lvl-now" id="svlvlnow">当前等级：未记录</div>'+'<button class="sv-org" onclick="svOrgasm()">💥 高潮了（未射）· 点我记录<span class="sub">收缩期PC/肛门收缩而没射精 = 一次不射高潮</span></button>'+'<button class="sv-shot" onclick="svShot()">💧 射了（记录一下，别自责）</button>'+'<button class="sv-voice" onclick="svVoiceOn=!svVoiceOn;this.textContent=svVoiceOn?\'🔊 语音开（戴耳机）\':\'🔇 语音关\';svToast(svVoiceOn?\'语音已开，请戴耳机\':\'语音已关\')">🔇 语音关</button>'+"</div>";document.getElementById("svmain").innerHTML=h;var e1=document.getElementById("svorgn"),e2=document.getElementById("svshotn");if(e1)e1.textContent=rec.org||0;if(e2)e2.textContent=rec.shot||0;if(svLastLevel!==null){var el=document.getElementById("svlvlnow");if(el)el.textContent="当前等级："+svLastLevel;var bs=document.querySelectorAll("#svlv button");if(bs[svLastLevel])bs[svLastLevel].className="on"}}
-function svRenderLog(m){var s=svLoad(),today=svLog();var h='<div class="sv-card"><div class="t">📊 今日</div><div class="sv-log">'+("💥 不射高潮：<b>"+today.org+"</b> 次　💧 射了："+today.shot+" 次　🔢 等级记录："+(today.levels?today.levels.length:0)+" 次");if(today.levels&&today.levels.length){var mx=0;today.levels.forEach(function(x){if(x.l>mx)mx=x.l});h+="　最高等级："+mx}if(svTarget()>0)h+='<br>🎯 本月冲刺目标：单日 <b>'+svTarget()+"</b> 次不射高潮"+(today.org>=svTarget()?"　✅ 今日已达目标！":"");if(today.levels&&today.levels.length){h+='<div style="margin-top:4px;font-size:0.68em;color:var(--dim)">等级曲线：';today.levels.forEach(function(x){h+='<span style="color:'+(x.l>=7?"#dc503c":x.l>=5?"#f0c040":"#4caf84")+'">'+x.l+" </span>"});h+="</div>"}h+="</div></div>";h+='<div class="sv-card"><div class="t">🗓 最近记录</div><div class="sv-log"><table><tr><th>日期</th><th>不射</th><th>射</th><th>等级次数</th></tr>';var days=Object.keys(s.days||{}).sort().reverse().slice(0,14);if(days.length===0)h+='<tr><td colspan="4">还没有记录，今天开始第一次吧</td></tr>';days.forEach(function(ds){var d=s.days[ds];h+="<tr><td>"+ds.slice(5)+"</td><td>"+(d.org||0)+"</td><td>"+(d.shot||0)+"</td><td>"+(d.levels?d.levels.length:0)+"</td></tr>"});h+="</table></div></div>";h+='<div style="font-size:0.62em;color:#666;text-align:center;margin-top:8px">记录只存本机 · 可在浏览器清除数据里删除</div>';m.innerHTML=h;document.getElementById("svbot").style.display="none"}
-function svTab(t){svTabOpen=t;svStopTimer();if(t==="run"&&svSid&&!svDone){svRenderRun();svLoadStage()}else svRender()}
-function svNotices(){document.getElementById("svnotice").innerHTML=SV_NOTICE}
-function svStart(){var w=calcWeek(),dow=dayOfWeek();svSid=svSessionFor(w,dow);if(!svSid){svToast("今天没有单人专项");return}svMut(function(d){d.sessions.push({t:new Date().toISOString(),sid:svSid})});svDone=false;svPaused=false;svLastLevel=null;svTabOpen="run";svRenderRun();document.getElementById("svbot").style.display="flex";document.getElementById("st-plan").className="";document.getElementById("st-run").className="on";document.getElementById("st-log").className="";svSpeak("准备开始");svCD(svBegin)}
-function svCD(cb){svTimeLeft=3;var e=document.getElementById("svtime");if(e)e.textContent=3;var g=document.getElementById("svstg");if(g)g.textContent="准备";svTimer=setInterval(function(){if(svPaused)return;if(svDone){svStopTimer();return}svTimeLeft--;if(svTimeLeft>0){var t=document.getElementById("svtime");if(t)t.textContent=svTimeLeft;svBeep()}else{svStopTimer();cb()}},1000)}
-function svBegin(){svStageI=0;svLoadStage()}
-function svLoadStage(){svStopTimer();var s=SV_LIB[svSid];if(!s)return;if(svStageI>=s.stages.length){svFinish();return}var st=s.stages[svStageI];svTimeLeft=st.t;svSubI=0;svSubLeft=st.sub?st.sub[0].t:0;var g=document.getElementById("svstg");if(g)g.textContent=(svStageI+1)+"/"+s.stages.length+" "+st.n;var c=document.getElementById("svcue");if(c)c.textContent=st.c||"";var sb=document.getElementById("svsub");if(sb)sb.textContent=st.sub?st.sub[0].c:"";var dt=svD(svSid,svStageI);var hw=document.getElementById("svhow");if(hw)hw.innerHTML=dt?('<b style="color:var(--gold)">做法：</b>'+dt.how+'<br>'+dt.why):"";var t=document.getElementById("svtime");if(t)t.textContent=svTimeLeft;svBeep();svSpeak(st.n+(st.c?"，"+st.c:""));svTimer=setInterval(svTick,1000)}
-function svTick(){if(svPaused)return;if(svDone){svStopTimer();return}svTimeLeft--;var t=document.getElementById("svtime");if(t)t.textContent=svTimeLeft;var s=SV_LIB[svSid],st=s?s.stages[svStageI]:null;if(st&&st.sub){svSubLeft--;if(svSubLeft<=0){svSubI=(svSubI+1)%st.sub.length;svSubLeft=st.sub[svSubI].t;var sb=document.getElementById("svsub");if(sb)sb.textContent=st.sub[svSubI].c;svBeep();svSpeak(st.sub[svSubI].c)}}if(svTimeLeft<=3&&svTimeLeft>0)svBeep();if(svTimeLeft<=0){svStopTimer();svStageI++;setTimeout(function(){if(!svDone)svLoadStage()},400)}}
-function svStopTimer(){if(svTimer){clearInterval(svTimer);svTimer=null}}
-function svFinish(){svDone=true;svStopTimer();svMut(function(d){d.finished=true});var c=document.getElementById("svcue");if(c)c.textContent="🏆 完成";var sb=document.getElementById("svsub");if(sb)sb.textContent="今天练完啦，去「复盘」查看记录";svSpeak("训练完成");svToast("🏆 完成，去复盘看看记录")}
-function svSetLevel(l){svLastLevel=l;svMut(function(d){d.levels.push({t:new Date().toISOString(),l:l})});var el=document.getElementById("svlvlnow");if(el)el.textContent="当前等级："+l;var bs=document.querySelectorAll("#svlv button");for(var i=0;i<bs.length;i++)bs[i].className=(i===l)?"on":"";svToast("兴奋等级 "+l);if(l>=7)svSpeak("七级以上，执行技法或刹车");svBeep()}
-function svOrgasm(){var n=0;svMut(function(d){d.org++;n=d.org});var el=document.getElementById("svorgn");if(el)el.textContent=n;svToast("💥 已记录第 "+n+" 次不射高潮");svSpeak("已记录不射高潮");try{if(navigator.vibrate)navigator.vibrate([120,60,120])}catch(e){}var tg=svTarget();if(tg>0&&n>=tg)svToast("🎯 今日目标 "+tg+" 次已达成！")}
-function svShot(){var n=0;svMut(function(d){d.shot++;n=d.shot});var el=document.getElementById("svshotn");if(el)el.textContent=n;svToast("💧 已记录。射了就射了，别自责")}
-function svPause(){svPaused=!svPaused;var b=document.getElementById("svpbtn");if(svPaused){if(b)b.textContent="▶ 继续";var t=document.getElementById("svtime");if(t)t.textContent="⏸"}else{if(b)b.textContent="⏸ 暂停";var t2=document.getElementById("svtime");if(t2)t2.textContent=svTimeLeft}}
-function svSkip(){if(!svSid)return;svStageI++;svStopTimer();if(svStageI>=SV_LIB[svSid].stages.length){svFinish();return}svLoadStage()}
-function quitSolo(){svStopTimer();svDone=true;try{speechSynthesis.cancel()}catch(e){}document.getElementById("sv").style.display="none";document.getElementById("home").style.display="flex";renderHome()}
-function openSolo(){svTabOpen="plan";document.getElementById("home").style.display="none";document.getElementById("sv").style.display="flex";svNotices();svRender();svToast("单人专项 · 数据仅存本机")}
+function svModal(open,title,body){var m=document.getElementById("svmodal");if(!m)return;if(!open){m.style.display="none";return}document.getElementById("svmtitle").textContent=title;document.getElementById("svmbody").innerHTML=body;m.style.display="flex"}
+var SV_NOTICE='<b>🧴 每次开始前读一遍</b><br>① 第三板块 = 自我取悦，全程用油性润滑。<br>② 🚦 兴奋等级 0–10：约7级=接近「无法返回之点」，到7级就停/刹车。<br>③ ⬆️ 大提气法：到7级（射精前30秒–1分钟）时执行；🔒 手指锁：只在真快射时用，只学不练。<br>④ 💥 高潮未射精→点「高潮记录」；射了→点「射了」，别自责。<br>⑤ 🧹 点「结束训练」后必须做排空能量（最后动作）。<br>⑥ ⚠️ 失眠/耳鸣/心悸→立即停+排空能量。数据仅存本机，不上传。';
+var SV_CARDS=[
+{id:"self",n:"练习五 · 自我取悦",bk:"《男性多重高潮》自我取悦 · PDF p64",
+ d:"油性润滑 → 刺激全阴茎+阴囊+会阴 → 觉察兴奋 → 快到就停 → 想几次就几次",
+ steps:["开始前，在阴茎涂上润滑液。油性比水性好，水性较快干。","想怎么爽就怎么爽，但要按摩并同时刺激整个阴茎、阴囊、会阴，包括「百万元点」。","试着观察自己上升的兴奋感：阴茎根部的刺痒感、勃起的不同阶段、加快的心跳。","感觉快要射精时，停下来休息一下。注意收缩期高潮时PC肌和肛门的收缩——不射精也能体会需要时间，不必惊讶；若前列腺开始收缩、怕忍不住，试着挤压前列腺周围的PC肌。","重获控制后重新来过，想要几次就几次，想持续多久就多久。"]},
+{id:"sep",n:"练习六 · 高潮射精分离",bk:"《男性多重高潮》练习六 · PDF p67–70",
+ d:"到「无法返回之点」前几下及时停 → 呼吸+轻收PC → 试按百万元点/轻扯阴囊/按压阴茎前端 → 数次高潮不射",
+ steps:["跟自我取悦一样，先涂润滑剂。","专注于生殖器之前，先触摸按摩身体其他部位，尤其腹部、大腿和乳头。","想怎么爽就怎么爽，但记得刺激整个阴茎、阴囊和会阴。","特别注意自己的兴奋速率：阴茎根部刺痒感、勃起各阶段、呼吸改变、心跳加快。","快到「无法返回之点」时：停下、呼吸、轻轻收缩前列腺周围的PC肌。想延迟射精还可：按「百万元点」、轻扯阴囊、按压阴茎前端、或用意念按压阴茎前端。实验哪种最适合你。最关键：在「无法返回之点」前几下抽动及时停止。","性能量太狂野难以控制时：靠意念把能量沿脊椎上提，再收缩释放几次PC肌；仍兴奋失控就停10–20秒专注深呼吸。","留意收缩期高潮时的PC肌和肛门收缩现象。","高潮几次都没射精之后停下。之后会觉得平静却充满活力；感受循环全身的性能量，有点痒痒刺刺的。"]},
+{id:"big",n:"练习八 · 大提气法",bk:"《男性多重高潮》练习八 · PDF p83–85",
+ d:"勃起到射精前30秒–1分钟 → 收PC+夹脚趾 → 吸+挤臀把能量从会阴送往肛门脊椎 → 波浪上提到头顶 → 步骤3–6重复8次",
+ steps:["站着自慰直到充分勃起，但还不到「无法返回之点」（射精前30秒到1分钟）。","停止自我刺激，休息一下重获控制。然后用力收缩围绕前列腺的PC肌，同时夹紧靠近地板的脚趾。","吸气并用力挤压臀部，把性能量从会阴转移到肛门和脊椎。","像开车踩刹车一样，收缩肛门到脊椎之间的肌肉，一波接一波，每次收缩都快速吸气；脊椎前后摆动像骑马，帮助能量沿脊椎上移。","能量到颅底时，下巴稍微内缩，帮助能量从脊椎移到头部。","眼球往上移动，像看着头顶，让能量一路移到头顶。","把能量像打帮浦一样送到头顶，就完成一次大提气法。勃起程度应下降=成功指标。","把步骤3到6重复八次。"]},
+{id:"finger",n:"手指锁",bk:"《男性多重高潮》手指锁 · PDF p88–89",
+ d:"射精已不可避免时用：中间三指按百万元点压住尿道 → 收PC+会阴上提 → 收缩完全结束才移开",
+ steps:["当觉得射精已不可避免时，用惯用手中间三根手指（除拇指和小指外）按压「百万元点」，力道刚好让精液停止流出。","手指应稍微弯曲，中指直接按压尿道管（快射精时会扩张，很好找），另外两根手指按在尿道管两侧固定位置。","收缩环绕前列腺的PC肌，并将会阴往上提举，把高潮能量上提经脊椎送至脑部。","收缩发生之前、之中、之后，手指都固定在原处。","等收缩完全结束后才移开手指。"],
+ warn:"只学不练：只有真正快射时才使用，平时练习用停止法和大提气法。"},
+{id:"drain",n:"排空能量",bk:"《男性多重高潮》排空能量 · PDF p95",
+ d:"每次结束训练的最后动作：仰躺 → 手放嘴前 → 闭眼深吸 → 微笑「嘿」长音呼气推手 → 重复3/6/9次",
+ steps:["仰躺。腰部后侧不舒服可在膝下垫枕头。","双手放嘴巴前面，手指并拢，手掌朝向脚部。","闭眼深呼吸，感受腹部和胸部慢慢扩展开来。","微笑，安静呼气，发出「嘿」的长音；呼气同时双手往脚方向推，想象身体是空管子，用手把能量排空。","重复发出「嘿」长音和动作3次、6次或9次，每次想象把多余能量经心脏、腹部、腿推到脚底。站着或坐着也可做。"],
+ warn:"排空能量遇困难时，联系「疗愈之道」指导员或咨询针灸师。"}
+];
+function svCardHtml(c,i){var h='<div class="sv-card"><div class="t">'+(i+1)+'. '+c.n+'</div><div class="d">'+c.d+'</div><div class="bk">'+c.bk+'</div><details class="sv-steps"><summary>📖 完整步骤（点击展开）</summary><ol>';c.steps.forEach(function(st){h+='<li>'+st+'</li>'});h+='</ol></details>'+(c.warn?'<div class="sv-warn">⚠️ '+c.warn+'</div>':"")+'</div>';return h}
+function svRenderPlan(){var h='<div class="sv-subh">📖 五个核心卡片 · 练习前先看对应卡片</div>';SV_CARDS.forEach(function(c,i){h+=svCardHtml(c,i)});document.getElementById("svmain").innerHTML=h}
+function svRenderRun(){var rec=svLog();var h='<div class="sv-run">'
++'<div class="sv-cue">现在开始自我取悦。步骤忘了点「📖 卡片」。</div>'
++'<div style="font-size:0.7em;color:var(--dim)">兴奋等级 0–10（随手点，自动记录）</div>'
++'<div class="sv-levels" id="svlv">';for(var i=0;i<=10;i++)h+='<button onclick="svSetLevel('+i+')">'+i+'</button>';h+='</div>'
++'<div class="sv-lvl-now" id="svlvlnow">当前等级：未记录</div>'
++'<button class="sv-ponr" onclick="svPonr()">🚦 无法返回之点<span class="sub">点到就点我 → 显示接下来怎么做 · 已点 <b id="svponrn">0</b> 次</span></button>'
++'<div class="sv-row3">'
++'<button class="sv-cnt" onclick="svBig()">⬆️ 大提气法<span class="sub">已用 <b id="svbign">0</b> 次</span></button>'
++'<button class="sv-cnt" onclick="svFinger()">🔒 手指锁<span class="sub">已用 <b id="svfingn">0</b> 次</span></button>'
++'<button class="sv-cnt" onclick="svVoiceOn=!svVoiceOn;this.textContent=svVoiceOn?\'🔊 语音开\':\'🔇 语音关\';svToast(svVoiceOn?\'语音已开（戴耳机）\':\'语音已关\')">🔇 语音关<span class="sub">提示音</span></button>'
++'</div>'
++'<button class="sv-org" onclick="svOrgasm()">💥 高潮了（未射）· 点我记录<span class="sub">收缩期PC/肛门收缩而没射精 = 一次不射高潮</span></button>'
++'<button class="sv-shot" onclick="svShot()">💧 射了（记录一下，别自责）</button>'
++'<button class="sv-end" onclick="svEnd()">🧹 结束训练<span class="sub">点我后 → 进入排空能量（最后动作）</span></button>'
++'</div>';document.getElementById("svmain").innerHTML=h;
+var e=document.getElementById("svponrn");if(e)e.textContent=rec.ponr||0;e=document.getElementById("svbign");if(e)e.textContent=rec.big||0;e=document.getElementById("svfingn");if(e)e.textContent=rec.finger||0;
+if(svLastLevel!==null){var el=document.getElementById("svlvlnow");if(el)el.textContent="当前等级："+svLastLevel;var bs=document.querySelectorAll("#svlv button");if(bs[svLastLevel])bs[svLastLevel].className="on"}}
+function svRenderLog(){var today=svLog();var h='<div class="sv-card"><div class="t">📊 今日复盘</div><div class="sv-log">'
++'💥 不射高潮：<b>'+today.org+'</b> 次<br>💧 射了：<b>'+today.shot+'</b> 次<br>🚦 无法返回之点：<b>'+today.ponr+'</b> 次<br>⬆️ 大提气法：<b>'+today.big+'</b> 次<br>🔒 手指锁：<b>'+today.finger+'</b> 次<br>🎚 等级记录：<b>'+today.levels.length+'</b> 次'
++(today.ended?'<br>🧹 已做排空能量收尾 ✓':'<br>⚠️ 今日还未点「结束训练」做排空能量')
++'</div></div>';var st=svLoad();var days=Object.keys(st.days).sort().slice(-7);h+='<div class="sv-card"><div class="t">📅 近7天</div><div class="sv-log">';days.forEach(function(k){var d=st.days[k];h+=k.slice(5)+'：高潮'+d.org+' 射'+d.shot+' 大提气'+d.big+' 手指锁'+d.finger+(d.ended?' ✓':'')+'<br>'});h+='</div></div>';document.getElementById("svmain").innerHTML=h}
+function svTab(t){svTabOpen=t;document.getElementById("st-plan").className=t==="plan"?"on":"";document.getElementById("st-run").className=t==="run"?"on":"";document.getElementById("st-log").className=t==="log"?"on":"";if(t==="plan")svRenderPlan();else if(t==="run")svRenderRun();else svRenderLog()}
+function svSetLevel(l){svLastLevel=l;svMut(function(d){d.levels.push({t:new Date().toISOString(),l:l})});var el=document.getElementById("svlvlnow");if(el)el.textContent="当前等级："+l;var bs=document.querySelectorAll("#svlv button");for(var i=0;i<bs.length;i++)bs[i].className=i===l?"on":"";svBeep();svToast("等级"+l+" 已记录")}
+function svPonr(){var n=0;svMut(function(d){d.ponr++;n=d.ponr});var e=document.getElementById("svponrn");if(e)e.textContent=n;svBeep();svSpeak("无法返回之点。马上执行：停止刺激，深呼吸");svModal(true,"🚦 无法返回之点 · 接下来这么做",'<div class="sv-mt">今天已出现 <b>'+n+'</b> 次</div><ol class="sv-mol"><li>立即停止一切刺激。</li><li>深慢呼吸：吸4秒、呼6秒，10–20秒。</li><li>轻轻收缩前列腺周围的PC肌。</li><li>仍压不住：按「百万元点」／轻扯阴囊／按压阴茎前端（练习六第5步）。</li><li>能量太狂：意念把能量沿脊椎上提，再收缩释放PC肌几次；停10–20秒专注深呼吸。</li><li>真正快射时才用手指锁；勃起程度下降=大提气成功。</li></ol>')}
+function svBig(){var n=0;svMut(function(d){d.big++;n=d.big});var e=document.getElementById("svbign");if(e)e.textContent=n;svBeep();svSpeak("大提气：收PC、夹脚趾、吸气挤臀、波浪上提");svToast("⬆️ 大提气法已记录 · 今日"+n+"次")}
+function svFinger(){var n=0;svMut(function(d){d.finger++;n=d.finger});var e=document.getElementById("svfingn");if(e)e.textContent=n;svBeep();svToast("🔒 手指锁已记录 · 今日"+n+"次 · 只学不练")}
+function svOrgasm(){var n=0;svMut(function(d){d.org++;n=d.org});svBeep();svSpeak("高潮未射，很好，继续");svToast("💥 不射高潮 +1 · 今日"+n+"次")}
+function svShot(){var n=0;svMut(function(d){d.shot++;n=d.shot});svBeep();svToast("💧 已记录。射了就射了，明天继续")}
+function svEnd(){svStopDrain();svModal(true,"🧹 结束训练 → 排空能量（最后动作）",'<div class="sv-mt">每次训练结束都必须做排空能量（3/6/9次）。</div><div class="sv-drain-opt"><button class="on" onclick="svDrainPick(9,this)">9次</button><button onclick="svDrainPick(6,this)">6次</button><button onclick="svDrainPick(3,this)">3次</button></div><div class="sv-drain-steps"><b>做法：</b>仰躺→双手放嘴前、手掌朝脚→闭眼深吸→微笑，呼气发「嘿」长音同时双手往脚方向推，想象身体是空管子，把能量经心、腹、腿排到脚底。</div><button class="sv-drain-go" onclick="svDrainGo()">▶ 开始跟练</button>')}
+function svDrainPick(n,btn){svDrainN=n;var bs=document.querySelectorAll(".sv-drain-opt button");for(var i=0;i<bs.length;i++)bs[i].className=bs[i]===btn?"on":""}
+function svDrainGo(){var m=document.getElementById("svmodal");if(!m)return;svDrainI=0;svDrainLeft=4;svDrainPh="in";document.getElementById("svmbody").innerHTML='<div class="sv-ring" style="margin:10px auto"><div class="in"><div class="t1" id="svdrt">--</div><div class="t2" id="svdrs">第1/'+svDrainN+' 次 · 吸气</div></div></div><div class="sv-cue" id="svdrc">鼻吸4秒</div><div style="text-align:center;font-size:0.7em;color:var(--dim)">呼气时发「嘿」长音，双手往脚方向推</div><button class="sv-drain-skip" onclick="svStopDrain();svDoneDrain()">⏭ 跳过</button>';svSpeak("开始排空能量");svDrainTimer=setInterval(svDrainTick,1000)}
+function svDrainTick(){if(!svDrainTimer)return;svDrainLeft--;if(svDrainLeft>0){var t=document.getElementById("svdrt");if(t)t.textContent=svDrainLeft;return}
+if(svDrainPh==="in"){svDrainPh="out";svDrainLeft=6;var e1=document.getElementById("svdrt");if(e1)e1.textContent="嘿";var e2=document.getElementById("svdrc");if(e2)e2.textContent="微笑呼气「嘿」长音 + 双手往脚推";svSpeak("嘿");return}
+svDrainI++;if(svDrainI>=svDrainN){svStopDrain();svDoneDrain();return}
+svDrainPh="in";svDrainLeft=4;var e3=document.getElementById("svdrs");if(e3)e3.textContent="第"+(svDrainI+1)+"/"+svDrainN+" 次 · 吸气";var e4=document.getElementById("svdrc");if(e4)e4.textContent="鼻吸4秒";svSpeak("吸")}
+function svStopDrain(){if(svDrainTimer){clearInterval(svDrainTimer);svDrainTimer=null}}
+function svDoneDrain(){svMut(function(d){d.ended=true});stopSpeak();svModal(false);svToast("🧹 排空能量完成 · 今日训练收尾 ✓");svTab("log")}
+function svModalClose(){svStopDrain();svModal(false)}
+function quitSolo(){svStopDrain();stopSpeak();document.getElementById("sv").style.display="none";document.getElementById("home").style.display="flex";renderHome()}
+function openSolo(){unlockAudio();svTabOpen="plan";document.getElementById("home").style.display="none";document.getElementById("sv").style.display="flex";document.getElementById("svnotice").innerHTML=SV_NOTICE;svRenderPlan();svToast("板块三 · 自我取悦 · 数据仅存本机")}
 function soloPress(ev){if(ev&&ev.preventDefault)ev.preventDefault();svPressT0=Date.now();svPressTimer=setInterval(function(){var p=(Date.now()-svPressT0)/3000*100;var lp=document.getElementById("sololp");if(lp)lp.style.width=Math.min(100,p)+"%";if(Date.now()-svPressT0>=3000){clearInterval(svPressTimer);svPressTimer=null;var lp2=document.getElementById("sololp");if(lp2)lp2.style.width="0";try{if(navigator.vibrate)navigator.vibrate(120)}catch(e){}openSolo()}},50)}
 function soloRelease(){if(svPressTimer){clearInterval(svPressTimer);svPressTimer=null}var lp=document.getElementById("sololp");if(lp)lp.style.width="0"}
 // ============ 检查更新（强制刷新 Service Worker） ============
 function checkUpdate(){try{if(!("serviceWorker" in navigator)){alert("此浏览器无离线缓存，直接刷新即可");location.reload();return}navigator.serviceWorker.getRegistration().then(function(r){if(!r){alert("未启用离线缓存，刷新页面即可");location.reload();return}function restart(){setTimeout(function(){location.reload(true)},500)}if(r.waiting){r.waiting.postMessage({type:"SKIP_WAITING"});alert("已更新，正在重启");restart();return}if(r.installing){alert("正在后台更新，稍等几秒再刷新");return}r.update().then(function(){setTimeout(function(){if(r.waiting){r.waiting.postMessage({type:"SKIP_WAITING"});alert("已更新，正在重启");restart()}else alert("已是最新版")},800)}).catch(function(){alert("检查失败，请手动清缓存")})}).catch(function(){alert("检查失败，请手动清缓存")})}catch(e){alert("检查失败，请手动清缓存")}}
 window.addEventListener("load",function(){if("serviceWorker" in navigator&&navigator.onLine){navigator.serviceWorker.getRegistration().then(function(r){if(r)r.update().catch(function(){})})}});// ============ INIT ============
 initVoices();
+gSound=loadState().sound!==false;var _mb0=document.getElementById("mutebtn");if(_mb0)_mb0.textContent=gSound?"🔊 声音：开":"🔇 声音：关";
 document.addEventListener("touchstart",function(){if(gTTS&&!gVoice)initVoices()},{once:true});
-document.addEventListener("click",function(){if(gTTS){try{var u=new SpeechSynthesisUtterance("");u.volume=0;speechSynthesis.speak(u)}catch(e){}}},{once:true});
+document.addEventListener("click",function(){unlockAudio()},{once:true});
 renderHome();
 </script>
 <script>
@@ -833,14 +898,21 @@ window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();gIn
 function installApp(){if(gInst){gInst.prompt();gInst.userChoice.then(function(){gInst=null;var b=document.getElementById("instbtn");if(b)b.style.display="none"})}else{alert("此浏览器暂不支持一键安装。安卓：浏览器菜单→添加到主屏幕；苹果：Safari 分享→添加到主屏幕")}}
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("serviceWorker.js").then(function(){console.log("SW OK")}).catch(function(e){console.log("SW fail",e)})})}
 </script>
+
 <div id="sv">
-  <div class="sv-top"><span class="t">🔒 单人专项</span><button onclick="quitSolo()">✕ 退出</button></div>
+  <div class="sv-top"><span class="t">🧴 板块三 · 自我取悦</span><button onclick="quitSolo()">✕ 退出</button></div>
   <div class="sv-notice" id="svnotice"></div>
-  <div class="sv-tabs"><button id="st-plan" class="on" onclick="svTab('plan')">📅 今日计划</button><button id="st-run" onclick="svTab('run')">▶ 开始</button><button id="st-log" onclick="svTab('log')">📊 复盘</button></div>
+  <div class="sv-tabs"><button id="st-plan" class="on" onclick="svTab('plan')">📖 卡片</button><button id="st-run" onclick="svTab('run')">🎯 练习</button><button id="st-log" onclick="svTab('log')">📊 复盘</button></div>
   <div class="sv-main" id="svmain"></div>
-  <div class="sv-bot" id="svbot" style="display:none"><button class="skip" onclick="svSkip()">⏭ 跳过</button><button class="pause" id="svpbtn" onclick="svPause()">⏸ 暂停</button><button class="quit" onclick="quitSolo()">✕ 退出</button></div>
 </div>
 <div class="sv-toast" id="svtoast"></div>
+<div class="pv-mask" id="svmodal" style="display:none" onclick="if(event.target===this)svModalClose()">
+  <div class="pv-box" style="max-width:420px">
+    <div class="pv-top"><span class="pv-title" id="svmtitle"></span><button class="pv-x" onclick="svModalClose()">✕</button></div>
+    <div class="pv-body" id="svmbody" style="padding:14px"></div>
+  </div>
+</div>
+
 <div id="pv" class="pv-mask" style="display:none" onclick="if(event.target===this)closePv()">
   <div class="pv-box">
     <div class="pv-top"><span class="pv-title" id="pvtitle">--</span><button class="pv-x" onclick="closePv()">✕</button></div>
