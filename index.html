@@ -197,7 +197,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;bac
 <body>
 <div id="home">
   <h1>🔥 一日七次</h1>
-  <div class="sub">道家房中术 · 语音跟练 · v2026.08.27m · 呼吸+PC肌版 · 吐气四拍·荐骨分段</div>
+  <div class="sub">道家房中术 · 语音跟练 · v2026.08.30a · 呼吸+PC肌版 · 马步主站+墙蹲辅助</div>
   <div class="wp card"><div class="wn" id="wn">--</div><div class="wl" id="wl">--</div><div class="wd" id="wdone">--</div></div>
   <div class="weekcal" id="wcal"></div>
   <div class="week-adj"><span>调整周数：</span><button onclick="adjWeek(-1)">◀</button><span id="wkov" style="color:var(--gold);min-width:60px;text-align:center">自动</span><button onclick="adjWeek(1)">▶</button></div>
@@ -205,7 +205,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;bac
   <div class="today-box"><div class="tt" id="tt">--</div><div class="ts" id="ts">--</div><button id="tbtn" onclick="startWorkout()">🚀 开始今日训练</button></div>
 <div style="display:flex;gap:6px;margin:6px 0 0"><button id="sndbtn" onclick="testVoice()" style="flex:1;padding:12px;background:var(--card);border:1px solid var(--green);color:var(--green);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">🔊 测试语音</button><button id="mutebtn" onclick="toggleSound()" style="flex:1;padding:12px;background:var(--card);border:1px solid #2a2a3a;color:var(--text);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">🔊 声音：开</button></div>
 <a href="声音诊断.html" style="display:block;text-align:center;margin-top:8px;color:#4caf84;font-size:0.8em;text-decoration:none">🔍 没声音？打开「声音诊断」自检</a>
-<button id="legsbtn" onclick="startLegs()" style="width:100%;margin:6px 0 0;padding:12px;background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">🏋️ 动作练习专区 · 腿部动作（站桩3→30分钟 · 吸4呼6 · 5-7组）</button>
+<button id="legsbtn" onclick="startLegs()" style="width:100%;margin:6px 0 0;padding:12px;background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">🏋️ 动作练习专区 · 腿部动作（站桩：高马步→半年15分 · 吸4呼6 · 5-7组）</button>
 <button id="instbtn" onclick="installApp()" style="display:none;width:100%;margin:4px 0;padding:12px;background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:10px;font-size:0.9em;font-weight:bold;cursor:pointer">📲 安装为离线App</button>
 <div style="font-size:0.68em;color:#666;text-align:center;margin:0 0 8px;line-height:1.6">安卓：浏览器菜单 → 添加到主屏幕（支持时点上方按钮）<br>苹果：Safari 分享 → 添加到主屏幕</div>
 <div class="solo-entry"><button id="solobtn" onpointerdown="soloPress(event)" onpointerup="soloRelease()" onpointercancel="soloRelease()" onpointerleave="soloRelease()" oncontextmenu="return false"><div class="lp" id="sololp"></div>🧴 自我取悦 · 板块三（长按 3 秒解锁）</button><div class="sh">第三板块 · 卡片式自我取悦 · 无法返回之点/大提气/手指锁记录 · 排空能量收尾 · 仅存本机</div></div>
@@ -319,12 +319,12 @@ var EX_LIB=[
  key:"要点：弓步时骨盆前倾类似后入位。在骨盆前倾状态下觉察PC肌紧张度。",
  book:"添加练习"},
 
-{id:"horse",n:"马步站桩",d:"单次连续站桩 · 3→30分钟/月递进 · 气沉丹田",blk:"腿部动作",u:"分钟",
- p:[{c:"站桩",t:60,y:"hold"}],r:2,rest:35,
- s:["两倍肩宽站立，下蹲（宁高勿弯），背绝对直，双手抱球于腹前。","吸气沉丹田，呼气意守双腿；双腿颤抖时用呼吸稳住，抖得厉害就站浅一点。","6个月递进：第1月单次3分钟→第2月5分钟→第3月8分钟→第4月12分钟→第5月18分钟→第6月30分钟。","第6月验收：轻松单次连续站满30分钟以上（不是累计、不是分多次凑）。","每天一次，宁可浅蹲也要挺背；每次比上次多坚持30秒。"],
- m:"弯腰 → 浅蹲保直。",
- key:"要点：腿部力量与耐力根基。单次连续站桩时间=骨盆核心续航力，是抽插输出的底盘。第6个月目标：轻松每天单次30分钟以上。",
- book:"添加练习·6个月渐进至单次30分钟"},
+{id:"horse",n:"马步站桩",d:"主站+靠墙静蹲 · 高马步 · 半年15分钟",blk:"腿部动作",u:"分钟",
+ p:[{c:"站桩",t:40,y:"hold"}],r:1,rest:35,
+ s:["主站：高马步起步（宁高勿弯）。两倍肩宽站立，下蹲，背绝对直，双手抱球于腹前。","周递进：40秒→60秒→2分钟→3分钟→5分钟→10分钟→15分钟（第24周验收）。每次比上周多10~20秒，减量周回到75%。","呼吸：吸气沉丹田，呼气意守双腿；双腿颤抖时用呼吸稳住，抖得厉害就站浅一点。","主站≤3分钟时加靠墙静蹲：背贴墙，双脚前移与肩同宽，下蹲至大腿平行或略高，膝盖不内扣；时长=主站60%（30~120秒）。","主站>3分钟后只站主站，专注连站质量。组间休息60秒。","第6月验收：单次连续站满15分钟以上；30分钟是之后的长期目标。"],
+ m:"弯腰、膝盖内扣 → 浅蹲挺背，宁高勿弯。",
+ key:"要点：主站练髋外展与续航，靠墙静蹲补股四头肌弱链。高马步起步，半年单次15分钟；30分钟为长期目标。",
+ book:"添加练习·6个月渐进至单次15分钟"},
 
 {id:"march1",n:"踏步呼吸·基础",demo:"Jogging_Treadmill",d:"原地踏步 · 吸4拍呼6拍",
  p:[{c:"吸",t:4,y:"inhale"},{c:"呼",t:6,y:"exhale"}],r:24,rest:10,
@@ -570,6 +570,9 @@ ANIM.lunge=function(phase){
   return '<svg viewBox="0 0 240 160"><circle cx="120" cy="22" r="11" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="120" y1="33" x2="120" y2="58" stroke="#ddd" stroke-width="3.5" stroke-linecap="round"/><line x1="120" y1="58" x2="92" y2="'+fKneeY+'" stroke="#ddd" stroke-width="3" stroke-linecap="round" style="transition:y2 0.5s"/><line x1="92" y1="'+fKneeY+'" x2="'+fFootX+'" y2="138" stroke="#ddd" stroke-width="3" stroke-linecap="round" style="transition:all 0.5s"/><line x1="120" y1="58" x2="145" y2="100" stroke="#ddd" stroke-width="2.5" stroke-linecap="round"/><line x1="145" y1="100" x2="160" y2="138" stroke="#ddd" stroke-width="2.5" stroke-linecap="round"/><line x1="120" y1="43" x2="90" y2="65" stroke="#ddd" stroke-width="2" stroke-linecap="round" opacity="0.5"/><line x1="120" y1="43" x2="150" y2="65" stroke="#ddd" stroke-width="2" stroke-linecap="round" opacity="0.5"/>'+ (isDown?'<ellipse cx="92" cy="'+(fKneeY-12)+'" rx="12" ry="6" fill="#4caf84" opacity="0.2" stroke="#4caf84" stroke-width="1"/>':"") +'<text x="120" y="155" text-anchor="middle" fill="#f0c040" font-size="11">'+ (isDown?"吸气下降·前膝90°":"呼气起身·前脚发力") +'</text></svg>';
 };
 
+ANIM.wallsit=function(phase){
+  return '<svg viewBox="0 0 240 160"><rect x="215" y="8" width="10" height="144" fill="#555"/><line x1="20" y1="140" x2="212" y2="140" stroke="#888" stroke-width="2" opacity="0.3"/><circle cx="204" cy="42" r="11" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="204" y1="53" x2="204" y2="78" stroke="#ddd" stroke-width="3.5" stroke-linecap="round"/><line x1="204" y1="78" x2="150" y2="98" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="150" y1="98" x2="150" y2="140" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><circle cx="204" cy="80" r="16" fill="none" stroke="#7fd4ff" stroke-width="2" opacity="0.4"><animate attributeName="r" values="16;18;16" dur="3s" repeatCount="indefinite"/></circle><text x="204" y="82" text-anchor="middle" fill="#7fd4ff" font-size="10" font-weight="bold">定</text><text x="120" y="155" text-anchor="middle" fill="#7fd4ff" font-size="11">靠墙静蹲 · 背贴墙 · 大腿平行</text></svg>';
+};
 // --- 马步站桩 ---
 ANIM.horse=function(phase){
   return '<svg viewBox="0 0 240 160"><circle cx="120" cy="22" r="11" fill="none" stroke="#ccc" stroke-width="2.5"/><line x1="120" y1="33" x2="120" y2="65" stroke="#ddd" stroke-width="3.5" stroke-linecap="round"/><line x1="120" y1="65" x2="65" y2="82" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="65" y1="82" x2="55" y2="140" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="120" y1="65" x2="175" y2="82" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="175" y1="82" x2="185" y2="140" stroke="#ddd" stroke-width="3" stroke-linecap="round"/><line x1="75" y1="48" x2="165" y2="48" stroke="#888" stroke-width="2" opacity="0.3"/><circle cx="120" cy="90" r="16" fill="none" stroke="#f0c040" stroke-width="2" opacity="0.4"><animate attributeName="r" values="16;18;16" dur="3s" repeatCount="indefinite"/></circle><text x="120" y="92" text-anchor="middle" fill="#f0c040" font-size="10" font-weight="bold">气</text><text x="120" y="155" text-anchor="middle" fill="#f0c040" font-size="11">马步站桩 · 气沉丹田</text></svg>';
@@ -599,7 +602,7 @@ function renderAnim(){
     return;
   }
   var ph=getCurPh();
-  var fn=ANIM[ex.id]||ANIM.breath;
+  var fn=ANIM[ex.id]||ANIM.breath;if(ex.id==="horse"&&ph&&ph.c==="靠墙静蹲"&&ANIM.wallsit)fn=ANIM.wallsit;
   try{box.innerHTML=fn(ph?ph.y:"")}catch(e){}
 }
 
@@ -625,6 +628,8 @@ var SETS_PLAN={"动作一 · 包头深蹲":[5,5,6,6,7,7],"动作二 · 手撑地
 var SETREP_PLAN={"动作一 · 包头深蹲":[10,10,20,20,20,20],"动作二 · 手撑地深蹲":[10,10,20,20,20,20],"动作三 · 跪姿顶髋":[10,10,20,20,20,20],"动作四 · 凳上摆髋":[10,10,20,20,20,20]};
 var BT_PLAN={"动作一 · 包头深蹲":[2.4,2.2,2.0,1.8,1.6,1.4],"动作二 · 手撑地深蹲":[2.4,2.2,2.0,1.8,1.6,1.4],"动作三 · 跪姿顶髋":[1.8,1.6,1.4,1.3,1.2,1.1],"动作四 · 凳上摆髋":[1.6,1.4,1.3,1.2,1.1,1.0]};
 var SAC_PLAN={rot:[6,8,8,10,10,12],fwd:[8,10,12,14,16,20],bwd:[8,10,12,14,16,20],alt:[10,12,14,16,20,24],cir:[6,6,8,8,10,10],circSets:[1,1,1,1,2,2],spi:[6,6,10,10,16,16]};
+var HORSE_WEEK=[40,50,60,45,70,80,90,75,120,150,180,150,210,240,270,240,300,360,420,360,480,600,720,900];
+function durSay(s){if(s>=60){var m=Math.floor(s/60),x=s%60;return m+"分"+(x?x+"秒":"")}return s+"秒"}
 function setRepFor(name,w){var m=monthOfWeek(w);var T=SETREP_PLAN[name][m-1]||10;var k=(w-1)%4;if(T<=10)return 10;if(T<=20)return k===2?20:10;return [10,20,30,20][k]}
 function monthOfWeek(w){return Math.min(6,Math.max(1,Math.floor((w-1)/4)+1))}
 function adjFor(name,w){var pl=REP_PLAN[name];if(!pl)return null;var m=monthOfWeek(w);var T=pl[m-1];if(!T)return null;if(REP_FIXED[name])return T;var prev=m>1?pl[m-2]:0;var ramp=(m===1||prev===0||T>prev);var k=(w-1)%4;if(k===3)return Math.max(1,Math.round(T*0.7));if(!ramp)return T;return [Math.ceil(T*0.5),Math.ceil(T*0.75),T][k]}
@@ -651,7 +656,7 @@ function buildWorkout(dayType){
       ex.key=(ex.key||"")+" 呼吸融合有氧：每个完整呼吸=吸"+INH4+"下+呼"+EXH6+"下（10次动作）。每下1秒（吸4秒+呼6秒），每组从1轮完整呼吸（10次）起步、逐月加到2轮（20次）；组数5组起步、逐月加到7组；每组后休息"+ex.setRest+"秒。呼吸不断=输出不断。";
     }
     if(ex.id==="sacrum"){var sp2=SAC_PLAN;var R2=function(k){return sp2[k][m-1]||0};var ps2=[];ps2.push({c:"定位荐骨",t:10,y:"hold"});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});ps2.push({c:"左旋",base:"左旋",rp:R2("rot"),bt:2,beat:true,y:"inhale",t:R2("rot")*2});ps2.push({c:"右旋",base:"右旋",rp:R2("rot"),bt:2,beat:true,y:"exhale",t:R2("rot")*2});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});ps2.push({c:"前推上举",base:"前推上举",rp:R2("fwd"),bt:2,beat:true,y:"inhale",t:R2("fwd")*2});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});ps2.push({c:"后推下摆",base:"后推下摆",rp:R2("bwd"),bt:2,beat:true,y:"exhale",t:R2("bwd")*2});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});var altH=Math.floor(R2("alt")/2);ps2.push({c:"前推",base:"前推",rp:altH,bt:1,beat:true,y:"inhale",t:altH});ps2.push({c:"后推",base:"后推",rp:altH,bt:1,beat:true,y:"exhale",t:altH});ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});var cs2=R2("circSets");for(var ci2=0;ci2<cs2;ci2++){ps2.push({c:"顺圈",base:"顺圈",rp:R2("cir"),bt:3,beat:true,y:"free",t:R2("cir")*3});ps2.push({c:"逆圈",base:"逆圈",rp:R2("cir"),bt:3,beat:true,y:"free",t:R2("cir")*3});if(ci2<cs2-1)ps2.push({c:"组间休息",t:10,y:"rest",isRest:true,nextSet:ci2+2})}ps2.push({c:"段间休息",t:5,y:"rest",isRest:true});ps2.push({c:"旋进",base:"旋进",rp:R2("spi"),bt:3,beat:true,y:"free",t:R2("spi")*3});ex.p=ps2;ex.grouped=true;ex.sets=cs2;ex.r=1+R2("rot")*2+R2("fwd")+R2("bwd")+R2("alt")+R2("cir")*2*cs2+R2("spi");ex.d="荐骨分段·旋进 · 本月："+R2("rot")+"轮左右旋 · 前推"+R2("fwd")+" · 后推"+R2("bwd")+" · 连动"+R2("alt")+" · 顺逆圈"+R2("cir")+"×"+cs2+" · 旋进"+R2("spi")+"圈";ex.key=(ex.key||"")+" 呼吸绑定：左右旋/前推/后推每下2秒（左旋吸、右旋呼，前推吸、后推呼），连动每下1秒（前推吸后推呼），顺逆圈每圈3秒一圈一呼吸，旋进绑呼吸（M5-6吸4呼6）。段间休息5秒、组间休息10秒。"}
-    if(ex.id==="horse"){ex.minutes=ex.r;ex.r=1;ex.p=[{c:"站桩",t:ex.minutes*60,y:"hold"}]}
+    if(ex.id==="horse"){var hsec=HORSE_WEEK[Math.max(0,Math.min(23,w-1))]||40;var wall=0;if(hsec<=180)wall=Math.max(30,Math.min(120,Math.round(hsec*0.6)));ex.minutes=hsec/60;ex.r=1;ex.p=[{c:"站桩",t:hsec,y:"hold"}];if(wall>0){ex.sets=2;ex.p.push({c:"组间休息",t:60,y:"rest",isRest:true,nextSet:2});ex.p.push({c:"靠墙静蹲",t:wall,y:"hold"})}else{ex.sets=1}ex.d="主站"+durSay(hsec)+(wall>0?"+靠墙静蹲"+durSay(wall):"")+" · 半年15分钟"}
     workoutPlan.push(ex)}
   if(dayType==="rest"){add("count200");return}
   if(dayType==="legs"){add("horse");add("sq1");add("sq2");add("sq3");add("sq4");add("sacrum");return}
@@ -716,7 +721,7 @@ function showExInfo(){
   document.getElementById("wsteps").innerHTML=sh;
 }
 
-function renderExList(){var h="";workoutPlan.forEach(function(ex,i){var cls="el";if(i===gExI)cls+=" cur";if(i<gExI)cls+=" dn";h+='<div class="'+cls+'"><span class="eln">'+(i<gExI?"✓ ":"")+ex.n+'<span class="elr">'+((ex.minutes?ex.minutes+"分钟":ex.r+(ex.u||"次")))+"</span></div>"});document.getElementById("exlist").innerHTML=h}
+function renderExList(){var h="";workoutPlan.forEach(function(ex,i){var cls="el";if(i===gExI)cls+=" cur";if(i<gExI)cls+=" dn";h+='<div class="'+cls+'"><span class="eln">'+(i<gExI?"✓ ":"")+ex.n+'<span class="elr">'+((ex.minutes?durSay(Math.round(ex.minutes*60)):ex.r+(ex.u||"次")))+"</span></div>"});document.getElementById("exlist").innerHTML=h}
 function toggleList(){var el=document.getElementById("exlist");var btns=document.getElementsByClassName("exlist-toggle");if(el.style.display==="block"){el.style.display="none";if(btns[0])btns[0].textContent="📋 查看全部动作 ▾"}else{el.style.display="block";renderExList();if(btns[0])btns[0].textContent="📋 查看全部动作 ▴"}}
 
 // ============ COUNTDOWN ============
@@ -727,7 +732,7 @@ function announceStart(){if(gExI>=workoutPlan.length){finishWorkout();return}var
 function startPh(){
   var ex=getCurEx();if(!ex)return;var ph=ex.p[gPhI];if(!ph)return;
   if(ph.isRest){gPhW=0;gTimeLeft=ph.t;gState="phase";var rng=document.getElementById("wring");rng.style.display="flex";rng.className="breath-ring rest";var rc=ph.c||"组间休息";document.getElementById("wcue").textContent=rc;document.getElementById("wtimer").textContent=(gTimeLeft>0?Math.ceil(gTimeLeft):0);document.getElementById("wtimer").className="phase-timer rest-color";document.getElementById("wrep").textContent=ph.nextSet?("下一组：第"+ph.nextSet+"/"+ex.sets+"组"):"";document.getElementById("wpf").style.width=(gDoneRep/gTotalRep*100)+"%";gWaitVoice=true;var myRunR=gRunId;var rsCb=function(){if(gRunId!==myRunR)return;if(gState!=="phase")return;gWaitVoice=false;if(!gPaused)startTimer()};speakWait(rc+ph.t+"秒",0.7,0.95,rsCb);renderAnim();return}
-  if(ex.minutes){gPhW=1;gPhEl=0;gPhLastRep=0;gTimeLeft=ph.t;gState="phase";var rng2=document.getElementById("wring");rng2.style.display="flex";rng2.className="breath-ring hold";document.getElementById("wcue").textContent="站桩";document.getElementById("wtimer").textContent=fmtMS(gTimeLeft);document.getElementById("wtimer").className="phase-timer gold";document.getElementById("wrep").textContent="目标：单次连续站满 "+ex.minutes+" 分钟（不累计）";document.getElementById("wpf").style.width=(gDoneRep/gTotalRep*100)+"%";gWaitVoice=true;var myRunM=gRunId;var mnCb=function(){if(gRunId!==myRunM)return;if(gState!=="phase")return;gWaitVoice=false;if(!gPaused)startTimer()};speakWait("站桩"+ex.minutes+"分钟，开始",0.6,1.0,mnCb);renderAnim();return}
+  if(ex.minutes){gPhW=1/Math.max(1,(ex.sets||1));gPhEl=0;gPhLastRep=0;gTimeLeft=ph.t;gState="phase";var rng2=document.getElementById("wring");rng2.style.display="flex";rng2.className="breath-ring hold";var hcue=ph.c||"站桩";document.getElementById("wcue").textContent=hcue;document.getElementById("wtimer").textContent=fmtMS(gTimeLeft);document.getElementById("wtimer").className="phase-timer gold";document.getElementById("wrep").textContent=(ex.sets>1?("第"+gSetN+"/"+ex.sets+"组 · "):"")+"目标：单次连续 "+durSay(Math.round(ex.minutes*60))+" · 不累计";document.getElementById("wpf").style.width=(gDoneRep/gTotalRep*100)+"%";gWaitVoice=true;var myRunM=gRunId;var mnCb=function(){if(gRunId!==myRunM)return;if(gState!=="phase")return;gWaitVoice=false;if(!gPaused)startTimer()};speakWait(hcue+"，"+durSay(ph.t)+"，开始",0.6,1.0,mnCb);renderAnim();return}
   if(ph.rp){var rem=ex.r-gRepC;if(ph.rp>rem){ph.rp=rem;ph.t=Math.ceil(rem*ph.bt)}}
   gPhW=(ph.rp!==undefined)?ph.rp:1/ex.p.length;gPhEl=0;gPhLastRep=0;
   gTimeLeft=ph.t;gState="phase";
@@ -800,7 +805,7 @@ function previewDay(di){
     else{
       buildWorkout(tp);
       workoutPlan.forEach(function(ex,i){
-        h+='<div class="pv-item"><div class="pv-nm">'+(i+1)+'. '+ex.n+'<span class="pv-r">'+((ex.minutes?ex.minutes+'分钟':ex.r+(ex.u||'次')))+'</span></div><div class="pv-d">'+(ex.d||"")+'</div>'+(ex.key?'<div class="pv-k">💡 '+ex.key+'</div>':"")+(ex.pass?'<div class="pv-pass">🎯 过关标准：'+ex.pass+'</div>':"")+'<details class="pv-detail"><summary>📖 动作详解</summary>'+(ex.s?'<ol>'+ex.s.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ol>':"")+(ex.m?'<div class="pv-m">⚠️ '+ex.m+'</div>':"")+(ex.book?'<div class="pv-d">—— '+ex.book+'</div>':"")+'</details></div>';
+        h+='<div class="pv-item"><div class="pv-nm">'+(i+1)+'. '+ex.n+'<span class="pv-r">'+((ex.minutes?durSay(Math.round(ex.minutes*60)):ex.r+(ex.u||'次')))+'</span></div><div class="pv-d">'+(ex.d||"")+'</div>'+(ex.key?'<div class="pv-k">💡 '+ex.key+'</div>':"")+(ex.pass?'<div class="pv-pass">🎯 过关标准：'+ex.pass+'</div>':"")+'<details class="pv-detail"><summary>📖 动作详解</summary>'+(ex.s?'<ol>'+ex.s.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ol>':"")+(ex.m?'<div class="pv-m">⚠️ '+ex.m+'</div>':"")+(ex.book?'<div class="pv-d">—— '+ex.book+'</div>':"")+'</details></div>';
       });
       workoutPlan=[];
     }
